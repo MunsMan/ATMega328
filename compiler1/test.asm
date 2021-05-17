@@ -5,13 +5,20 @@ hi:
 
 main:
 
-    MOV r1 #4 // ldi r23 #4 -> MOV r1 r23 
+    MOV r1 #4; // ldi r23 #4 -> MOV r1 r23 
+    MOV r2 r3;
     MOV r16 #32
     MOV r17 #224
     ADD r16 r17 // r16 = 0 -> Z = 1
+    ADD r1 #5
+    ADC r1 #5
     MOV r18 #1
     BRBC 1 jumpto // NO JUMP
     MOV r18 #10
+
+    CMP r1 r3
+
+    ADDEQ r5 r7
 
     MOV r19 #1
     BRBC 2 1
