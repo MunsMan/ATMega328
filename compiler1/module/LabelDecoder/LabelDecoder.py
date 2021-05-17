@@ -2,11 +2,14 @@ from typing import List, Dict, Any
 
 
 class LabelDecoder:
-    def __init__(self) -> None:
+    def __init__(self, file) -> None:
         self.labels: Dict[str, List[Any]] = {"main": []}
         self.currentLabel: str = "main"
+        self.file = file
+        self._scanLabels(file)
+        self._splitLabels(file)
 
-    def scanLabels(self, file: List[str]):
+    def _scanLabels(self, file: List[str]):
         for line in file:
             if self.checkIfLabel(line):
                 line = line.replace(":", "")
@@ -33,7 +36,7 @@ class LabelDecoder:
         instructions.append(instruction)
         self.labels[self.currentLabel] = instructions
 
-    def splitLabels(self, file) -> Dict[str, List[str]]:
+    def _splitLabels(self, file) -> Dict[str, List[str]]:
         for line in file:
             if self.checkIfLabel(line):
                 self.updateCurrentLabel(line)
@@ -41,7 +44,13 @@ class LabelDecoder:
                     self.labels[self.currentLabel] = []
             else:
                 self.labels[self.currentLabel].append(line)
-        return self.labels
+
+    def printLabels(self):
+        for label in self.labels:
+            instructions = self.labels[label]
+            print("{label}:".format(label=label))
+            for instruction in instructions:
+                print("\t{i}".format(i=instruction))
 
     def labelRef(self):
         pass
