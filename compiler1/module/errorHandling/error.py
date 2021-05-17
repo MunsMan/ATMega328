@@ -43,7 +43,7 @@ def unknownInstructionError(custom: Any) -> str:
     return "Compiler Error:\nCan't parse following instruction: '{op}'\nPlease reference to the Documentation for available Instructions. ".format(op=op)
 
 
-def invalidRegisterRefernce(custom: str) -> str:
+def invalidRegisterReference(custom: str) -> str:
     r: str = custom
     return "Invalid Register:\nThe used Register is not definde for that Processor. Please check the passed Register: {r}.\nValid Register are in range of r0-r31.".format(r=r)
 
@@ -58,9 +58,14 @@ def wrongArgumentConstant(custom: Tuple[int, int]) -> str:
     return "A Constant can only take an Argument of size: {ks} Bit.\nYou provided a Constant: {K}\nIt is of Size {aS} Bit.".format(K=constant, ks=constant_size, aS=argSize)
 
 
-def wrongRegisterRefernced(custom: Tuple[str, str]) -> str:
+def wrongRegisterReferenced(custom: Tuple[str, str]) -> str:
     passedRegister, supportedRegisters = custom
     return "You passed Register {pR}.\nOnly following Registers are Supported:\n{sPs}".format(pR=passedRegister, sPs=supportedRegisters)
+
+
+def invalidCondError(custom: Tuple[str]) -> str:
+    cond = custom
+    return "Invalid condition used: {cond}\nThis condition is not supported. Please reference to the instruction Set Manual".format(cond=cond)
 
 
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
@@ -68,8 +73,9 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     2: failedLoadingInputFile,
     3: wrongArgumentRegister,
     4: unknownInstructionError,
-    5: invalidRegisterRefernce,
+    5: invalidRegisterReference,
     6: invalidConstantError,
     7: wrongArgumentConstant,
-    8: wrongRegisterRefernced,
+    8: wrongRegisterReferenced,
+    9: invalidCondError,
 }
