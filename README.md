@@ -23,21 +23,15 @@ LDI R0 #100 : R0 <- 100;
 
 ## Compiler / Assembler
 
-At base there is a custom compiler for basic Assembly Code. This Compiler is writen in Python and takes `*.o`files. You can find the compiler in tehe `./compiler`directory.
+This Project container his own Assembly Compiler/Assembler.
+The Compiler works in 4 Steps:
+1. Parsing Labels
+2. Parsing Lines
+3. Linking Labels
+4. Compiling Code
 
-### Constantes
-
-At the moment only unsigned Constants are supported. At the moment I'm not sure if signed Constants are even allowed in real assembly.
-
-
-
-
-Constant c = -50 -> 1100 1110
-Word w = -8173 -> 1110 0000 0001 0011
-wh = 1110 0000
-wl = 0001 0011
-
-
-    wl          0001 0011
-    c           1100 1110
-wl = wl + c ->  1110 0001
+### List of supported Instructions:
+|Instruction|Meaning|example|
+|:---:|:---:|:---:|
+|ADD| Adding register or constants together| ADD r1 #5 |
+|MOV| Move Register or Constants to another Register | MOV r5 #45 |
