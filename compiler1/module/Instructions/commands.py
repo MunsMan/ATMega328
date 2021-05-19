@@ -1,72 +1,33 @@
-from compiler1.module.errorHandling.error import throwError
-from compiler1.module.Instructions.instructions import mapInstructions
-from compiler1.module.Instructions.helper import checkConst, checkIfRegister, getConst, getRegister, loadImmediate
+from . import RegisterManager
+from ..errorHandling.error import throwError
+from ..Instructions.instructions import mapInstructions
+from .helper import checkConst, getConst, getRegister
 from typing import Callable, Union
 
+class CommandArgs:
+    def __init__(self, opcode: str, cond: str, flag: str, rd: str, rr: str, labelRef: Callable, lineNum: int, label: str) -> None:
+        self.opcode = opcode
+        self.cond = cond
+        self.flag = flag
+        self.rd = rd
+        self.rr = rr
+        self.labelRef = labelRef
+        self.blockIndex = lineNum
+        self.label = label
 
-class RegisterManager:
-    def __init__(self) -> None:
-        RegisterManager.registers = {
-            "r0": 0x00,
-            "r1": False,
-            "r2": False,
-            "r3": False,
-            "r4": False,
-            "r5": False,
-            "r6": False,
-            "r7": False,
-            "r8": False,
-            "r9": False,
-            "r10": False,
-            "r11": False,
-            "r12": False,
-            "r13": False,
-            "r14": False,
-            "r15": False,
-            "r16": False,
-            "r17": False,
-            "r18": False,
-            "r19": False,
-            "r20": False,
-            "r21": False,
-            "r22": False,
-            "r23": False,
-            "r24": False,
-            "r25": False,
-            "r26": False,
-            "r27": False,
-            "r28": False,
-            "r29": False,
-            "r30": False,
-            "r31": False,
-        }
-
-    @staticmethod
-    def getFreeRegister(lower=0) -> int:
-        for register in RegisterManager.registers[lower:]:
-            if not register:
-                RegisterManager.registers[register] = True
-                return getRegister(register)
-
-    def freeRegister(register: Union[str, int]):
-        checkIfRegister(register)
-        if isinstance(register, int):
-            register = "r" + str(register)
-        RegisterManager.registers[register] = False
-
-    def setRegister(register: Union[str, int]):
-        checkIfRegister(register)
-        if isinstance(register, int):
-            register = "r" + str(register)
-        RegisterManager.registers[register] = True
+    def labelRefArgs(self, offset):
+        return offset, self.blockIndex, self.label
+         
 
 
-def mapCommmands(opcode: str, cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
-    if opcode in CommandsMap:
-        return opcode(cond, flag, rd, rr, labelRef)
+def mapCommmands(args: CommandArgs):
+    if args.opcode in CommandsMap:
+        return CommandsMap[args.opcode](args)
 
 
-def ADD(cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
+def ADD(args: CommandArgs):
+    rr = args.rr
+    rd = args.rd
     instructions = []
     if checkConst(rr):
         r = RegisterManager.getFreeRegister(16)
@@ -78,7 +39,9 @@ def ADD(cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
     return (len(instructions), lambda: instructions)
 
 
-def MOV(cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
+def MOV(args: CommandArgs):
+    rd = args.rd
+    rr = args.rr
     instructions = []
     if checkConst(rr):
         instructions = loadImmediate(rd, getConst(rr))
@@ -88,18 +51,24 @@ def MOV(cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
     return (len(instructions), lambda: instructions)
 
 
-def BR(cond: str, flag: str, rd: str, rr: str, labelRef: Callable):
+def BR(args: CommandArgs):
+    rd = args.rd
+    rr = args.rr
+    labelRef = args.labelRef
+    cond = args.cond
 
-    def twoArgs(opcode: str, bit: int, offset: Union[str, int]):
+    def twoArgs(opcode: str, bit: Union[str, int], offset: Union[str, int]):
+        if isinstance(bit, str):
+            bit = int(bit)
         LEN_INSTRUCTIONS = 1
         if not str(offset).isdigit():
-            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, labelRef(offset))])
-        return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, offset)])
+            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, labelRef(*args.labelRefArgs(offset)))])
+        return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, int(offset))])
 
     def oneArg(opcode: str, offset: Union[str, int]):
         LEN_INSTRUCTIONS = 1
         if not str(offset).isdigit():
-            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(labelRef(offset))])
+            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(labelRef(*args.labelRefArgs(offset)))])
         return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(offset)])
 
     case = {
@@ -134,3 +103,16 @@ CommandsMap = {
     "MOV": MOV,
     "BR": BR,
 }
+
+
+def loadImmediate(rd: str, immediate: int):
+    instructions = []
+    if getRegister(rd) > 15:
+        instructions.append(mapInstructions("ldi")(getRegister(rd), immediate))
+    else:
+        r = RegisterManager.getFreeRegister(16)
+        instructions.append(mapInstructions("ldi")(r, immediate))
+        instructions.append(mapInstructions("mov")(getRegister(rd), r))
+        RegisterManager.freeRegister(r)
+    RegisterManager.setRegister(rd)
+    return instructions
