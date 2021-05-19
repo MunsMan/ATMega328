@@ -1,7 +1,5 @@
-from compiler1.module.Instructions.instructions import mapInstructions
-from compiler1.module.Instructions.commands import RegisterManager
 from typing import Union
-from compiler1.module.errorHandling.error import throwError
+from ..errorHandling.error import throwError
 
 RegisterMap = {
     "r0": 0x00,
@@ -47,7 +45,9 @@ def getConst(register: str) -> int:
     return int(register.replace("#", ""), base=10)
 
 
-def getRegister(register: str) -> int:
+def getRegister(register: Union[str, int]) -> int:
+    if isinstance(register, int):
+            register = "r" + str(register)
     register = register.lower()
     if register in RegisterMap:
         return RegisterMap[register]
@@ -60,15 +60,7 @@ def checkIfRegister(register: Union[str, int]):
     if register not in RegisterMap:
         throwError(5, True, register)
 
-
-def loadImmediate(rd: str, immediate: int):
-    instructions = []
-    if getRegister(rd) > 15:
-        instructions.append(mapInstructions("ldi")(rd, immediate))
-    else:
-        r = RegisterManager.getFreeRegister(16)
-        instructions.append(mapInstructions("ldi")(r, immediate))
-        instructions.append(mapInstructions("mov")(rd, r))
-        RegisterManager.freeRegister(r)
-    RegisterManager.setRegister(rd)
-    return instructions
+def twoOp(Rd, Rn):
+    dest = getRegister(Rd)
+    src = getRegister(Rn)
+    return ((src >> 4) << 9) + (dest << 4) + (src & 0xF)
