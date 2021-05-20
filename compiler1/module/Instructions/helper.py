@@ -37,30 +37,41 @@ RegisterMap = {
 }
 
 
-def checkConst(register: str) -> bool:
+def checkConst(register: Union[str, int]) -> bool:
+    if isinstance(register, int):
+        return True
+    if register.isdigit():
+        return True
     return register.find("#") != -1
 
 
-def getConst(register: str) -> int:
-    return int(register.replace("#", ""), base=10)
+# ToDo Add a range for an expected Const
+def getConst(register: Union[str, int]) -> int:
+    if not checkConst(register):
+        return throwError(6, True, "0 - 255")
+
+    if not isinstance(register, int):
+        register = int(register.replace("#", ""))
+    return register
 
 
 def getRegister(register: Union[str, int]) -> int:
     if isinstance(register, int):
-            register = "r" + str(register)
-    register = register.lower()
-    if register in RegisterMap:
-        return RegisterMap[register]
+        reg = "r" + str(register)
+    else:
+        reg = register.lower()
+    if reg in RegisterMap:
+        return RegisterMap[reg]
     throwError(5, True, register)
 
 
-def checkIfRegister(register: Union[str, int]):
+def checkIfRegister(register: Union[str, int]) -> bool:
     if isinstance(register, int):
         register = "r" + str(register)
-    if register not in RegisterMap:
-        throwError(5, True, register)
+    return register.lower() in RegisterMap
+
 
 def twoOp(Rd, Rn):
     dest = getRegister(Rd)
     src = getRegister(Rn)
-    return ((src >> 4) << 9) + (dest << 4) + (src & 0xF)
+    return ((src & 0x10) << 5) + (dest << 4) + (src & 0xF)
