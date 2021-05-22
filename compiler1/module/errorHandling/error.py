@@ -53,7 +53,7 @@ def invalidConstantError(custom: str) -> str:
     return "Passed Constant can't be interpreted as valid Number.\n Please ensure that it is a number: {n}\n".format(n=n)
 
 
-def wrongArgumentConstant(custom: Tuple[int, int]) -> str:
+def wrongArgumentConstant(custom: Tuple[int, int, int]) -> str:
     constant, constant_size, argSize = custom
     return "A Constant can only take an Argument of size: {ks} Bit.\nYou provided a Constant: {K}\nIt is of Size {aS} Bit.".format(K=constant, ks=constant_size, aS=argSize)
 
