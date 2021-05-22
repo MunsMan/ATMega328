@@ -1,4 +1,4 @@
-from ..Instructions.helper import checkIfRegister, getRegister
+from ..Instructions.helper import checkRegister, getRegister
 from typing import Union
 
 
@@ -48,14 +48,14 @@ class RegisterManager:
 
     @staticmethod
     def freeRegister(register: Union[str, int]):
-        checkIfRegister(register)
+        checkRegister(register)
         if isinstance(register, int):
             register = "r" + str(register)
         RegisterManager.registers[register] = False
 
     @staticmethod
     def setRegister(register: Union[str, int]):
-        checkIfRegister(register)
+        checkRegister(register)
         if isinstance(register, int):
             register = "r" + str(register)
         RegisterManager.registers[register] = True
