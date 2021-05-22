@@ -1,8 +1,9 @@
 from . import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
-from .helper import checkConst, getConst, getRegister
+from .helper import RegisterMap, checkConst, checkRegister, getConst, getRegister
 from typing import Callable, Union
+
 
 class CommandArgs:
     def __init__(self, opcode: str, cond: str, flag: str, rd: str, rr: str, labelRef: Callable, lineNum: int, label: str) -> None:
@@ -17,7 +18,6 @@ class CommandArgs:
 
     def labelRefArgs(self, offset):
         return offset, self.blockIndex, self.label
-         
 
 
 def mapCommmands(args: CommandArgs):
@@ -29,12 +29,17 @@ def ADD(args: CommandArgs):
     rr = args.rr
     rd = args.rd
     instructions = []
+    if not checkRegister(rd):
+        throwError(5, True, rd)
     if checkConst(rr):
+        rr = getConst(rr)
         r = RegisterManager.getFreeRegister(16)
         instructions = loadImmediate(r, getConst(rr))
         instructions.append(mapInstructions("add")(rd, r))
         RegisterManager.freeRegister(r)
     else:
+        if not checkRegister(rr):
+            throwError(5, True, rr)
         instructions.append(mapInstructions("add")(rd, rr))
     return (len(instructions), lambda: instructions)
 
@@ -98,10 +103,35 @@ def BR(args: CommandArgs):
     throwError(9, True, (cond))
 
 
+def AND(args: CommandArgs):
+    rd = args.rd
+    rr = args.rr
+    instructions = []
+    if not checkRegister(rd):
+        throwError(5, True, rd)
+    rd = getRegister(rd)
+    if checkConst(rr):
+        rr = getConst(rr)
+        if rd < 16:
+            r = RegisterManager.getFreeRegister(16)
+            instructions += loadImmediate(r, rr)
+            instructions.append(mapInstructions("and")(rd, r))
+            RegisterManager.freeRegister(r)
+        else:
+            instructions.append(mapInstructions("andi")(rd, rr))
+    else:
+        if not checkRegister(rr):
+            throwError(5, True, rr)
+        rr = getRegister(rr)
+        instructions.append(mapInstructions("and")(rd, rr))
+    return (len(instructions), lambda: instructions)
+
+
 CommandsMap = {
     "ADD": ADD,
     "MOV": MOV,
     "BR": BR,
+    "AND": AND,
 }
 
 
