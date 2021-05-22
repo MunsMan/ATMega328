@@ -1,8 +1,9 @@
 from .. import helper
-from ..helper import checkConst, checkIfRegister, getConst, getRegister, twoOp
-from ...errorHandling import throwError
+from ..helper import checkConst, checkRegister, getConst, getRegister, twoOp
+import pytest
 from pytest_mock import MockerFixture
 import numpy as np
+from . import mock_exit
 
 
 def test_checkValidConst():
@@ -30,16 +31,18 @@ def test_getValidConst(mocker: MockerFixture):
 
 def test_getInvalidConst(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
-    getConst("ABC")
+    mock_throwError.side_effect = mock_exit
+    with pytest.raises(SystemExit):
+        getConst("ABC")
     mock_throwError.assert_called_once_with(6, True, "0 - 255")
 
 
 def test_checkValidRegister():
     registers = range(0, 32)
     for register in registers:
-        assert checkIfRegister(register) == True
-        assert checkIfRegister('r'+str(register)) == True
-        assert checkIfRegister('R'+str(register)) == True
+        assert checkRegister(register) == True
+        assert checkRegister('r'+str(register)) == True
+        assert checkRegister('R'+str(register)) == True
 
 
 def test_checkInvalidRegister(mocker: MockerFixture):
@@ -47,7 +50,7 @@ def test_checkInvalidRegister(mocker: MockerFixture):
                  'R32', "ABC", "abc", "d7", "r100"]
 
     for register in registers:
-        assert checkIfRegister(register) == False
+        assert checkRegister(register) == False
 
 
 def test_getValidRegister(mocker: MockerFixture):
