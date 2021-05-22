@@ -45,13 +45,13 @@ def checkConst(register: Union[str, int]) -> bool:
     return register.find("#") != -1
 
 
-# ToDo Add a range for an expected Const
-def getConst(register: Union[str, int]) -> int:
+def getConst(register: Union[str, int], bits: int = 8) -> int:
     if not checkConst(register):
-        return throwError(6, True, "0 - 255")
-
+        throwError(6, True, "0 - 255")
     if not isinstance(register, int):
         register = int(register.replace("#", ""))
+    if register > 2**bits-1:
+        throwError(7, True, (register, register.bit_length(), bits))
     return register
 
 
@@ -65,7 +65,7 @@ def getRegister(register: Union[str, int]) -> int:
     throwError(5, True, register)
 
 
-def checkIfRegister(register: Union[str, int]) -> bool:
+def checkRegister(register: Union[str, int]) -> bool:
     if isinstance(register, int):
         register = "r" + str(register)
     return register.lower() in RegisterMap
