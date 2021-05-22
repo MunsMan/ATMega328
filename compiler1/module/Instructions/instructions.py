@@ -16,6 +16,7 @@ def ldi(rd: int, k: int) -> int:
     dest = (rd - 16) << 4
     return opcode + kh + dest + kl
 
+
 def mov(rd: int, rr: int) -> int:
     return (0b001011 << 10) + twoOp(rd, rr)
 
@@ -24,12 +25,19 @@ def add(rd: int, rn: int) -> int:
     return (3 << 10) + twoOp(rd, rn)
 
 
-def logicalAndIm(rd: int, k: int) -> int:
+def andi(rd: int, immediate: int) -> int:
     opcode = 0x7 << 12
-    kh = (k & 0xF0) << 4
-    kl = (k & 0xF)
+    kh = (immediate & 0xF0) << 4
+    kl = (immediate & 0xF)
     d = rd << 4
     return opcode + kh + d + kl
+
+
+def and_(rd: int, rr: int) -> int:
+    opcode = 0x08 << 10
+    r = ((rr & 0x10) << 5) + (rr & 0x0F)
+    d = ((rd & 0x10) << 3) + ((rd & 0x0F) << 4)
+    return opcode + r + d
 
 
 def shiftRight(rd: int) -> int:
@@ -61,4 +69,6 @@ InstructionsMap = {
     "mov": mov,
     "add": add,
     "brbc": brbc,
+    "and": and_,
+    "andi": andi
 }
