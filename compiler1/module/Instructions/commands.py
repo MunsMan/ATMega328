@@ -20,6 +20,8 @@ class CommandArgs:
         return offset, self.blockIndex, self.label
 
 
+# ToDo: Needs to be Tested!
+# FixMe: Command not found!
 def mapCommmands(args: CommandArgs):
     if args.opcode in CommandsMap:
         return CommandsMap[args.opcode](args)
@@ -44,6 +46,7 @@ def ADD(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
+# ToDo: Needs to be Tested
 def MOV(args: CommandArgs):
     rd = args.rd
     rr = args.rr
@@ -56,6 +59,7 @@ def MOV(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
+# ToDo: Needs to be tested
 def BR(args: CommandArgs):
     rd = args.rd
     rr = args.rr
@@ -135,6 +139,7 @@ CommandsMap = {
 }
 
 
+# ToDo: Needs to be tested!
 def loadImmediate(rd: str, immediate: int):
     instructions = []
     if getRegister(rd) > 15:
