@@ -1,7 +1,7 @@
 from ..instructions import add, and_, andi, ldi
 import pytest
 from pytest_mock import MockerFixture
-from ..commands import ADD, AND, CommandArgs
+from ..commands import ADD, AND, CommandArgs, mapCommmands, CommandsMap
 from .. import commands
 from . import mock_exit
 
@@ -10,7 +10,7 @@ def test_addTwoRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rds = range(0, 32)
     rrs = range(0, 32)
-    args = CommandArgs("ADD", "", "", 0, 0, None, None, "")
+    args = CommandArgs("ADD", "", "")
 
     for rd in rds:
         for rr in rrs:
@@ -30,7 +30,7 @@ def test_addRegisterConstant(mocker: MockerFixture):
 
     rds = range(0, 32)
     ks = range(0, 256)
-    args = CommandArgs("ADD", "", "", None, None, None, None, "")
+    args = CommandArgs("ADD", "", "")
     for rd in rds:
         for k in ks:
             if rd == 16:
@@ -48,7 +48,7 @@ def test_addInvalidRegisterRegister(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     rd = "r32"
     rr = "r0"
-    args = CommandArgs("ADD", "", "", rd, rr, None, None, "")
+    args = CommandArgs("ADD", rd, rr)
     with pytest.raises(SystemExit):
         ADD(args)
     mock_throwError.assert_called_once_with(5, True, rd)
@@ -59,7 +59,7 @@ def test_addRegisterInvalidRegister(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     rd = "r0"
     rr = "r32"
-    args = CommandArgs("ADD", "", "", rd, rr, None, None, "")
+    args = CommandArgs("ADD", rd, rr)
     with pytest.raises(SystemExit):
         ADD(args)
     mock_throwError.assert_called_once_with(5, True, rr)
@@ -68,7 +68,7 @@ def test_addRegisterInvalidRegister(mocker: MockerFixture):
 def test_andTwoRegister():
     rds = range(0, 32)
     rrs = range(0, 32)
-    args = CommandArgs("AND", "", "", None, None, None, None, None)
+    args = CommandArgs("AND", "", "")
     for rd in rds:
         for rr in rrs:
             args.rd = 'r' + str(rd)
@@ -81,7 +81,7 @@ def test_andTwoRegister():
 def test_andRegister16Immediate():
     rds = range(16, 32)
     rrs = range(0, 256)
-    args = CommandArgs("AND", "", "", None, None, None, None, None)
+    args = CommandArgs("AND", "", "")
     for rd in rds:
         for rr in rrs:
             args.rd = 'r' + str(rd)
@@ -97,7 +97,7 @@ def test_andRegister0Immediate(mocker: MockerFixture):
     mock_getRegister.return_value = 16
     rds = range(0, 16)
     rrs = range(0, 256)
-    args = CommandArgs("AND", "", "", None, None, None, None, None)
+    args = CommandArgs("AND", "", "")
     for rd in rds:
         for rr in rrs:
             args.rd = 'r' + str(rd)
