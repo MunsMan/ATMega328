@@ -133,7 +133,7 @@ def test_movRegisterImmedite(mocker: MockerFixture):
     args = CommandArgs("MOV", "", "")
     # Register < 16
     for rd in rds[:16]:
-        for rr in rds:
+        for rr in rrs:
             args.rd = 'r' + str(rd)
             args.rr = rr
             numInstruction, instructions = MOV(args)
@@ -141,7 +141,7 @@ def test_movRegisterImmedite(mocker: MockerFixture):
             assert(instructions() == [ldi(16, rr), mov(rd, 16)])
     # Register >= 16
     for rd in rds[16:]:
-        for rr in rds:
+        for rr in rrs:
             args.rd = 'r' + str(rd)
             args.rr = rr
             numInstruction, instructions = MOV(args)
