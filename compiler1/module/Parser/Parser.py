@@ -13,11 +13,12 @@ class Parser:
         op, cond, flag = self.parseOpcode(line[0])
         rd = line[1]
         rr = line[2]
-        args = CommandArgs(op, cond, flag, rd, rr, self.labelRef, numLine, self.label)
+        args = CommandArgs(op, rd, rr, cond, flag,
+                           self.labelRef, numLine, self.label)
         return mapCommmands(args)
 
-    def parseBlock(self, labelName:str, label: List[str]) -> Tuple[int, List[Tuple[int, Callable[[], List[int]]]]]:
-        self.label = labelName 
+    def parseBlock(self, labelName: str, label: List[str]) -> Tuple[int, List[Tuple[int, Callable[[], List[int]]]]]:
+        self.label = labelName
         numLine = 0
         instructions = []
         numInstructions = 0
