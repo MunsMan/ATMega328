@@ -123,7 +123,7 @@ def test_movRegisterRegister(mocker: MockerFixture):
     mock_throwError.assert_not_called()
 
 
-def test_movRegisterImmedite(mocker: MockerFixture):
+def test_movRegisterImmediate(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     mock_getRegister = mocker.patch.object(
         commands.RegisterManager, "getFreeRegister")
@@ -133,7 +133,7 @@ def test_movRegisterImmedite(mocker: MockerFixture):
     args = CommandArgs("MOV", "", "")
     # Register < 16
     for rd in rds[:16]:
-        for rr in rds:
+        for rr in rrs:
             args.rd = 'r' + str(rd)
             args.rr = rr
             numInstruction, instructions = MOV(args)
@@ -141,7 +141,7 @@ def test_movRegisterImmedite(mocker: MockerFixture):
             assert(instructions() == [ldi(16, rr), mov(rd, 16)])
     # Register >= 16
     for rd in rds[16:]:
-        for rr in rds:
+        for rr in rrs:
             args.rd = 'r' + str(rd)
             args.rr = rr
             numInstruction, instructions = MOV(args)
@@ -183,7 +183,7 @@ def test_movInvalidSecondRegister(mocker: MockerFixture):
         mock_throwError.reset_mock()
 
 
-def test_movInvalidImmedite(mocker: MockerFixture):
+def test_movInvalidImmediate(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
     mock_throwError.side_effect = mock_exit
 
@@ -194,7 +194,7 @@ def test_movInvalidImmedite(mocker: MockerFixture):
     mock_throwError.reset_mock()
 
 
-def test_movInvalidImmediteSize(mocker: MockerFixture):
+def test_movInvalidImmediateSize(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
     mock_throwError.side_effect = mock_exit
     rr = 256
