@@ -48,14 +48,14 @@ def invalidRegisterReference(custom: str) -> str:
     return "Invalid Register:\nThe used Register is not definde for that Processor. Please check the passed Register: {r}.\nValid Register are in range of r0-r31.".format(r=r)
 
 
-def invalidImmediteError(custom: str) -> str:
+def invalidImmediateError(custom: str) -> str:
     n = custom
-    return "Passed Immedite can't be interpreted as valid unsigned Integer.\n Please ensure that it is a number: {n}\n".format(n=n)
+    return "Passed Immediate can't be interpreted as valid unsigned Integer.\n Please ensure that it is a number: {n}\n".format(n=n)
 
 
-def wrongImmediteSize(custom: Tuple[int, int, int]) -> str:
-    immedite, immedite_size, expected_size = custom
-    return "An Immedite can only take an Argument of size: {ks} Bit.\nYou provided this Immedite: {K}\nIt is of size {aS} Bit.\n".format(K=immedite, ks=immedite_size, aS=expected_size)
+def wrongImmediateSize(custom: Tuple[int, int, int]) -> str:
+    immediate, immediate_size, expected_size = custom
+    return "An Immediate can only take an Argument of size: {ks} Bit.\nYou provided this Immediate: {K}\nIt is of size {aS} Bit.\n".format(K=immediate, ks=immediate_size, aS=expected_size)
 
 
 def wrongRegisterReferenced(custom: Tuple[str, str]) -> str:
@@ -74,8 +74,8 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     3: wrongArgumentRegister,
     4: unknownInstructionError,
     5: invalidRegisterReference,
-    6: invalidImmediteError,
-    7: wrongImmediteSize,
+    6: invalidImmediateError,
+    7: wrongImmediateSize,
     8: wrongRegisterReferenced,
     9: invalidCondError,
 }
