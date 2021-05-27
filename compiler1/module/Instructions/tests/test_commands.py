@@ -1,10 +1,12 @@
 from ..instructions import add, and_, andi, ldi, mov
 import pytest
 from pytest_mock import MockerFixture
-from ..commands import ADD, AND, CommandArgs, MOV, mapCommmands, CommandsMap
+from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate, mapCommmands, CommandsMap
 from .. import commands
 from .. import helper
 from . import mock_exit
+
+invalidRegisters = ["r32", "1", "r-1", "ro", "AB", "-1", "r#"]
 
 
 def test_addTwoRegister(mocker: MockerFixture):
@@ -204,3 +206,60 @@ def test_movInvalidImmediateSize(mocker: MockerFixture):
     mock_throwError.assert_called_once_with(
         7, True, (rr, rr.bit_length(), 8))
     mock_throwError.reset_mock()
+
+
+def test_loadImmediate(mocker: MockerFixture):
+    mocker_throwError = mocker.patch.object(commands, "throwError")
+    mock_getRegister = mocker.patch.object(
+        commands.RegisterManager, "getFreeRegister")
+    mock_getRegister.return_value = 16
+
+    rds = range(0, 32)
+    immediates = range(0, 256)
+
+    # Register < 16
+    for rd in rds[:16]:
+        for immediate in immediates:
+            instructions = loadImmediate(rd, immediate)
+            expected = [ldi(16, immediate), mov(rd, 16)]
+            assert(len(instructions) == 2)
+            assert(instructions == expected)
+
+    # Register >= 16
+    for rd in rds[16:]:
+        for immediate in immediates:
+            instructions = loadImmediate(rd, immediate)
+            assert(len(instructions) == 1)
+            assert(instructions == [ldi(rd, immediate)])
+    mocker_throwError.assert_not_called()
+
+
+def test_loadImmediateInvalidRegister(mocker: MockerFixture):
+    mocker_throwError = mocker.patch.object(helper, "throwError")
+    mocker_throwError.side_effect = mock_exit
+
+    immediate = 5
+
+    for rd in invalidRegisters:
+        with pytest.raises(SystemExit):
+            assert(loadImmediate(rd, immediate) == None)
+        mocker_throwError.assert_called_once_with(5, True, rd)
+        mocker_throwError.reset_mock()
+
+
+def test_loadImmediateInvalidImmediate(mocker: MockerFixture):
+    mocker_throwError = mocker.patch.object(helper, "throwError")
+    mocker_throwError.side_effect = mock_exit
+    mock_getRegister = mocker.patch.object(
+        commands.RegisterManager, "getFreeRegister")
+    mock_getRegister.return_value = 16
+
+    rds = range(0, 32)
+    invalidImmediates = [256, -1]
+
+    for rd in rds:
+        for immediate in invalidImmediates:
+            with pytest.raises(SystemExit):
+                loadImmediate(rd, immediate)
+            mocker_throwError.assert_called_once_with(7, True, immediate)
+            mocker_throwError.reset_mock()

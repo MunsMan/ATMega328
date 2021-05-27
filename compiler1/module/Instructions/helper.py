@@ -92,3 +92,8 @@ def twoComplement(value: int, bit_length: int) -> int:
     if value < 0:
         return 2**bit_length + value
     return value
+
+
+def checkImmediateSize(immediate: int, bit_length: int):
+    if immediate < 0 or immediate.bit_length() > bit_length:
+        throwError(7, True, immediate)

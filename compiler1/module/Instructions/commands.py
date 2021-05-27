@@ -1,7 +1,7 @@
 from . import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
-from .helper import RegisterMap, checkConst, checkRegister, getConst, getRegister
+from .helper import checkConst, checkImmediateSize, checkRegister, getConst, getRegister
 from typing import Callable, Union
 
 
@@ -141,9 +141,9 @@ CommandsMap = {
 }
 
 
-# ToDo: Needs to be tested!
 def loadImmediate(rd: str, immediate: int):
     instructions = []
+    checkImmediateSize(immediate, 8)
     if getRegister(rd) > 15:
         instructions.append(mapInstructions("ldi")(getRegister(rd), immediate))
     else:
