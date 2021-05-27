@@ -6,7 +6,7 @@ from typing import Callable, Union
 
 
 class CommandArgs:
-    def __init__(self, opcode: str, cond: str, flag: str, rd: str, rr: str, labelRef: Callable, lineNum: int, label: str) -> None:
+    def __init__(self, opcode: str, rd: str, rr: str, cond: str = None, flag: str = None, labelRef: Callable = None, lineNum: int = None, label: str = None) -> None:
         self.opcode = opcode
         self.cond = cond
         self.flag = flag
@@ -20,11 +20,10 @@ class CommandArgs:
         return offset, self.blockIndex, self.label
 
 
-# ToDo: Needs to be Tested!
-# FixMe: Command not found!
 def mapCommmands(args: CommandArgs):
     if args.opcode in CommandsMap:
         return CommandsMap[args.opcode](args)
+    throwError(4, True, args.opcode)
 
 
 def ADD(args: CommandArgs):
