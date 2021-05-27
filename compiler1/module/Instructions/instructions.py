@@ -62,8 +62,9 @@ def loadBitT(rd: int, rr: str) -> int:
 
 def brbc(rd: int, rr: int):
     opcode = 0xF400
-    k = rr << 3
-    return opcode + k + rd
+    s = rd
+    k = twoComplement(rr, 7) << 3
+    return opcode + k + s
 
 
 def brbs(rd: int, rr: int) -> int:
@@ -76,10 +77,10 @@ def brbs(rd: int, rr: int) -> int:
     Returns:
         int: 16 Bit Instruction 
     """
-    opcode = 0x3c << 12
+    opcode = 0xF << 12
     s = rd
     k = twoComplement(rr, 7) << 3
-    return opcode + s + k
+    return opcode + k + s
 
 
 InstructionsMap = {
