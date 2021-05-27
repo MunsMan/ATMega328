@@ -1,3 +1,5 @@
+from ctypes import c_uint8
+from module.Instructions.helper import twoComplement
 from . import twoOp
 from typing import Callable
 from ..errorHandling.error import throwError
@@ -62,6 +64,22 @@ def brbc(rd: int, rr: int):
     opcode = 0xF400
     k = rr << 3
     return opcode + k + rd
+
+
+def brbs(rd: int, rr: int) -> int:
+    """[summary]
+
+    Args:
+        rd (int): 0-7 Flag in SREG
+        rr (int): -64 - 63 jump offset
+
+    Returns:
+        int: 16 Bit Instruction 
+    """
+    opcode = 0x3c << 12
+    s = rd
+    k = twoComplement(rr, 7) << 3
+    return opcode + s + k
 
 
 InstructionsMap = {

@@ -1,4 +1,6 @@
-from ..instructions import and_, andi
+from ctypes import c_uint8
+from ..instructions import and_, andi, brbs
+from .. import twoComplement
 
 
 def test_and():
@@ -18,3 +20,15 @@ def test_andi():
             d = rd << 4
             expected = opcode + k + d
             assert expected == andi(rd, immediate)
+
+
+def test_brbs():
+    sregs = range(0, 8)
+    offset = range(-64, 64)
+    opcode = 0b111100 << 12
+    for s in sregs:
+        for k in offset:
+            result = brbs(s, k)
+            k = twoComplement(k, 7) << 3
+            expected = opcode + k + s
+            assert(expected == result)
