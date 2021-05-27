@@ -77,3 +77,18 @@ def twoOp(Rd, Rn):
     dest = getRegister(Rd)
     src = getRegister(Rn)
     return ((src & 0x10) << 5) + (dest << 4) + (src & 0xF)
+
+
+# ToDo: Needs Test
+def twoComplement(value: int, bit_length: int) -> int:
+    MAX = 2**bit_length / 2 - 1
+    MIN = -(2**bit_length / 2)
+    if value > MAX:
+        print("to big!")
+        return
+    if value < MIN:
+        print("value to small: " + str(value))
+        return
+    if value < 0:
+        return 2**bit_length + value
+    return value
