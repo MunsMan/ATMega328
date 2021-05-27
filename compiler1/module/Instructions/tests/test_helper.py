@@ -32,9 +32,10 @@ def test_getValidConst(mocker: MockerFixture):
 def test_getInvalidConst(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
     mock_throwError.side_effect = mock_exit
+    immedite = "ABC"
     with pytest.raises(SystemExit):
-        getConst("ABC")
-    mock_throwError.assert_called_once_with(6, True, "0 - 255")
+        getConst(immedite)
+    mock_throwError.assert_called_once_with(6, True, immedite)
 
 
 def test_checkValidRegister():

@@ -45,14 +45,17 @@ def ADD(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
-# ToDo: Needs to be Tested
 def MOV(args: CommandArgs):
     rd = args.rd
     rr = args.rr
     instructions = []
+    if not checkRegister(rd):
+        throwError(5, True, rd)
     if checkConst(rr):
         instructions = loadImmediate(rd, getConst(rr))
     else:
+        if not checkRegister(rr):
+            throwError(5, True, rr)
         instructions.append(mapInstructions("mov")(rd, rr))
     RegisterManager.setRegister(rd)
     return (len(instructions), lambda: instructions)

@@ -47,9 +47,11 @@ def checkConst(register: Union[str, int]) -> bool:
 
 def getConst(register: Union[str, int], bits: int = 8) -> int:
     if not checkConst(register):
-        throwError(6, True, "0 - 255")
+        throwError(6, True, register)
     if not isinstance(register, int):
         register = int(register.replace("#", ""))
+    if register < 0:
+        throwError(6, True, register)
     if register > 2**bits-1:
         throwError(7, True, (register, register.bit_length(), bits))
     return register
