@@ -1,7 +1,7 @@
 from ..instructions import add, and_, andi, ldi, mov
 import pytest
 from pytest_mock import MockerFixture
-from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate, mapCommmands, CommandsMap
+from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate
 from .. import commands
 from .. import helper
 from . import mock_exit
