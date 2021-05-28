@@ -1,5 +1,5 @@
 from .error import throwError
-from .LineRev import LineRev
+from .LineRef import LineRef
 
 
-LineRev()
+LineRef()

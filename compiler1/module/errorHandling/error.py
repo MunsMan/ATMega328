@@ -1,5 +1,5 @@
 from typing import Dict, Tuple, Any, Callable
-from . import LineRev
+from . import LineRef
 
 
 def throwError(errorCode: int, line: bool, custom: Any = None):
@@ -10,8 +10,8 @@ def throwError(errorCode: int, line: bool, custom: Any = None):
 
 def errorWrapper(errorCode: int, line: bool,  customMessage: str):
     if line:
-        print("Error:\nLine " + LineRev.getNumLine() +
-              ": " + LineRev.getLine() + "\n" + customMessage)
+        print("Error:\nLine " + LineRef.getNumLine() +
+              ": " + LineRef.getLine() + "\n" + customMessage)
     else:
         print(customMessage)
     exit(errorCode)
