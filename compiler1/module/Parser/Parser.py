@@ -1,6 +1,6 @@
-from module.Instructions import instructions
 from ..Instructions.commands import CommandArgs, mapCommmands
 from typing import Any, Callable, Dict, List, Tuple
+from ..errorHandling import LineRef
 
 
 class Parser:
@@ -19,17 +19,16 @@ class Parser:
 
     def parseBlock(self, labelName: str, label: List[str]) -> Tuple[int, List[Tuple[int, Callable[[], List[int]]]]]:
         self.label = labelName
-        numLine = 0
         instructions = []
         numInstructions = 0
-        for line in label:
-            res = self.parseLine(line, numLine)
+        for blockIndex, (lineNum, line) in enumerate(label):
+            LineRef.setLine(lineNum, line)
+            res = self.parseLine(line, blockIndex)
             numInstructions += res[0]
             instructions.append(res)
-            numLine += 1
         return numInstructions, instructions
 
-    def parseLabels(self, labels: Dict[str, List[Any]]):
+    def parseLabels(self, labels: Dict[str, List[Tuple[int, str]]]):
         for label in labels:
             labels[label] = self.parseBlock(label, labels[label])
         return labels
