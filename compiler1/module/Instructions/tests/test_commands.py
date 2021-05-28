@@ -261,5 +261,6 @@ def test_loadImmediateInvalidImmediate(mocker: MockerFixture):
         for immediate in invalidImmediates:
             with pytest.raises(SystemExit):
                 loadImmediate(rd, immediate)
-            mocker_throwError.assert_called_once_with(7, True, immediate)
+            mocker_throwError.assert_called_once_with(
+                7, True, (immediate, immediate.bit_length(), 8))
             mocker_throwError.reset_mock()
