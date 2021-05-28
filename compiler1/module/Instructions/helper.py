@@ -84,11 +84,9 @@ def twoComplement(value: int, bit_length: int) -> int:
     MAX = 2**bit_length / 2 - 1
     MIN = -(2**bit_length / 2)
     if value > MAX:
-        print("to big!")
-        return
+        throwError(10, True, (value, bit_length))
     if value < MIN:
-        print("value to small: " + str(value))
-        return
+        throwError(10, True, (value, bit_length))
     if value < 0:
         return 2**bit_length + value
     return value
@@ -96,4 +94,4 @@ def twoComplement(value: int, bit_length: int) -> int:
 
 def checkImmediateSize(immediate: int, bit_length: int):
     if immediate < 0 or immediate.bit_length() > bit_length:
-        throwError(7, True, immediate)
+        throwError(7, True, (immediate, immediate.bit_length(), bit_length))
