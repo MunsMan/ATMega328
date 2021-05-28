@@ -68,6 +68,16 @@ def invalidCondError(custom: Tuple[str]) -> str:
     return "Invalid condition used: {cond}\nThis condition is not supported. Please reference to the instruction Set Manual".format(cond=cond)
 
 
+def wrongTwoComplementSize(custom: Tuple[str]) -> str:
+    immediate, expected_size = custom
+    sign = "negativ"
+    if immediate >= 0:
+        sign = "positiv"
+        expected_size -= 1
+    diff = immediate.bit_length() - (expected_size-1)
+    return "A {sign} Immediate in the Two's Complement can only be of size: {pos_size}bit.\nYou provided an Immediate of size: {immediate_size}bit.\nThat is {diff}bit to long.\n".format(pos_size=expected_size-1, immediate_size=immediate.bit_length(), diff=diff, sign=sign)
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -78,4 +88,5 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     7: wrongImmediateSize,
     8: wrongRegisterReferenced,
     9: invalidCondError,
+    10: wrongTwoComplementSize,
 }
