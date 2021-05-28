@@ -1,5 +1,5 @@
 from typing import Dict, Tuple, Any, Callable
-from . import LineRef
+from .LineRef import LineRef
 
 
 def throwError(errorCode: int, line: bool, custom: Any = None):
