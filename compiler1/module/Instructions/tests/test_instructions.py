@@ -28,8 +28,9 @@ def test_brbs():
     opcode = 0b1111 << 12
     for s in sregs:
         for k in offset:
+            k = twoComplement(k, 7)
             result = brbs(s, k)
-            k = twoComplement(k, 7) << 3
+            k <<= 3
             expected = opcode + k + s
             assert(expected == result)
 
@@ -40,7 +41,8 @@ def test_brbc():
     opcode = 0b111101 << 10
     for s in sregs:
         for k in offset:
+            k = twoComplement(k, 7)
             result = brbc(s, k)
-            k = twoComplement(k, 7) << 3
+            k <<= 3
             expected = opcode + k + s
             assert(expected == result)
