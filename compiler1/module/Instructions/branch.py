@@ -3,6 +3,8 @@ from ..Instructions.instructions import mapInstructions
 from typing import Callable, Union
 from enum import Enum
 
+INSTRUCTIONS_LEN = 1
+
 
 class Flag(Enum):
     C = 0
@@ -89,19 +91,17 @@ def BRVS(offset: Union[str, int], labelRef: Callable[[], int]):
 
 def BRBC(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
     if not str(offset).replace("-", "").isdigit():
-        instructions = [mapInstructions('brbc')(
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbc')(
             flag, labelRef())]
     else:
-        instructions = [mapInstructions('brbc')(flag, int(offset))]
-    return len(instructions), lambda: instructions
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbc')(flag, int(offset))]
 
 
 def BRBS(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
     checkImmediateSize(flag, 3)
     if not str(offset).replace("-", "").isdigit():
-        instructions = [mapInstructions('brbs')(
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbs')(
             flag, twoComplement(labelRef(), 7))]
     else:
-        instructions = [mapInstructions('brbs')(
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbs')(
             flag, twoComplement(int(offset), 7))]
-    return len(instructions), lambda: instructions
