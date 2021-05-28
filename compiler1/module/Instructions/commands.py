@@ -1,3 +1,4 @@
+from ..Instructions.branch import *
 from . import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
@@ -12,12 +13,9 @@ class CommandArgs:
         self.flag = flag
         self.rd = rd
         self.rr = rr
-        self.labelRef = labelRef
         self.blockIndex = lineNum
         self.label = label
-
-    def labelRefArgs(self, offset):
-        return offset, self.blockIndex, self.label
+        self.labelRef = lambda: labelRef(self.rr, self.blockIndex, self.label)
 
 
 def mapCommmands(args: CommandArgs):
@@ -61,48 +59,31 @@ def MOV(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
-# ToDo: Can we implement the oneArg BR-Operations with the twoArgs. BRBC or BRBS should be enough intern.
 def BR(args: CommandArgs):
     rd = args.rd
     rr = args.rr
-    labelRef = args.labelRef
     cond = args.cond
-
-    def twoArgs(opcode: str, bit: Union[str, int], offset: Union[str, int]):
-        if isinstance(bit, str):
-            bit = int(bit)
-        LEN_INSTRUCTIONS = 1
-        if not str(offset).isdigit():
-            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, labelRef(*args.labelRefArgs(offset)))])
-        return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(bit, int(offset))])
-
-    def oneArg(opcode: str, offset: Union[str, int]):
-        LEN_INSTRUCTIONS = 1
-        if not str(offset).isdigit():
-            return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(labelRef(*args.labelRefArgs(offset)))])
-        return (LEN_INSTRUCTIONS, lambda: [mapInstructions(opcode)(offset)])
-
     case = {
-        "BC": twoArgs("brbc", int(rd), rr),
-        "BS": twoArgs("brbs", int(rd), rr),
-        "EQ": oneArg("breq", rd),
-        "NE": oneArg("brne", rd),
-        "CS": oneArg("brcs", rd),
-        "CC": oneArg("brcc", rd),
-        "SH": oneArg("brsh", rd),
-        "LO": oneArg("brlo", rd),
-        "MI": oneArg("brmi", rd),
-        "PL": oneArg("brpl", rd),
-        "GE": oneArg("brge", rd),
-        "LT": oneArg("brlt", rd),
-        "HS": oneArg("brhs", rd),
-        "HC": oneArg("brhc", rd),
-        "TS": oneArg("brts", rd),
-        "TC": oneArg("brtc", rd),
-        "VS": oneArg("brvs", rd),
-        "VC": oneArg("brvc", rd),
-        "IE": oneArg("brie", rd),
-        "ID": oneArg("brid", rd),
+        "BC": BRBC(rd, rr, args.labelRef),
+        "BS": BRBS(rd, rr, args.labelRef),
+        "EQ": BREQ(rd, args.labelRef),
+        "NE": BRNE(rd, args.labelRef),
+        "CS": BRCS(rd, args.labelRef),
+        "CC": BRCC(rd, args.labelRef),
+        "SH": BRSH(rd, args.labelRef),
+        "LO": BRLO(rd, args.labelRef),
+        "MI": BRMI(rd, args.labelRef),
+        "PL": BRPL(rd, args.labelRef),
+        "GE": BRGE(rd, args.labelRef),
+        "LT": BRLT(rd, args.labelRef),
+        "HS": BRHS(rd, args.labelRef),
+        "HC": BRHC(rd, args.labelRef),
+        "TS": BRTS(rd, args.labelRef),
+        "TC": BRTC(rd, args.labelRef),
+        "VS": BRVS(rd, args.labelRef),
+        "VC": BRVC(rd, args.labelRef),
+        "IE": BRIE(rd, args.labelRef),
+        "ID": BRID(rd, args.labelRef),
     }
     if cond in case:
         return case[cond]
