@@ -63,30 +63,34 @@ def BR(args: CommandArgs):
     rd = args.rd
     rr = args.rr
     cond = args.cond
-    case = {
-        "BC": BRBC(rd, rr, args.labelRef),
-        "BS": BRBS(rd, rr, args.labelRef),
-        "EQ": BREQ(rd, args.labelRef),
-        "NE": BRNE(rd, args.labelRef),
-        "CS": BRCS(rd, args.labelRef),
-        "CC": BRCC(rd, args.labelRef),
-        "SH": BRSH(rd, args.labelRef),
-        "LO": BRLO(rd, args.labelRef),
-        "MI": BRMI(rd, args.labelRef),
-        "PL": BRPL(rd, args.labelRef),
-        "GE": BRGE(rd, args.labelRef),
-        "LT": BRLT(rd, args.labelRef),
-        "HS": BRHS(rd, args.labelRef),
-        "HC": BRHC(rd, args.labelRef),
-        "TS": BRTS(rd, args.labelRef),
-        "TC": BRTC(rd, args.labelRef),
-        "VS": BRVS(rd, args.labelRef),
-        "VC": BRVC(rd, args.labelRef),
-        "IE": BRIE(rd, args.labelRef),
-        "ID": BRID(rd, args.labelRef),
+    branch_bit = {
+        "BC": BRBC,
+        "BS": BRBS
     }
-    if cond in case:
-        return case[cond]
+    branch_cond = {
+        "EQ": BREQ,
+        "NE": BRNE,
+        "CS": BRCS,
+        "CC": BRCC,
+        "SH": BRSH,
+        "LO": BRLO,
+        "MI": BRMI,
+        "PL": BRPL,
+        "GE": BRGE,
+        "LT": BRLT,
+        "HS": BRHS,
+        "HC": BRHC,
+        "TS": BRTS,
+        "TC": BRTC,
+        "VS": BRVS,
+        "VC": BRVC,
+        "IE": BRIE,
+        "ID": BRID,
+    }
+    if cond in branch_bit:
+        return branch_bit[cond](rd, rr, args.labelRef)
+    if cond in branch_cond:
+        return branch_cond[cond](rd, args.labelRef)
     throwError(9, True, (cond))
 
 
