@@ -61,7 +61,7 @@ def MOV(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
-# ToDo: Needs to be tested
+# ToDo: Can we implement the oneArg BR-Operations with the twoArgs. BRBC or BRBS should be enough intern.
 def BR(args: CommandArgs):
     rd = args.rd
     rr = args.rr
