@@ -1,5 +1,6 @@
 from typing import Union
 from ..errorHandling.error import throwError
+from .Flags import Flags
 
 RegisterMap = {
     "r0": 0x00,
@@ -90,6 +91,12 @@ def twoComplement(value: int, bit_length: int) -> int:
     if value < 0:
         return 2**bit_length + value
     return value
+
+
+def checkFlag(flag: Union[int, str, Flags]) -> int:
+    if isinstance(flag, Flags):
+        return flag.value
+    return getConst(flag, 3)
 
 
 def checkImmediateSize(immediate: int, bit_length: int):
