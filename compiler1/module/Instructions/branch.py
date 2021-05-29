@@ -79,7 +79,7 @@ def BRVS(offset: Union[str, int], labelRef: Callable[[], int]):
 
 
 def BRBC(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
-    checkFlag(flag)
+    flag = checkFlag(flag)
     if not str(offset).replace("-", "").isdigit():
         return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbc')(
             flag, labelRef())]
@@ -90,7 +90,7 @@ def BRBC(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
 
 
 def BRBS(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
-    checkFlag(flag)
+    flag = checkFlag(flag)
     if not str(offset).replace("-", "").isdigit():
         return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbs')(
             flag, twoComplement(labelRef(), 7))]
