@@ -13,6 +13,6 @@ New Instructions:
 - `CALL`: Long Call to a Subroutine 
 
 
-[Reference](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf#)
+[Reference](http://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-0856-AVR-Instruction-Set-Manual.pdf)
 
 *SREG* = Status Register
