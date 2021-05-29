@@ -25,6 +25,10 @@ def add(rd: int, rn: int) -> int:
     return (3 << 10) + twoOp(rd, rn)
 
 
+def adc(rd: int, rn: int) -> int:
+    return (7 << 10) + twoOp(rd, rn)
+
+
 def andi(rd: int, immediate: int) -> int:
     opcode = 0x7 << 12
     kh = (immediate & 0xF0) << 4
