@@ -95,6 +95,11 @@ def bst(rd: int, rr: int) -> int:
     return opcode + rd + rr
 
 
+def call(rd: int) -> int:
+    opcode = 0x940E0000
+    return opcode + rd
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

@@ -164,3 +164,12 @@ def test_brbc():
             k <<= 3
             expected = opcode + k + s
             assert(expected == result)
+
+
+def test_call():
+    rds = [0, 1, 2, 65533, 65534, 65535]
+    opcode = 0b1001_0100_0000_1110 << 16
+    for rd in rds:
+        result = call(rd)
+        expected = opcode + rd
+        assert(result == expected)
