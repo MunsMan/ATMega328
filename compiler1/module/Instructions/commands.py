@@ -2,7 +2,7 @@ from ..Instructions.branch import *
 from . import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
-from .helper import checkImmediate, checkImmediateSize, checkRegister, getImmediate, getRegister
+from .helper import checkImmediate, checkImmediateSize, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer
 from typing import Callable, Union
 
 
@@ -27,22 +27,30 @@ def mapCommmands(args: CommandArgs):
     throwError(4, True, args.opcode)
 
 
+# ToDo: Refactor needed!!!
+# ToDo: Tests needed for ADIW
 def ADD(args: CommandArgs):
     rr = args.rr
     rd = args.rd
     instructions = []
-    if not checkRegister(rd):
-        throwError(5, True, rd)
-    if checkImmediate(rr):
-        rr = getImmediate(rr)
-        r = RegisterManager.getFreeRegister(16)
-        instructions = loadImmediate(r, getImmediate(rr))
-        instructions.append(mapInstructions(args.opcode.lower())(rd, r))
-        RegisterManager.freeRegister(r)
+    if checkRegisterPointer(rd):
+        rd_p = getRegisterPointer(rd, 24)
+        if not checkImmediate(rr):
+            throwError(6, True, rr)
+        instructions.append(mapInstructions('adiw')(rd_p, getImmediate(rr, 6)))
     else:
-        if not checkRegister(rr):
-            throwError(5, True, rr)
-        instructions.append(mapInstructions(args.opcode.lower())(rd, rr))
+        if not checkRegister(rd):
+            throwError(5, True, rd)
+        if checkImmediate(rr):
+            rr = getImmediate(rr)
+            r = RegisterManager.getFreeRegister(16)
+            instructions = loadImmediate(r, getImmediate(rr))
+            instructions.append(mapInstructions(args.opcode.lower())(rd, r))
+            RegisterManager.freeRegister(r)
+        else:
+            if not checkRegister(rr):
+                throwError(5, True, rr)
+            instructions.append(mapInstructions(args.opcode.lower())(rd, rr))
     return (len(instructions), lambda: instructions)
 
 
