@@ -89,6 +89,12 @@ def bset(rd: int) -> int:
     return opcode + rd
 
 
+def bst(rd: int, rr: int) -> int:
+    opcode = 0xFA00
+    rd <<= 4
+    return opcode + rd + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

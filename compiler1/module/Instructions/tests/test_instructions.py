@@ -1,4 +1,4 @@
-from ..instructions import adc, add, adiw, and_, andi, asr, bclr, bld, brbc, brbs, bset, ldi, mov
+from ..instructions import *
 from .. import twoComplement
 
 
@@ -81,6 +81,18 @@ def test_bset():
         rd <<= 4
         expected = opcode + rd
         assert(result == expected)
+
+
+def test_bst():
+    rds = range(0, 32)
+    rrs = range(0, 8)
+    opcode = 0b1111_1010 << 8
+    for rd in rds:
+        for rr in rrs:
+            result = bst(rd, rr)
+            rd <<= 4
+            expected = opcode + rd + rr
+            assert(result == expected)
 
 
 def test_mov():
