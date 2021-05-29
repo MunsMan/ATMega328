@@ -1,4 +1,4 @@
-from ..instructions import adc, add, and_, andi, brbc, brbs, ldi, mov
+from ..instructions import adc, add, adiw, and_, andi, brbc, brbs, ldi, mov
 from .. import twoComplement
 
 
@@ -26,6 +26,19 @@ def test_adc():
             rrrr = rr & 0xF
             expected = opcode + r + ddddd + rrrr
             assert(adc(rd, rr) == expected)
+
+
+def test_adiw():
+    rds = range(24, 32, 2)
+    rrs = range(0, 64)
+    opcode = 0b10010110 << 8
+    for rd in rds:
+        for rr in rrs:
+            dd = ((rd - 24) // 2) << 4
+            KK = (rr & 0x30) << 2
+            KKKK = rr & 0x0F
+            expected = opcode + KK + dd + KKKK
+            assert(adiw(rd, rr) == expected)
 
 
 def test_mov():

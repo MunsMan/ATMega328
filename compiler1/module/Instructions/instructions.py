@@ -29,6 +29,13 @@ def adc(rd: int, rn: int) -> int:
     return (7 << 10) + twoOp(rd, rn)
 
 
+def adiw(rd: int, rr: int) -> int:
+    opcode = 0x9600
+    destination = ((rd - 24) // 2) << 4
+    immediate = ((rr & 0x30) << 2) + (rr & 0xF)
+    return opcode + destination + immediate
+
+
 def andi(rd: int, immediate: int) -> int:
     opcode = 0x7 << 12
     kh = (immediate & 0xF0) << 4
@@ -77,10 +84,11 @@ def brbs(rd: int, rr: int) -> int:
 
 
 InstructionsMap = {
+    "adc": adc,
+    "add": add,
+    "adiw": adiw,
     "ldi": ldi,
     "mov": mov,
-    "add": add,
-    "adc": adc,
     "brbc": brbc,
     "brbs": brbs,
     "and": and_,
