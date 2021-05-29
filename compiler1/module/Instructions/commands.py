@@ -15,7 +15,10 @@ class CommandArgs:
         self.rr = rr
         self.blockIndex = lineNum
         self.label = label
-        self.labelRef = lambda: labelRef(self.rr, self.blockIndex, self.label)
+        self.labelRef = lambda: labelRef(
+            self.rr if self.rr is not None else self.rd,
+            self.blockIndex,
+            self.label)
 
 
 def mapCommmands(args: CommandArgs):

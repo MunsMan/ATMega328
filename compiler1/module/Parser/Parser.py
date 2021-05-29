@@ -12,7 +12,7 @@ class Parser:
         line: List[str] = line.split(" ")
         op, cond, flag = self.parseOpcode(line[0])
         rd = line[1]
-        rr = line[2]
+        rr = line[2] if len(line) == 3 else None
         args = CommandArgs(op, rd, rr, cond, flag,
                            self.labelRef, numLine, self.label)
         return mapCommmands(args)
