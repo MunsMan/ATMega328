@@ -63,7 +63,7 @@ def bclr(rd: int) -> int:
     return opcode + s
 
 
-def loadBitT(rd: int, rr: str) -> int:
+def bld(rd: int, rr: str) -> int:
     opcode = 0xF800
     rd = rd << 4
     return opcode + rd + rr
