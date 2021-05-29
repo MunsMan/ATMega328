@@ -36,6 +36,13 @@ def adiw(rd: int, rr: int) -> int:
     return opcode + destination + immediate
 
 
+def and_(rd: int, rr: int) -> int:
+    opcode = 0x08 << 10
+    r = ((rr & 0x10) << 5) + (rr & 0x0F)
+    d = ((rd & 0x10) << 3) + ((rd & 0x0F) << 4)
+    return opcode + r + d
+
+
 def andi(rd: int, immediate: int) -> int:
     opcode = 0x7 << 12
     kh = (immediate & 0xF0) << 4
@@ -44,20 +51,13 @@ def andi(rd: int, immediate: int) -> int:
     return opcode + kh + d + kl
 
 
-def and_(rd: int, rr: int) -> int:
-    opcode = 0x08 << 10
-    r = ((rr & 0x10) << 5) + (rr & 0x0F)
-    d = ((rd & 0x10) << 3) + ((rd & 0x0F) << 4)
-    return opcode + r + d
-
-
-def shiftRight(rd: int) -> int:
+def asr(rd: int) -> int:
     opcode = 0x9405
     d = rd << 4
     return opcode + d
 
 
-def clearBitSREG(rd: int) -> int:
+def bclr(rd: int) -> int:
     opcode = 0x9488
     s = rd << 4
     return opcode + s
