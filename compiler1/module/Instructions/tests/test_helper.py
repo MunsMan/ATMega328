@@ -1,5 +1,5 @@
 from .. import helper
-from ..helper import checkImmediate, checkRegister, getConst, getRegister, twoOp
+from ..helper import checkImmediate, checkRegister, getImmediate, getRegister, twoOp
 import pytest
 from pytest_mock import MockerFixture
 import numpy as np
@@ -23,9 +23,9 @@ def test_getValidConst(mocker: MockerFixture):
     ks = np.random.randint(0, 255, 1000)
     mock_throwError = mocker.patch.object(helper, "throwError")
     for k in ks:
-        assert getConst('#' + str(k)) == k
-        assert getConst(int(k)) == k
-        assert getConst(str(k)) == k
+        assert getImmediate('#' + str(k)) == k
+        assert getImmediate(int(k)) == k
+        assert getImmediate(str(k)) == k
         assert mock_throwError.call_count == 0
 
 
@@ -34,7 +34,7 @@ def test_getInvalidConst(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     immediate = "ABC"
     with pytest.raises(SystemExit):
-        getConst(immediate)
+        getImmediate(immediate)
     mock_throwError.assert_called_once_with(6, True, immediate)
 
 

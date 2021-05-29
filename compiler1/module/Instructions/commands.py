@@ -2,7 +2,7 @@ from ..Instructions.branch import *
 from . import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
-from .helper import checkImmediate, checkImmediateSize, checkRegister, getConst, getRegister
+from .helper import checkImmediate, checkImmediateSize, checkRegister, getImmediate, getRegister
 from typing import Callable, Union
 
 
@@ -31,9 +31,9 @@ def ADD(args: CommandArgs):
     if not checkRegister(rd):
         throwError(5, True, rd)
     if checkImmediate(rr):
-        rr = getConst(rr)
+        rr = getImmediate(rr)
         r = RegisterManager.getFreeRegister(16)
-        instructions = loadImmediate(r, getConst(rr))
+        instructions = loadImmediate(r, getImmediate(rr))
         instructions.append(mapInstructions("add")(rd, r))
         RegisterManager.freeRegister(r)
     else:
@@ -50,7 +50,7 @@ def MOV(args: CommandArgs):
     if not checkRegister(rd):
         throwError(5, True, rd)
     if checkImmediate(rr):
-        instructions = loadImmediate(rd, getConst(rr))
+        instructions = loadImmediate(rd, getImmediate(rr))
     else:
         if not checkRegister(rr):
             throwError(5, True, rr)
@@ -102,7 +102,7 @@ def AND(args: CommandArgs):
         throwError(5, True, rd)
     rd = getRegister(rd)
     if checkImmediate(rr):
-        rr = getConst(rr)
+        rr = getImmediate(rr)
         if rd < 16:
             r = RegisterManager.getFreeRegister(16)
             instructions += loadImmediate(r, rr)

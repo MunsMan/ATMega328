@@ -46,7 +46,7 @@ def checkImmediate(register: Union[str, int]) -> bool:
     return register.find("#") != -1
 
 
-def getConst(register: Union[str, int], bits: int = 8) -> int:
+def getImmediate(register: Union[str, int], bits: int = 8) -> int:
     if not checkImmediate(register):
         throwError(6, True, register)
     if not isinstance(register, int):
@@ -96,7 +96,7 @@ def twoComplement(value: int, bit_length: int) -> int:
 def checkFlag(flag: Union[int, str, Flags]) -> int:
     if isinstance(flag, Flags):
         return flag.value
-    return getConst(flag, 3)
+    return getImmediate(flag, 3)
 
 
 def checkImmediateSize(immediate: int, bit_length: int):
