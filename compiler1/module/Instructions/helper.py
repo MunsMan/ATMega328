@@ -1,4 +1,4 @@
-from module.Instructions.RegisterManager import RegisterPointer
+from .RegisterPointer import RegisterPointer
 from typing import Union
 from ..errorHandling.error import throwError
 from .Flags import Flags

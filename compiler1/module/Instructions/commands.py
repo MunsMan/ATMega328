@@ -1,9 +1,9 @@
 from ..Instructions.branch import *
-from . import RegisterManager
+from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import checkImmediate, checkImmediateSize, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer
-from typing import Callable, Union
+from typing import Callable
 
 
 class CommandArgs:
