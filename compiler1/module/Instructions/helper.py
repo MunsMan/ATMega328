@@ -80,7 +80,6 @@ def twoOp(Rd, Rn):
     return ((src & 0x10) << 5) + (dest << 4) + (src & 0xF)
 
 
-# ToDo: Needs Test
 def twoComplement(value: int, bit_length: int) -> int:
     MAX = 2**bit_length / 2 - 1
     MIN = -(2**bit_length / 2)
