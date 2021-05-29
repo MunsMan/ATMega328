@@ -1,5 +1,18 @@
-from ..instructions import adc, and_, andi, brbc, brbs
+from ..instructions import adc, add, and_, andi, brbc, brbs
 from .. import twoComplement
+
+
+def test_add():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    opcode = 0b000011 << 10
+    for rd in rds:
+        for rr in rrs:
+            r = (rr & 0x10) << 5
+            ddddd = rd << 4
+            rrrr = rr & 0xF
+            expected = opcode + r + ddddd + rrrr
+            assert(add(rd, rr) == expected)
 
 
 def test_adc():
