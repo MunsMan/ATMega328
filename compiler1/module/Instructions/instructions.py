@@ -83,6 +83,12 @@ def brbs(rd: int, rr: int) -> int:
     return opcode + k + s
 
 
+def bset(rd: int) -> int:
+    opcode = 0x9408
+    rd <<= 4
+    return opcode + rd
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
