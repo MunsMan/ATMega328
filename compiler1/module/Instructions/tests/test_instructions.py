@@ -1,4 +1,4 @@
-from ..instructions import adc, add, and_, andi, brbc, brbs, mov
+from ..instructions import adc, add, and_, andi, brbc, brbs, ldi, mov
 from .. import twoComplement
 
 
@@ -39,6 +39,19 @@ def test_mov():
             rrrr = rr & 0xF
             expected = opcode + r + ddddd + rrrr
             assert(mov(rd, rr) == expected)
+
+
+def test_ldi():
+    registers = range(16, 32)
+    immediates = range(0, 256)
+    opcode = 0b1110 << 12
+    for register in registers:
+        for immediate in immediates:
+            result = ldi(register, immediate)
+            r = (register & 0xF) << 4
+            k = ((immediate & 0xF0) << 4) + (immediate & 0x0F)
+            expected = opcode + r + k
+            assert(result == expected)
 
 
 def test_and():
