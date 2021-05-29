@@ -1,5 +1,5 @@
 from .. import helper
-from ..helper import checkConst, checkRegister, getConst, getRegister, twoOp
+from ..helper import checkImmediate, checkRegister, getConst, getRegister, twoOp
 import pytest
 from pytest_mock import MockerFixture
 import numpy as np
@@ -9,14 +9,14 @@ from . import mock_exit
 def test_checkValidConst():
     ks = np.random.randint(0, 255, 1000)
     for k in ks:
-        assert checkConst('#' + str(k)) == True
-        assert checkConst(int(k)) == True
-        assert checkConst(str(k)) == True
+        assert checkImmediate('#' + str(k)) == True
+        assert checkImmediate(int(k)) == True
+        assert checkImmediate(str(k)) == True
 
 
 def test_checkInvalidConst():
     k = "CONST"
-    assert checkConst(k) == False
+    assert checkImmediate(k) == False
 
 
 def test_getValidConst(mocker: MockerFixture):

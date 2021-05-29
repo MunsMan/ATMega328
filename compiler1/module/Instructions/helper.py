@@ -38,7 +38,7 @@ RegisterMap = {
 }
 
 
-def checkConst(register: Union[str, int]) -> bool:
+def checkImmediate(register: Union[str, int]) -> bool:
     if isinstance(register, int):
         return True
     if register.isdigit():
@@ -47,7 +47,7 @@ def checkConst(register: Union[str, int]) -> bool:
 
 
 def getConst(register: Union[str, int], bits: int = 8) -> int:
-    if not checkConst(register):
+    if not checkImmediate(register):
         throwError(6, True, register)
     if not isinstance(register, int):
         register = int(register.replace("#", ""))
