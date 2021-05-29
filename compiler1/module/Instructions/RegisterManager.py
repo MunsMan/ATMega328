@@ -59,3 +59,10 @@ class RegisterManager:
         if isinstance(register, int):
             register = "r" + str(register)
         RegisterManager.registers[register] = True
+
+
+RegisterPointer = {
+    "X": 26,
+    "Y": 28,
+    "Z": 30
+}

@@ -1,3 +1,4 @@
+from module.Instructions.RegisterManager import RegisterPointer
 from typing import Union
 from ..errorHandling.error import throwError
 from .Flags import Flags
@@ -101,3 +102,30 @@ def checkFlag(flag: Union[int, str, Flags]) -> int:
 def checkImmediateSize(immediate: int, bit_length: int):
     if immediate < 0 or immediate.bit_length() > bit_length:
         throwError(7, True, (immediate, immediate.bit_length(), bit_length))
+
+
+# ToDo: Test needed
+def checkRegisterPointer(register: str):
+    if register.find(":") != -1:
+        return True
+    if register.upper() in RegisterPointer:
+        return True
+    return False
+
+
+# ToDo: Test needed
+def getRegisterPointer(register: str, lowest: int = 0):
+    if not checkRegisterPointer:
+        # ToDo: Add new Error Message
+        # throwError()
+        exit()
+    index = register.find(":")
+    if index != -1:
+        reg_p = getRegister(register[:index])
+    else:
+        reg_p = RegisterPointer[register.upper()]
+    if reg_p < lowest:
+        # ToDo: Add new Error Message
+        # throwError()
+        exit()
+    return reg_p
