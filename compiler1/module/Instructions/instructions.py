@@ -80,6 +80,7 @@ InstructionsMap = {
     "ldi": ldi,
     "mov": mov,
     "add": add,
+    "adc": adc,
     "brbc": brbc,
     "brbs": brbs,
     "and": and_,

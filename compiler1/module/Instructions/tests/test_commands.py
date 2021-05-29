@@ -1,4 +1,4 @@
-from ..instructions import add, and_, andi, ldi, mov
+from ..instructions import add, and_, andi, ldi, mov, adc
 import pytest
 from pytest_mock import MockerFixture
 from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate
@@ -66,6 +66,17 @@ def test_addRegisterInvalidRegister(mocker: MockerFixture):
     with pytest.raises(SystemExit):
         ADD(args)
     mock_throwError.assert_called_once_with(5, True, rr)
+
+
+def test_adc(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(commands, "throwError")
+    rd = "r0"
+    rr = "r1"
+    args = CommandArgs("ADC", rd, rr)
+    numInstruction, instructions = ADD(args)
+    assert(numInstruction == 1)
+    assert(instructions() == [adc(0, 1)])
+    mock_throwError.assert_not_called()
 
 
 def test_andTwoRegister():

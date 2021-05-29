@@ -37,12 +37,12 @@ def ADD(args: CommandArgs):
         rr = getImmediate(rr)
         r = RegisterManager.getFreeRegister(16)
         instructions = loadImmediate(r, getImmediate(rr))
-        instructions.append(mapInstructions("add")(rd, r))
+        instructions.append(mapInstructions(args.opcode.lower())(rd, r))
         RegisterManager.freeRegister(r)
     else:
         if not checkRegister(rr):
             throwError(5, True, rr)
-        instructions.append(mapInstructions("add")(rd, rr))
+        instructions.append(mapInstructions(args.opcode.lower())(rd, rr))
     return (len(instructions), lambda: instructions)
 
 
@@ -123,6 +123,7 @@ def AND(args: CommandArgs):
 
 CommandsMap = {
     "ADD": ADD,
+    "ADC": ADD,
     "MOV": MOV,
     "BR": BR,
     "AND": AND,
