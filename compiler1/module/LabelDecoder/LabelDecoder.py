@@ -21,7 +21,7 @@ class LabelDecoder:
         return self.labels
 
     def checkIfLabel(self, line: str) -> bool:
-        return line.find(":") != -1
+        return line.find(":") == len(line) - 1
 
     def getCurrentLabel(self) -> str:
         return self.currentLabel
