@@ -85,6 +85,11 @@ def wrongRegisterPointer(custom) -> str:
     return "Wrong use of RegisterPointer.\nRegister Pointer should be higer or equal then {lowest} and smaller then 32.\n{even}You passed the follwing: {reg_p}".format(lowest=lowest, reg_p=reg_p, even=even)
 
 
+def invalidRegisterReference(custom) -> str:
+    reg_p = custom
+    return "Invalid Register Pointer.\nYou provided the following Register Pointer: {reg_p}.\nIt couldn't be parsed or is not defined for this CPU.\n Please check the docs for more information.\n".format(reg_p=reg_p)
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -97,4 +102,5 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     9: invalidCondError,
     10: wrongTwoComplementSize,
     11: wrongRegisterPointer,
+    12: invalidRegisterReference,
 }
