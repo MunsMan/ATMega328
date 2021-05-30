@@ -27,28 +27,36 @@ def mapCommmands(args: CommandArgs):
     throwError(4, True, args.opcode)
 
 
-# ToDo: Refactor needed!!!
 def ADD(args: CommandArgs):
     rr = args.rr
     rd = args.rd
     instructions = []
     if checkRegisterPointer(rd):
-        rd_p = getRegisterPointer(rd, 24, True)
-        instructions.append(mapInstructions('adiw')(rd_p, getImmediate(rr, 6)))
+        return ADIW(rd, rr)
+
+    if not checkRegister(rd):
+        throwError(5, True, rd)
+    rd = getRegister(rd)
+    if checkImmediate(rr):
+        r = RegisterManager.getFreeRegister(16)
+        instructions = loadImmediate(r, getImmediate(rr))
+        instructions.append(mapInstructions(args.opcode.lower())(rd, r))
+        RegisterManager.freeRegister(r)
     else:
-        if not checkRegister(rd):
-            throwError(5, True, rd)
-        if checkImmediate(rr):
-            rr = getImmediate(rr)
-            r = RegisterManager.getFreeRegister(16)
-            instructions = loadImmediate(r, getImmediate(rr))
-            instructions.append(mapInstructions(args.opcode.lower())(rd, r))
-            RegisterManager.freeRegister(r)
-        else:
-            if not checkRegister(rr):
-                throwError(5, True, rr)
-            instructions.append(mapInstructions(args.opcode.lower())(rd, rr))
+        if not checkRegister(rr):
+            throwError(5, True, rr)
+        instructions.append(mapInstructions(
+            args.opcode.lower())(rd, getRegister(rr)))
+    RegisterManager.setRegister(rd)
     return (len(instructions), lambda: instructions)
+
+
+def ADIW(rd, rr):
+    rd_p = getRegisterPointer(rd, 24, True)
+    instruction = mapInstructions('adiw')(rd_p, getImmediate(rr, 6))
+    RegisterManager.setRegister(rd_p)
+    RegisterManager.setRegister(rd_p+1)
+    return (1, lambda: [instruction])
 
 
 def MOV(args: CommandArgs):
