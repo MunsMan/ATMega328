@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from ..errorHandling import throwError
+import re
 
 
 class FileReader:
@@ -19,13 +20,15 @@ class FileReader:
     def _cleanFile(self):
         lines = []
         for index, line in self.lines:
-            line = line.replace("\n", "")
-            line = line.replace(";", "")
-            if line.find("//") != -1:
-                line = line[0:line.find("//")]
+            line = re.sub(r'\/\/.*$', "", line)  # removing comments
+            # replace \n, \t, ',', ; with space
+            line = re.sub(r'[\n|\t|,|;|\s+]', " ", line)
+            line = re.sub(r'\s+', " ", line)
+            # line = re.sub(r'\s+', " ", line)  # spaces to one
             line = line.strip()
             if line != "":
                 lines.append((index, line))
+            print(line)
         self.lines = lines
 
     def printFile(self):
