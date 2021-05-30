@@ -131,6 +131,7 @@ def AND(args: CommandArgs):
             throwError(5, True, rr)
         rr = getRegister(rr)
         instructions.append(mapInstructions("and")(rd, rr))
+    RegisterManager.setRegister(rd)
     return (len(instructions), lambda: instructions)
 
 
