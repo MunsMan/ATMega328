@@ -78,6 +78,13 @@ def wrongTwoComplementSize(custom: Tuple[str]) -> str:
     return "A {sign} Immediate in the Two's Complement can only be of size: {pos_size}bit.\nYou provided an Immediate of size: {immediate_size}bit.\nThat is {diff}bit to long.\n".format(pos_size=expected_size-1, immediate_size=immediate.bit_length(), diff=diff, sign=sign)
 
 
+def wrongRegisterPointer(custom) -> str:
+    reg_p, lowest, even = custom
+    if even:
+        even = "For this Operation, only even RegisterPointer are allowed.\n"
+    return "Wrong use of RegisterPointer.\nRegister Pointer should be higer or equal then {lowest} and smaller then 32.\n{even}You passed the follwing: {reg_p}".format(lowest=lowest, reg_p=reg_p, even=even)
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -89,4 +96,5 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     8: wrongRegisterReferenced,
     9: invalidCondError,
     10: wrongTwoComplementSize,
+    11: wrongRegisterPointer,
 }
