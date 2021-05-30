@@ -3,7 +3,7 @@ from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
-from typing import Callable
+from typing import Callable, List, Tuple
 
 
 class CommandArgs:
@@ -135,12 +135,22 @@ def AND(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
+# ToDo: Needs to be tested!
+def ASR(args: CommandArgs) -> Tuple[int, List[int]]:
+    rd = getRegister(args.rd)
+    rr = getImmediate(args.rr, 3) if args.rr is not None else 1
+    instructions = [mapInstructions("asr")(rd)] * rr
+    RegisterManager.setRegister(rd)
+    return (len(instructions), lambda: instructions)
+
+
 CommandsMap = {
     "ADD": ADD,
     "ADC": ADD,
     "MOV": MOV,
     "BR": BR,
     "AND": AND,
+    "ASR": ASR,
 }
 
 
