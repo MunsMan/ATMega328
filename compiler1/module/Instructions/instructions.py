@@ -104,6 +104,7 @@ InstructionsMap = {
     "adc": adc,
     "add": add,
     "adiw": adiw,
+    "asr": asr,
     "ldi": ldi,
     "mov": mov,
     "brbc": brbc,
