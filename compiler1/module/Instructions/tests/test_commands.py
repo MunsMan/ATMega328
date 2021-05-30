@@ -1,4 +1,4 @@
-from ..instructions import add, and_, andi, ldi, mov, adc
+from ..instructions import *
 import pytest
 from pytest_mock import MockerFixture
 from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate
@@ -76,6 +76,23 @@ def test_adc(mocker: MockerFixture):
     numInstruction, instructions = ADD(args)
     assert(numInstruction == 1)
     assert(instructions() == [adc(0, 1)])
+    mock_throwError.assert_not_called()
+
+
+def test_adiw(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(commands, "throwError")
+    rds = ["r24:r25", "r26:r27", "r28:r29", "r30:r31", "X", "Y", "Z"]
+    rrs = range(0, 64)
+    args = CommandArgs("ADD", "", "")
+    for rd in rds:
+        args.rd = rd
+        for rr in rrs:
+            args.rr = rr
+
+            numInstruction, instructions = ADD(args)
+            rd = helper.getRegisterPointer(args.rd)
+            assert(numInstruction == 1)
+            assert(instructions() == [adiw(rd, rr)])
     mock_throwError.assert_not_called()
 
 
