@@ -1,3 +1,4 @@
+from .helper import getAllRegisterPointer
 import pytest
 from pytest_mock import MockerFixture
 import numpy as np
@@ -5,7 +6,7 @@ from ctypes import c_uint8, c_uint16
 
 from . import mock_exit
 from .. import helper
-from ..helper import checkImmediate, checkRegister, getImmediate, getRegister, twoComplement, twoOp
+from ..helper import checkImmediate, checkRegister, checkRegisterPointer, getImmediate, getRegister, twoComplement, twoOp
 
 
 def test_checkValidConst():
@@ -107,3 +108,15 @@ def test_twoComplementInvalid(mocker: MockerFixture):
         mock_throwError.assert_called_once_with(
             10, True, (toSmall, bit_length))
         mock_throwError.reset_mock()
+
+
+def test_checkValidRegisterPointer():
+    rds = getAllRegisterPointer()
+    for rd in rds:
+        assert(checkRegisterPointer(rd))
+
+
+def test_checkInvalidRegisterPointer():
+    rds = ['r1', 'A', 'Q', 'r31', 'r0', 'r1-r2']
+    for rd in rds:
+        assert(not checkRegisterPointer(rd))
