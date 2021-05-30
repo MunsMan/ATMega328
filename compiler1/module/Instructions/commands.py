@@ -2,7 +2,7 @@ from ..Instructions.branch import *
 from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
-from .helper import checkImmediate, checkImmediateSize, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer
+from .helper import *
 from typing import Callable
 
 
@@ -28,15 +28,12 @@ def mapCommmands(args: CommandArgs):
 
 
 # ToDo: Refactor needed!!!
-# ToDo: Tests needed for ADIW
 def ADD(args: CommandArgs):
     rr = args.rr
     rd = args.rd
     instructions = []
     if checkRegisterPointer(rd):
-        rd_p = getRegisterPointer(rd, 24)
-        if not checkImmediate(rr):
-            throwError(6, True, rr)
+        rd_p = getRegisterPointer(rd, 24, True)
         instructions.append(mapInstructions('adiw')(rd_p, getImmediate(rr, 6)))
     else:
         if not checkRegister(rd):
