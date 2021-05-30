@@ -96,6 +96,42 @@ def test_adiw(mocker: MockerFixture):
     mock_throwError.assert_not_called()
 
 
+def test_adiwInvalidRegister(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(helper, "throwError")
+    mock_throwError.side_effect = mock_exit
+    invalidRds = ["r22:", "r23:", "r31:", "r0:"]
+    rr = 0
+    args = CommandArgs("ADD", "", rr)
+    for rd in invalidRds:
+        args.rd = rd
+        with pytest.raises(SystemExit):
+            ADD(args)
+        mock_throwError.assert_called_once_with(11, True, (rd, 24, True))
+        mock_throwError.reset_mock()
+
+
+def test_adiwInvalidImmediate(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(helper, "throwError")
+    mock_throwError.side_effect = mock_exit
+    rd = "X"
+    args = CommandArgs("ADD", rd, "")
+    # Lower Bound Immediate - negative
+    immediate = -1
+    args.rr = immediate
+    with pytest.raises(SystemExit):
+        ADD(args)
+    mock_throwError.assert_called_once_with(6, True, immediate)
+    mock_throwError.reset_mock()
+    # Upper Bound Immediate
+    immediate = 64
+    args.rr = immediate
+    with pytest.raises(SystemExit):
+        ADD(args)
+    mock_throwError.assert_called_once_with(
+        7, True, (immediate, immediate.bit_length(), 6))
+    mock_throwError.reset_mock()
+
+
 def test_andTwoRegister():
     rds = range(0, 32)
     rrs = range(0, 32)
