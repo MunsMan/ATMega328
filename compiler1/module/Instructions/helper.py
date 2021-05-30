@@ -104,7 +104,6 @@ def checkImmediateSize(immediate: int, bit_length: int):
         throwError(7, True, (immediate, immediate.bit_length(), bit_length))
 
 
-# ToDo: Test needed
 def checkRegisterPointer(register: str):
     if register.find(":") != -1:
         return True
@@ -113,19 +112,18 @@ def checkRegisterPointer(register: str):
     return False
 
 
-# ToDo: Test needed
-def getRegisterPointer(register: str, lowest: int = 0):
-    if not checkRegisterPointer:
-        # ToDo: Add new Error Message
-        # throwError()
-        exit()
+def getRegisterPointer(register: str, lowest: int = 0, even=False):
+    if not checkRegisterPointer(register):
+        throwError(12, True, register)
     index = register.find(":")
     if index != -1:
         reg_p = getRegister(register[:index])
     else:
         reg_p = RegisterPointer[register.upper()]
-    if reg_p < lowest:
-        # ToDo: Add new Error Message
-        # throwError()
-        exit()
+    if even:
+        if reg_p < lowest or reg_p % 2:
+            throwError(11, True, (register, lowest, True))
+    else:
+        if reg_p < lowest:
+            throwError(11, True, (register, lowest, False))
     return reg_p
