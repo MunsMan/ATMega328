@@ -241,3 +241,14 @@ def test_com():
         result = com(rd)
         expected = opcode + (rd << 4)
         assert(result == expected)
+
+
+def test_cp():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    opcode = 0b0001_0100 << 8
+    for rd in rds:
+        for rr in rrs:
+            result = cp(rd, rr)
+            expected = opcode + ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
+            assert(result == expected)

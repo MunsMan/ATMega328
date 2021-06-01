@@ -147,6 +147,11 @@ def com(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def cp(rd: int, rr: int) -> int:
+    opcode = 0x1400
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
