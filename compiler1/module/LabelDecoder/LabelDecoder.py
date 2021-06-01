@@ -14,7 +14,7 @@ class LabelDecoder:
     def _scanLabels(self, file: List[str]):
         for _, line in file:
             if self._checkIfLabel(line):
-                line = line.replace(":", "")
+                line = line[:-1]
                 self.labels[line] = []
 
     def getLabels(self):
