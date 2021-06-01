@@ -130,6 +130,10 @@ def cls() -> int:
     return 0x94C8
 
 
+def clt() -> int:
+    return 0x94E8
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
