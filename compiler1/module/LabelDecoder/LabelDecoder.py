@@ -13,22 +13,22 @@ class LabelDecoder:
 
     def _scanLabels(self, file: List[str]):
         for _, line in file:
-            if self.checkIfLabel(line):
+            if self._checkIfLabel(line):
                 line = line.replace(":", "")
                 self.labels[line] = []
 
     def getLabels(self):
         return self.labels
 
-    def checkIfLabel(self, line: str) -> bool:
-        return line.find(":") == len(line) - 1
+    def _checkIfLabel(self, line: str) -> bool:
+        return line[-1] == ":"
 
     def getCurrentLabel(self) -> str:
         return self.currentLabel
 
-    def updateCurrentLabel(self, line: str) -> bool:
-        if self.checkIfLabel(line):
-            self.currentLabel = line.replace(":", "")
+    def _updateCurrentLabel(self, line: str) -> bool:
+        if self._checkIfLabel(line):
+            self.currentLabel = line[:-1]
             return True
         else:
             return False
@@ -40,8 +40,8 @@ class LabelDecoder:
 
     def _splitLabels(self, file) -> Dict[str, List[str]]:
         for lineNum, line in file:
-            if self.checkIfLabel(line):
-                self.updateCurrentLabel(line)
+            if self._checkIfLabel(line):
+                self._updateCurrentLabel(line)
                 if self.currentLabel not in self.labels:
                     self.labels[self.currentLabel] = []
             else:
