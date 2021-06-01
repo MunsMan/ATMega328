@@ -6,16 +6,19 @@ class LabelDecoder:
         self.labels: Dict[str, List[Any]] = {"main": []}
         self.currentLabel: str = "main"
         self.file = file
-        self._scanLabels(file)
-        self._splitLabels(file)
+        self._parse()
         self.parsedLabels: Dict[str, Tuple[int,
                                            List[Tuple[int, Callable[[], List[int]]]]]] = {}
 
-    def _scanLabels(self, file: List[str]):
-        for _, line in file:
+    def _parse(self):
+        self._scanLabels()
+        self._splitLabels()
+
+    def _scanLabels(self):
+        for _, line in self.file:
             if self._checkIfLabel(line):
-                line = line[:-1]
-                self.labels[line] = []
+                label = line[:-1]
+                self.labels[label] = []
 
     def getLabels(self):
         return self.labels
@@ -38,8 +41,8 @@ class LabelDecoder:
         instructions.append(instruction)
         self.labels[self.currentLabel] = instructions
 
-    def _splitLabels(self, file) -> Dict[str, List[str]]:
-        for lineNum, line in file:
+    def _splitLabels(self) -> Dict[str, List[str]]:
+        for lineNum, line in self.file:
             if self._checkIfLabel(line):
                 self._updateCurrentLabel(line)
                 if self.currentLabel not in self.labels:
@@ -87,4 +90,13 @@ class LabelDecoder:
             offset -= sum(map(lambda x: self.parsedLabels[x][0], labels))
             offset -= sum(map(lambda x: x[0],
                           currentLabelInstructions[:blockIndex]))
+            offset -= 1
         return int(offset)
+
+    def decodeLabelRef(self):
+        assert len(self.parsedLabels) != 0
+        for label in self.parsedLabels:
+            _, instructions = self.parsedLabels[label]
+            for i, (l, instruction) in enumerate(instructions):
+                instructions[i] = (l, instruction())
+        return self.parsedLabels
