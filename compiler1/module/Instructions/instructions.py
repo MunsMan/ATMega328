@@ -100,6 +100,36 @@ def call(rd: int) -> int:
     return opcode + rd
 
 
+def cbi(rd: int, rr: int) -> int:
+    opcode = 0x9800
+    return opcode + (rd << 3) + rr
+
+
+def clc() -> int:
+    return 0x9488
+
+
+def clh() -> int:
+    return 0x94D8
+
+
+def cli() -> int:
+    return 0x94F8
+
+
+def cln() -> int:
+    return 0x94A8
+
+
+def clr(rd: int) -> int:
+    opcode = 0x2400
+    return opcode + rd
+
+
+def cls() -> int:
+    return 0x94C8
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

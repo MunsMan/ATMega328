@@ -173,3 +173,47 @@ def test_call():
         result = call(rd)
         expected = opcode + rd
         assert(result == expected)
+
+
+def test_cbi():
+    rds = range(0, 32)
+    rrs = range(0, 8)
+    opcode = 0b1001_1000 << 8
+    for rd in rds:
+        for rr in rrs:
+            result = cbi(rd, rr)
+            expected = opcode + (rd << 3) + rr
+            assert(result == expected)
+
+
+def test_clc():
+    opcode = 0b1001_0100_1000_1000
+    assert(clc() == opcode)
+
+
+def test_clh():
+    opcode = 0b1001_0100_1101_1000
+    assert(clh() == opcode)
+
+
+def test_cli():
+    opcode = 0b1001_0100_1111_1000
+    assert(cli() == opcode)
+
+
+def test_cln():
+    opcode = 0b1001_0100_1010_1000
+    assert(cln() == opcode)
+
+
+def test_clr():
+    rds = range(0, 32)
+    opcode = 0b0010_0100 << 8
+    for rd in rds:
+        expected = opcode + rd
+        assert(clr(rd) == expected)
+
+
+def test_cls():
+    opcode = 0b1001_0100_1100_1000
+    assert(cls() == opcode)
