@@ -142,6 +142,11 @@ def clz() -> int:
     return 0x9498
 
 
+def com(rd: int) -> int:
+    opcode = 0x9400
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

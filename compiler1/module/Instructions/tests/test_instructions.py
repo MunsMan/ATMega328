@@ -232,3 +232,12 @@ def test_clv():
 def test_clz():
     opcode = 0b1001_0100_1001_1000
     assert(clz() == opcode)
+
+
+def test_com():
+    rds = range(0, 32)
+    opcode = 0b1001_0100 << 8
+    for rd in rds:
+        result = com(rd)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
