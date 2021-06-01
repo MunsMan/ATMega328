@@ -28,8 +28,10 @@ class FileReader:
             line = line.strip()
             if line != "":
                 lines.append((index, line))
-            print(line)
         self.lines = lines
+
+    def getLines(self):
+        return self.lines
 
     def printFile(self):
         for line in self.lines:
