@@ -227,3 +227,8 @@ def test_clt():
 def test_clv():
     opcode = 0b1001_0100_1011_1000
     assert(clv() == opcode)
+
+
+def test_clz():
+    opcode = 0b1001_0100_1001_1000
+    assert(clz() == opcode)

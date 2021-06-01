@@ -138,6 +138,10 @@ def clv() -> int:
     return 0x94B8
 
 
+def clz() -> int:
+    return 0x9498
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
