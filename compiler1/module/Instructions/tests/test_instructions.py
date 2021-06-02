@@ -294,3 +294,12 @@ def test_dec():
         result = dec(rd)
         expected = opcode + (rd << 4)
         assert(result == expected)
+
+
+def test_des():
+    rds = range(0, 16)
+    opcode = 0b1001_0100_0000_1011
+    for rd in rds:
+        result = des(rd)
+        expected = opcode + (rd << 4)
+        assert(result == expected)

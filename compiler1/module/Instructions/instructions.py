@@ -173,6 +173,11 @@ def dec(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def des(rd: int) -> int:
+    opcode = 0x940B
+    return opcode + ((rd & 0xF) << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
