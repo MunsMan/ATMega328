@@ -327,8 +327,8 @@ def test_eor():
 
 
 def test_fmul():
-    rds = range(16, 23)
-    rrs = range(16, 23)
+    rds = range(16, 24)
+    rrs = range(16, 24)
     opcode = 0b0000_0011_0000_1000
     for rd in rds:
         for rr in rrs:
@@ -338,11 +338,22 @@ def test_fmul():
 
 
 def test_fmuls():
-    rds = range(16, 23)
+    rds = range(16, 24)
     rrs = range(16, 24)
     opcode = 0b0000_0011_1000_0000
     for rd in rds:
         for rr in rrs:
             result = fmuls(rd, rr)
+            solution = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == solution)
+
+
+def test_fmulsu():
+    rds = range(16, 24)
+    rrs = range(16, 24)
+    opcode = 0b0000_0011_1000_1000
+    for rd in rds:
+        for rr in rrs:
+            result = fmulsu(rd, rr)
             solution = opcode + ((rd - 16) << 4) + (rr - 16)
             assert(result == solution)

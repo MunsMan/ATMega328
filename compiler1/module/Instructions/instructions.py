@@ -208,6 +208,11 @@ def fmuls(rd: int, rr: int) -> int:
     return opcode + ((rd & 0x7) << 4) + (rr & 0x7)
 
 
+def fmulsu(rd: int, rr: int) -> int:
+    opcode = 0x0388
+    return opcode + ((rd & 0x7) << 4) + (rr & 0x7)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
