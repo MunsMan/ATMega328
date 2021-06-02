@@ -217,6 +217,10 @@ def icall() -> int:
     return 0x9509
 
 
+def ijump() -> int:
+    return 0x9409
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

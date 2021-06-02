@@ -362,3 +362,8 @@ def test_fmulsu():
 def test_icall():
     opcode = 0b1001_0101_0000_1001
     assert(icall() == opcode)
+
+
+def test_ijump():
+    opcode = 0b1001_0100_0000_1001
+    assert(ijump() == opcode)
