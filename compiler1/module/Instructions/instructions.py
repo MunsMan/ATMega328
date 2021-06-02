@@ -221,6 +221,11 @@ def ijump() -> int:
     return 0x9409
 
 
+def in_(rd: int, rr: int) -> int:
+    opcode = 0xB000
+    return opcode + ((rr & 0x30) << 5) + (rr & 0xF) + ((rd & 0x1F) << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

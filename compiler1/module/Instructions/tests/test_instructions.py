@@ -367,3 +367,14 @@ def test_icall():
 def test_ijump():
     opcode = 0b1001_0100_0000_1001
     assert(ijump() == opcode)
+
+
+def test_in():
+    rds = range(0, 32)
+    rrs = range(0, 64)
+    opcode = 0b1011 << 12
+    for rd in rds:
+        for rr in rrs:
+            result = in_(rd, rr)
+            solution = opcode + (rd << 4) + ((rr & 0x30) << 5) + (rr & 0xF)
+            assert(result == solution)
