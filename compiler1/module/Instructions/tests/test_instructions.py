@@ -303,3 +303,8 @@ def test_des():
         result = des(rd)
         expected = opcode + (rd << 4)
         assert(result == expected)
+
+
+def test_eicall():
+    opcode = 0b1001_0101_0001_1001
+    assert(eicall() == opcode)

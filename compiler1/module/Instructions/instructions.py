@@ -178,6 +178,10 @@ def des(rd: int) -> int:
     return opcode + ((rd & 0xF) << 4)
 
 
+def eicall() -> int:
+    return 0x9519
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
