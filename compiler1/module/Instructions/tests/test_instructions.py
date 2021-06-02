@@ -263,3 +263,14 @@ def test_cpc():
             result = cpc(rd, rr)
             expected = opcode + ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
             assert(result == expected)
+
+
+def test_cpi():
+    rds = range(0, 32)
+    rrs = range(0, 256)
+    opcode = 0b0011 << 12
+    for rd in rds:
+        for rr in rrs:
+            result = cpi(rd, rr)
+            expected = opcode + (rd << 4) + ((rr & 0xF0) << 4) + (rr & 0xF)
+            assert(result == expected)

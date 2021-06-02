@@ -157,6 +157,12 @@ def cpc(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def cpi(rd: int, rr: int) -> int:
+    opcode = 0x3000
+    immediate = ((rr & 0xF0) << 4) + (rr & 0x0F)
+    return opcode + immediate + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
