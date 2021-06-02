@@ -308,3 +308,8 @@ def test_des():
 def test_eicall():
     opcode = 0b1001_0101_0001_1001
     assert(eicall() == opcode)
+
+
+def test_eijump():
+    opcode = 0b1001_0100_0001_1001
+    assert(eijump() == opcode)

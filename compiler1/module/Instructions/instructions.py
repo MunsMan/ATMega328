@@ -182,6 +182,10 @@ def eicall() -> int:
     return 0x9519
 
 
+def eijump() -> int:
+    return 0x9419
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
