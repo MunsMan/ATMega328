@@ -168,6 +168,11 @@ def cpse(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def dec(rd: int) -> int:
+    opcode = 0x940A
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

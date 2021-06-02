@@ -285,3 +285,12 @@ def test_cpse():
             result = cpse(rd, rr)
             expected = opcode + ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
             assert(result == expected)
+
+
+def test_dec():
+    rds = range(0, 32)
+    opcode = 0b1001_0100_0000_1010
+    for rd in rds:
+        result = dec(rd)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
