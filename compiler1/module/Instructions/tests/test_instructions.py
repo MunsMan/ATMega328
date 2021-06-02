@@ -357,3 +357,8 @@ def test_fmulsu():
             result = fmulsu(rd, rr)
             solution = opcode + ((rd - 16) << 4) + (rr - 16)
             assert(result == solution)
+
+
+def test_icall():
+    opcode = 0b1001_0101_0000_1001
+    assert(icall() == opcode)

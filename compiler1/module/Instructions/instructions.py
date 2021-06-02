@@ -213,6 +213,10 @@ def fmulsu(rd: int, rr: int) -> int:
     return opcode + ((rd & 0x7) << 4) + (rr & 0x7)
 
 
+def icall() -> int:
+    return 0x9509
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
