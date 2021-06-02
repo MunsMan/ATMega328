@@ -152,6 +152,11 @@ def cp(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def cpc(rd: int, rr: int) -> int:
+    opcode = 0x0400
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

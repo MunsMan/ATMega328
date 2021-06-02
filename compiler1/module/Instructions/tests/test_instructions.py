@@ -252,3 +252,14 @@ def test_cp():
             result = cp(rd, rr)
             expected = opcode + ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
             assert(result == expected)
+
+
+def test_cpc():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    opcode = 0b0000_0100 << 8
+    for rd in rds:
+        for rr in rrs:
+            result = cpc(rd, rr)
+            expected = opcode + ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
+            assert(result == expected)
