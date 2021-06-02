@@ -266,7 +266,7 @@ def test_cpc():
 
 
 def test_cpi():
-    rds = range(0, 32)
+    rds = range(16, 32)
     rrs = range(0, 256)
     opcode = 0b0011 << 12
     for rd in rds:
