@@ -313,3 +313,14 @@ def test_eicall():
 def test_eijump():
     opcode = 0b1001_0100_0001_1001
     assert(eijump() == opcode)
+
+
+def test_eor():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    opcode = 0b0010_0100 << 8
+    for rd in rds:
+        for rr in rrs:
+            result = eor(rd, rr)
+            solution = opcode + twoOp(rd, rr)
+            assert(result == solution)

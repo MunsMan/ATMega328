@@ -185,6 +185,18 @@ def eicall() -> int:
 def eijump() -> int:
     return 0x9419
 
+# ToDo: Needs implemtation
+
+
+def elpm(rd: int) -> int:
+    print("Undefinded")
+    exit()
+
+
+def eor(rd: int, rr: int) -> int:
+    opcode = 0x2400
+    return opcode + twoOp(rd, rr)
+
 
 InstructionsMap = {
     "adc": adc,
