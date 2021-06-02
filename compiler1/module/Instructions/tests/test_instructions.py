@@ -324,3 +324,14 @@ def test_eor():
             result = eor(rd, rr)
             solution = opcode + twoOp(rd, rr)
             assert(result == solution)
+
+
+def test_fmul():
+    rds = range(16, 23)
+    rrs = range(16, 23)
+    opcode = 0b0000_0011_0000_1000
+    for rd in rds:
+        for rr in rrs:
+            result = fmul(rd, rr)
+            solution = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == solution)
