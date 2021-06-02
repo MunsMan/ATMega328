@@ -335,3 +335,14 @@ def test_fmul():
             result = fmul(rd, rr)
             solution = opcode + ((rd - 16) << 4) + (rr - 16)
             assert(result == solution)
+
+
+def test_fmuls():
+    rds = range(16, 23)
+    rrs = range(16, 24)
+    opcode = 0b0000_0011_1000_0000
+    for rd in rds:
+        for rr in rrs:
+            result = fmuls(rd, rr)
+            solution = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == solution)
