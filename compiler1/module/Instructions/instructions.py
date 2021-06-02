@@ -163,6 +163,11 @@ def cpi(rd: int, rr: int) -> int:
     return opcode + immediate + (rd << 4)
 
 
+def cpse(rd: int, rr: int) -> int:
+    opcode = 0x1000
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
