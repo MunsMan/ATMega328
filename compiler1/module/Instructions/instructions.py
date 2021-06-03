@@ -160,7 +160,7 @@ def cpc(rd: int, rr: int) -> int:
 def cpi(rd: int, rr: int) -> int:
     opcode = 0x3000
     immediate = ((rr & 0xF0) << 4) + (rr & 0x0F)
-    return opcode + immediate + (rd << 4)
+    return opcode + immediate + ((rd & 0xF) << 4)
 
 
 def cpse(rd: int, rr: int) -> int:
