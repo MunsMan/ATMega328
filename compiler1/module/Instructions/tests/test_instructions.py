@@ -272,7 +272,8 @@ def test_cpi():
     for rd in rds:
         for rr in rrs:
             result = cpi(rd, rr)
-            expected = opcode + (rd << 4) + ((rr & 0xF0) << 4) + (rr & 0xF)
+            expected = opcode + ((rd - 16) << 4) + \
+                ((rr & 0xF0) << 4) + (rr & 0xF)
             assert(result == expected)
 
 
