@@ -251,6 +251,24 @@ def lat(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+# LD rd, X
+def ldx(rd: int) -> int:
+    opcode = 0x900C
+    return opcode + (rd << 4)
+
+
+# LD rd, X+
+def ldxi(rd: int) -> int:
+    opcode = 0x900D
+    return opcode + (rd << 4)
+
+
+# LD rd, -X
+def ldxd(rd: int) -> int:
+    opcode = 0x900E
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

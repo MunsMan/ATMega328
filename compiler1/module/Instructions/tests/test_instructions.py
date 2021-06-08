@@ -424,3 +424,30 @@ def test_lat():
         result = lat(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_ldx():
+    rds = range(0, 32)
+    opcode = 0b1001_0000_0000_1100
+    for rd in rds:
+        result = ldx(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldxi():
+    rds = range(0, 32)
+    opcode = 0b1001_0000_0000_1101
+    for rd in rds:
+        result = ldxi(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldxd():
+    rds = range(0, 32)
+    opcode = 0b1001_0000_0000_1110
+    for rd in rds:
+        result = ldxd(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
