@@ -388,3 +388,12 @@ def test_inc():
         result = inc(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_jmp():
+    rds = [0, 4194303]
+    opcode = 0b1001_0100_0000_1100 << 16
+    for rd in rds:
+        result = jmp(rd)
+        solution = opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
+        assert(result == solution)
