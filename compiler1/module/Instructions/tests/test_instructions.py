@@ -478,3 +478,14 @@ def test_ldyd():
         result = ldyd(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_lddy():
+    rds = list(range(0, 28)) + [30, 31]
+    qs = range(0, 64)
+    opcode = 0b1000_0000_0000_1000
+    for rd in rds:
+        for q in qs:
+            result = lddy(rd, q)
+            solution = opcode + (rd << 4) + ((q & 0b111000) << 7) + (q & 0b111)
+            assert(result == solution)
