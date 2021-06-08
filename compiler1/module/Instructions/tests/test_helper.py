@@ -5,7 +5,7 @@ from pytest_mock import MockerFixture
 import numpy as np
 from ctypes import c_uint8, c_uint16
 
-from . import mock_exit
+from . import mock_exit, fromBitMask
 from .. import helper
 from ..helper import checkImmediate, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer, twoComplement, twoOp
 
@@ -164,3 +164,14 @@ def test_getRegisterPointerEven(mocker: MockerFixture):
             getRegisterPointer(rd, 0, True)
         mock_throwError.assert_called_once_with(11, True, (rd, 0, True))
         mock_throwError.reset_mock()
+
+
+def test_fromBitMask():
+    mask = "11aa bbab ccaa dddd"
+    a = 0b01101
+    b = 0b000
+    c = 0b10
+    d = 0b1111
+    expected = 0b1101_0010_1001_1111
+    result = fromBitMask(mask, a=a, b=b, c=c, d=d)
+    assert(expected == result)
