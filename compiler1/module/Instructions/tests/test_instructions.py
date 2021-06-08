@@ -451,3 +451,30 @@ def test_ldxd():
         result = ldxd(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_ldy():
+    rds = range(0, 32)
+    opcode = 0b1000_0000_0000_1000
+    for rd in rds:
+        result = ldy(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldyi():
+    rds = list(range(0, 28)) + [30, 31]
+    opcode = 0b1001_0000_0000_1001
+    for rd in rds:
+        result = ldyi(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldyd():
+    rds = list(range(0, 28)) + [30, 31]
+    opcode = 0b1001_0000_0000_1010
+    for rd in rds:
+        result = ldyd(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)

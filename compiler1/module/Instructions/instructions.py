@@ -269,6 +269,24 @@ def ldxd(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+# LD rd, Y
+def ldy(rd: int) -> int:
+    opcode = 0x8008
+    return opcode + (rd << 4)
+
+
+# LD rd, Y+
+def ldyi(rd: int) -> int:
+    opcode = 0x9009
+    return opcode + (rd << 4)
+
+
+# LD rd, -Y
+def ldyd(rd: int) -> int:
+    opcode = 0x900A
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
