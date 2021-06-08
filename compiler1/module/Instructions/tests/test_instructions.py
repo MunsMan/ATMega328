@@ -406,3 +406,12 @@ def test_lac():
         result = lac(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_las():
+    rds = range(0, 32)
+    opcode = 0b1001_0010_0000_0101
+    for rd in rds:
+        result = las(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)

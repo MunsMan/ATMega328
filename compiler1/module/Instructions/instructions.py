@@ -241,6 +241,11 @@ def lac(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def las(rd: int) -> int:
+    opcode = 0x9205
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
