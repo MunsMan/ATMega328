@@ -415,3 +415,12 @@ def test_las():
         result = las(rd)
         solution = opcode + (rd << 4)
         assert(result == solution)
+
+
+def test_lat():
+    rds = range(0, 32)
+    opcode = 0b1001_0010_0000_0111
+    for rd in rds:
+        result = lat(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
