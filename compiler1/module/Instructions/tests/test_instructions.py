@@ -487,5 +487,6 @@ def test_lddy():
     for rd in rds:
         for q in qs:
             result = lddy(rd, q)
-            solution = opcode + (rd << 4) + ((q & 0b111000) << 7) + (q & 0b111)
+            solution = opcode + (rd << 4) + ((q & 0b10_0000)
+                                             << 8) + ((q & 0b11000) << 7) + (q & 0b111)
             assert(result == solution)

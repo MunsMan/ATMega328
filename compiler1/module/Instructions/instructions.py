@@ -290,7 +290,7 @@ def ldyd(rd: int) -> int:
 def lddy(rd: int, q: int) -> int:
     opcode = 0x8008
     rd = rd << 4
-    q = ((q & 0x38) << 7) + (q & 0x7)
+    q = ((q & 0x20) << 8) + ((q & 0x18) << 7) + (q & 0x7)
     return opcode + rd + q
 
 
