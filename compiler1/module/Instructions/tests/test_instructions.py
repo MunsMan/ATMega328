@@ -436,7 +436,7 @@ def test_ldx():
 
 
 def test_ldxi():
-    rds = range(0, 32)
+    rds = list(range(0, 26)) + list(range(28, 32))
     opcode = 0b1001_0000_0000_1101
     for rd in rds:
         result = ldxi(rd)
@@ -445,7 +445,7 @@ def test_ldxi():
 
 
 def test_ldxd():
-    rds = range(0, 32)
+    rds = list(range(0, 26)) + list(range(28, 32))
     opcode = 0b1001_0000_0000_1110
     for rd in rds:
         result = ldxd(rd)
