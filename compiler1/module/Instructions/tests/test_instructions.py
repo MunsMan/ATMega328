@@ -480,9 +480,8 @@ def test_ldyd():
         assert(result == solution)
 
 
-# FixMe: Change Range
 def test_lddy():
-    rds = list(range(0, 28)) + [30, 31]
+    rds = range(0, 32)
     qs = range(0, 64)
     opcode = 0b1000_0000_0000_1000
     for rd in rds:
