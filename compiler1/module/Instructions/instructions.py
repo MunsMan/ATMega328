@@ -294,6 +294,28 @@ def lddy(rd: int, q: int) -> int:
     return opcode + rd + q
 
 
+def ldz(rd: int) -> int:
+    opcode = 0x8000
+    return opcode + (rd << 4)
+
+
+def ldzi(rd: int) -> int:
+    opcode = 0x9001
+    return opcode + (rd << 4)
+
+
+def ldzd(rd: int) -> int:
+    opcode = 0x9002
+    return opcode + (rd << 4)
+
+
+def lddz(rd: int, q: int) -> int:
+    opcode = 0x8000
+    rd = (rd << 4)
+    q = ((q & 0x20) << 8) + ((q & 0x18) << 7) + (q & 0x7)
+    return opcode + rd + q
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

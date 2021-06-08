@@ -480,6 +480,7 @@ def test_ldyd():
         assert(result == solution)
 
 
+# FixMe: Change Range
 def test_lddy():
     rds = list(range(0, 28)) + [30, 31]
     qs = range(0, 64)
@@ -489,4 +490,43 @@ def test_lddy():
             result = lddy(rd, q)
             solution = opcode + (rd << 4) + ((q & 0b10_0000)
                                              << 8) + ((q & 0b11000) << 7) + (q & 0b111)
+            assert(result == solution)
+
+
+def test_ldz():
+    rds = range(0, 32)
+    opcode = 0b1000_0000_0000_0000
+    for rd in rds:
+        result = ldz(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldzi():
+    rds = range(0, 30)
+    opcode = 0b1001_0000_0000_0001
+    for rd in rds:
+        result = ldzi(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_ldzd():
+    rds = range(0, 30)
+    opcode = 0b1001_0000_0000_0010
+    for rd in rds:
+        result = ldzd(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
+
+
+def test_lddz():
+    rds = range(0, 32)
+    qs = range(0, 64)
+    opcode = 0b1000_0000_0000_0000
+    for rd in rds:
+        for q in qs:
+            result = lddz(rd, q)
+            solution = opcode + (rd << 4) + ((q & 0b10_0000)
+                                             << 8) + ((q & 0b01_1000) << 7) + (q & 0b111)
             assert(result == solution)
