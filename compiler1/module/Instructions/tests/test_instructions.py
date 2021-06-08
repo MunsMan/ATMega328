@@ -397,3 +397,12 @@ def test_jmp():
         result = jmp(rd)
         solution = opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
         assert(result == solution)
+
+
+def test_lac():
+    rds = range(0, 32)
+    opcode = 0b1001_0010_0000_0110
+    for rd in rds:
+        result = lac(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)
