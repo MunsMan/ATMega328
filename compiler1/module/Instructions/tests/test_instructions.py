@@ -379,3 +379,12 @@ def test_in():
             result = in_(rd, rr)
             solution = opcode + (rd << 4) + ((rr & 0x30) << 5) + (rr & 0xF)
             assert(result == solution)
+
+
+def test_inc():
+    rds = range(0, 32)
+    opcode = 0b1001_0100_0000_0011
+    for rd in rds:
+        result = inc(rd)
+        solution = opcode + (rd << 4)
+        assert(result == solution)

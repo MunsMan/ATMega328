@@ -226,6 +226,11 @@ def in_(rd: int, rr: int) -> int:
     return opcode + ((rr & 0x30) << 5) + (rr & 0xF) + ((rd & 0x1F) << 4)
 
 
+def inc(rd: int) -> int:
+    opcode = 0x9403
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
