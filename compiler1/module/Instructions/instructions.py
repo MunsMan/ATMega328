@@ -378,6 +378,11 @@ def nop() -> int:
     return 0x0000
 
 
+def or_(rd: int, rr: int) -> int:
+    opcode = 0x2800
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

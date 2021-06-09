@@ -646,3 +646,14 @@ def test_neg():
 
 def test_nop():
     assert(nop() == 0)
+
+
+def test_or():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    mask = "0010 10rd dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            result = or_(rd, rr)
+            solution = fromBitMask(mask, d=rd, r=rr)
+            assert(result == solution)
