@@ -552,3 +552,26 @@ def test_lds():
             result = lds(rd, k)
             solution = fromBitMask(mask, d=(rd-16), k=k)
             assert(result == solution)
+
+
+def test_lpm0():
+    mask = "1001 0101 1100 1000"
+    assert(lpm0() == fromBitMask(mask))
+
+
+def test_lpm():
+    rds = range(0, 32)
+    mask = "1001 000d dddd 0100"
+    for rd in rds:
+        result = lpm(rd)
+        solution = fromBitMask(mask, d=rd)
+        assert(result == solution)
+
+
+def test_lpmi():
+    rds = range(0, 30)
+    mask = "1001 000d dddd 0101"
+    for rd in rds:
+        result = lpmi(rd)
+        solution = fromBitMask(mask, d=rd)
+        assert(result == solution)

@@ -326,6 +326,20 @@ def lds(rd: int, k: int) -> int:
     return opcode + ((rd & 0xF) << 4) + ((k & 0x70) << 4) + (k & 0xF)
 
 
+def lpm0() -> int:
+    return 0x95C8
+
+
+def lpm(rd: int) -> int:
+    opcode = 0x9004
+    return opcode + (rd << 4)
+
+
+def lpmi(rd: int) -> int:
+    opcode = 0x9005
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
