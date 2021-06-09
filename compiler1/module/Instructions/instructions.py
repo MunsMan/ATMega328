@@ -349,6 +349,11 @@ def lsr(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def movw(rd: int, rr: int) -> int:
+    opcode = 0x0100
+    return opcode + ((rd // 2) << 4) + (rr // 2)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

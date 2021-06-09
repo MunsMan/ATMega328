@@ -589,3 +589,14 @@ def test_lsr():
         result = lsr(rd)
         solution = fromBitMask(mask, d=rd)
         assert(result == solution)
+
+
+def test_movw():
+    rds = range(0, 32, 2)
+    rrs = range(0, 32, 2)
+    mask = "0000 0001 dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            result = movw(rd, rr)
+            solution = fromBitMask(mask, d=rd//2, r=rr//2)
+            assert(result == solution)
