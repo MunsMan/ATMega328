@@ -600,3 +600,14 @@ def test_movw():
             result = movw(rd, rr)
             solution = fromBitMask(mask, d=rd//2, r=rr//2)
             assert(result == solution)
+
+
+def test_mul():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    mask = "1001 11rd dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            result = mul(rd, rr)
+            solution = fromBitMask(mask, d=rd, r=rr)
+            assert(result == solution)

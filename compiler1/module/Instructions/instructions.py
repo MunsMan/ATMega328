@@ -354,6 +354,11 @@ def movw(rd: int, rr: int) -> int:
     return opcode + ((rd // 2) << 4) + (rr // 2)
 
 
+def mul(rd: int, rr: int) -> int:
+    opcode = 0x9C00
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
