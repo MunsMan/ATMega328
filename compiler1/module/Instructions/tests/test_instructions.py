@@ -679,3 +679,12 @@ def test_out():
             result = out(a, rr)
             solution = fromBitMask(mask, A=a, r=rr)
             assert(result == solution)
+
+
+def test_pop():
+    rds = range(0, 32)
+    mask = "1001 000d dddd 1111"
+    for rd in rds:
+        result = pop(rd)
+        solution = fromBitMask(mask, d=rd)
+        assert(result == solution)

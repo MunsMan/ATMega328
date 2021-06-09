@@ -395,6 +395,11 @@ def out(a: int, rr: int) -> int:
     return opcode + a + (rr << 4)
 
 
+def pop(rd: int) -> int:
+    opcode = 0x900F
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
