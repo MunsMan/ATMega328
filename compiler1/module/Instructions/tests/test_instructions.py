@@ -642,3 +642,7 @@ def test_neg():
         result = neg(rd)
         solution = fromBitMask(mask, d=rd)
         assert(result == solution)
+
+
+def test_nop():
+    assert(nop() == 0)

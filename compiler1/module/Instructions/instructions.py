@@ -374,6 +374,10 @@ def neg(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def nop() -> int:
+    return 0x0000
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
