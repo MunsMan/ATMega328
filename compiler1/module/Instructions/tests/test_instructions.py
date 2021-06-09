@@ -1,3 +1,4 @@
+from module.Instructions.tests.helper import fromBitMask
 from ..instructions import *
 from .. import twoComplement
 
@@ -528,4 +529,15 @@ def test_lddz():
             result = lddz(rd, q)
             solution = opcode + (rd << 4) + ((q & 0b10_0000)
                                              << 8) + ((q & 0b01_1000) << 7) + (q & 0b111)
+            assert(result == solution)
+
+
+def test_lds():
+    rds = range(0, 32)
+    ks = [0, 65535]
+    mask = "1001 000d dddd 0000 kkkk kkkk kkkk kkkk"
+    for rd in rds:
+        for k in ks:
+            result = lds(rd, k)
+            solution = fromBitMask(mask, d=rd, k=k)
             assert(result == solution)

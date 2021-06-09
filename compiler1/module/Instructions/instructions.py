@@ -316,6 +316,11 @@ def lddz(rd: int, q: int) -> int:
     return opcode + rd + q
 
 
+def lds(rd: int, k: int) -> int:
+    opcode = 0x9000_0000
+    return opcode + (rd << 20) + k
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
