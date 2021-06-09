@@ -657,3 +657,14 @@ def test_or():
             result = or_(rd, rr)
             solution = fromBitMask(mask, d=rd, r=rr)
             assert(result == solution)
+
+
+def test_ori():
+    rds = range(16, 32)
+    rrs = range(0, 256)
+    mask = "0110 KKKK dddd KKKK"
+    for rd in rds:
+        for rr in rrs:
+            result = ori(rd, rr)
+            solution = fromBitMask(mask, d=(rd - 16), K=rr)
+            assert(result == solution)
