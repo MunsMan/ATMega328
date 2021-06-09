@@ -575,3 +575,17 @@ def test_lpmi():
         result = lpmi(rd)
         solution = fromBitMask(mask, d=rd)
         assert(result == solution)
+
+
+def test_lsl():
+    # Already tested via addition
+    pass
+
+
+def test_lsr():
+    rds = range(0, 32)
+    mask = "1001 010d dddd 0110"
+    for rd in rds:
+        result = lsr(rd)
+        solution = fromBitMask(mask, d=rd)
+        assert(result == solution)

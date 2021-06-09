@@ -344,6 +344,11 @@ def lsl(rd: int) -> int:
     return add(rd, rd)
 
 
+def lsr(rd: int) -> int:
+    opcode = 0x9406
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
