@@ -411,6 +411,10 @@ def rcall(k: int) -> int:
     return opcode + k
 
 
+def ret() -> int:
+    return 0x9508
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

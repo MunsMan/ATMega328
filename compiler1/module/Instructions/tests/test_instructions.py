@@ -707,3 +707,8 @@ def test_rcall():
         result = rcall(k)
         solution = fromBitMask(mask, k=i)
         assert(result == solution)
+
+
+def test_ret():
+    mask = "1001 0101 0000 1000"
+    assert(ret() == fromBitMask(mask))
