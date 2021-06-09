@@ -633,3 +633,12 @@ def test_mulsu():
             result = mulsu(rd, rr)
             solution = fromBitMask(mask, d=(rd-16), r=(rr - 16))
             assert(result == solution)
+
+
+def test_neg():
+    rds = range(0, 32)
+    mask = "1001 010d dddd 0001"
+    for rd in rds:
+        result = neg(rd)
+        solution = fromBitMask(mask, d=rd)
+        assert(result == solution)

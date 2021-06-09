@@ -369,6 +369,11 @@ def mulsu(rd: int, rr: int) -> int:
     return opcode + ((rd & 0x7) << 4) + (rr & 0x7)
 
 
+def neg(rd: int) -> int:
+    opcode = 0x9401
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
