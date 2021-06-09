@@ -405,6 +405,12 @@ def push(rr: int) -> int:
     return opcode + (rr << 4)
 
 
+def rcall(k: int) -> int:
+    k = 2**12 + k if k < 0 else k
+    opcode = 0xD000
+    return opcode + k
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

@@ -697,3 +697,13 @@ def test_push():
         result = push(rd)
         solution = fromBitMask(mask, d=rd)
         assert(result == solution)
+
+
+def test_rcall():
+    ks = [-2048, -1, 2047, 0]
+    solutions = [2048, 4095, 2047, 0]
+    mask = "1101 kkkk kkkk kkkk"
+    for i, k in zip(solutions, ks):
+        result = rcall(k)
+        solution = fromBitMask(mask, k=i)
+        assert(result == solution)
