@@ -400,6 +400,11 @@ def pop(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def push(rr: int) -> int:
+    opcode = 0x920F
+    return opcode + (rr << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
