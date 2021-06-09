@@ -383,10 +383,16 @@ def or_(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
-def ori(rd: int, rr: int) -> int:
+def ori(rd: int, k: int) -> int:
     opcode = 0x6000
-    K = ((rr & 0xF0) << 4) + (rr & 0x0F)
-    return opcode + ((rd & 0xF) << 4) + K
+    k = ((k & 0xF0) << 4) + (k & 0x0F)
+    return opcode + ((rd & 0xF) << 4) + k
+
+
+def out(a: int, rr: int) -> int:
+    opcode = 0xB800
+    a = ((a & 0x30) << 5) + (a & 0xF)
+    return opcode + a + (rr << 4)
 
 
 InstructionsMap = {
