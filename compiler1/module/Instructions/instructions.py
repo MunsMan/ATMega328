@@ -359,6 +359,11 @@ def mul(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def muls(rd: int, rr: int) -> int:
+    opcode = 0x0200
+    return opcode + ((rd & 0xF) << 4) + (rr & 0xF)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

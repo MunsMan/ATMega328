@@ -611,3 +611,14 @@ def test_mul():
             result = mul(rd, rr)
             solution = fromBitMask(mask, d=rd, r=rr)
             assert(result == solution)
+
+
+def test_muls():
+    rds = range(16, 32)
+    rrs = range(16, 32)
+    mask = "0000 0010 dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            result = muls(rd, rr)
+            solution = fromBitMask(mask, d=(rd-16), r=(rr - 16))
+            assert(result == solution)
