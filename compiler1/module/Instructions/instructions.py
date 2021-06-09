@@ -340,6 +340,10 @@ def lpmi(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def lsl(rd: int) -> int:
+    return add(rd, rd)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
