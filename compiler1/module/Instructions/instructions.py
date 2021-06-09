@@ -316,9 +316,14 @@ def lddz(rd: int, q: int) -> int:
     return opcode + rd + q
 
 
-def lds(rd: int, k: int) -> int:
+def lds32(rd: int, k: int) -> int:
     opcode = 0x9000_0000
     return opcode + (rd << 20) + k
+
+
+def lds(rd: int, k: int) -> int:
+    opcode = 0xA000
+    return opcode + ((rd & 0xF) << 4) + ((k & 0x70) << 4) + (k & 0xF)
 
 
 InstructionsMap = {

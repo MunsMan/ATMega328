@@ -532,12 +532,23 @@ def test_lddz():
             assert(result == solution)
 
 
-def test_lds():
+def test_lds32():
     rds = range(0, 32)
     ks = [0, 65535]
     mask = "1001 000d dddd 0000 kkkk kkkk kkkk kkkk"
     for rd in rds:
         for k in ks:
-            result = lds(rd, k)
+            result = lds32(rd, k)
             solution = fromBitMask(mask, d=rd, k=k)
+            assert(result == solution)
+
+
+def test_lds():
+    rds = range(16, 32)
+    ks = range(0, 128)
+    mask = "1010 0kkk dddd kkkk"
+    for rd in rds:
+        for k in ks:
+            result = lds(rd, k)
+            solution = fromBitMask(mask, d=(rd-16), k=k)
             assert(result == solution)
