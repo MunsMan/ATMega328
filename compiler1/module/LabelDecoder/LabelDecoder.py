@@ -1,14 +1,17 @@
 from typing import Callable, List, Dict, Any, Tuple
 
+ParsedFileType = Dict[str, Tuple[int,
+                                 List[Tuple[int, Callable[[], List[int]]]]]]
+LabelType = Dict[str, List[Any]]
+
 
 class LabelDecoder:
     def __init__(self, file) -> None:
-        self.labels: Dict[str, List[Any]] = {"main": []}
+        self.labels: LabelType = {"main": []}
         self.currentLabel: str = "main"
         self.file = file
         self._parse()
-        self.parsedLabels: Dict[str, Tuple[int,
-                                           List[Tuple[int, Callable[[], List[int]]]]]] = {}
+        self.parsedLabels: ParsedFileType = {}
 
     def _parse(self):
         self._scanLabels()
@@ -20,14 +23,8 @@ class LabelDecoder:
                 label = line[:-1]
                 self.labels[label] = []
 
-    def getLabels(self):
-        return self.labels
-
     def _checkIfLabel(self, line: str) -> bool:
         return line[-1] == ":"
-
-    def getCurrentLabel(self) -> str:
-        return self.currentLabel
 
     def _updateCurrentLabel(self, line: str) -> bool:
         if self._checkIfLabel(line):
@@ -57,9 +54,6 @@ class LabelDecoder:
             for instruction in instructions:
                 print("\t{i}".format(i=instruction))
 
-    def setParsedLabels(self, parsedLabels):
-        self.parsedLabels = parsedLabels
-
     def labelRef(self, jumpLabel: str, blockIndex: int, currentLabel: str) -> int:
         """[summary]
 
@@ -80,14 +74,14 @@ class LabelDecoder:
         jumpLabelIndex = labels.index(jumpLabel)
 
         if currentLabelIndex < jumpLabelIndex:
-            labels = labels[currentLabelIndex+1:jumpLabelIndex]
-            offset += sum(map(lambda x: self.parsedLabels[x][0], labels))
+            offsetLabels = labels[currentLabelIndex+1:jumpLabelIndex]
+            offset += sum(map(lambda x: self.parsedLabels[x][0], offsetLabels))
             if len(currentLabel) != blockIndex:
                 currentLabelInstructions = currentLabelInstructions[blockIndex+1:]
                 offset += sum(map(lambda x: x[0], currentLabelInstructions))
         else:
-            labels = labels[jumpLabelIndex: currentLabelIndex]
-            offset -= sum(map(lambda x: self.parsedLabels[x][0], labels))
+            offsetLabels = labels[jumpLabelIndex: currentLabelIndex]
+            offset -= sum(map(lambda x: self.parsedLabels[x][0], offsetLabels))
             offset -= sum(map(lambda x: x[0],
                           currentLabelInstructions[:blockIndex]))
             offset -= 1
