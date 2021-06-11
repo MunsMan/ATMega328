@@ -24,7 +24,9 @@ main:
     ADD Z 63
     ADD r24:r25 63
     ADD r24: 63
-    BL func
 
 func:
     ADD r1, r2
+
+
+[main , hi, jump, func]

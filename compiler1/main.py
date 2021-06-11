@@ -12,14 +12,14 @@ def main():
     labelDecoder = LabelDecoder(fileReader.lines)
     parser = Parser(labelDecoder.labelRef)
     labelDecoder.printLabels()
-    res = parser.parseLabels(labelDecoder.getLabels())
-    labelDecoder.setParsedLabels(res)
+    res = parser.parseLabels(labelDecoder.labels)
+    labelDecoder.parsedLabels = res
     for label in res:
         print(label)
         _, instructions = res[label]
         for _, instruction in instructions:
             for inst in instruction():
-                print("\t0x%04X"%inst)
+                print("\t0x%04X" % inst)
 
 
 if __name__ == "__main__":

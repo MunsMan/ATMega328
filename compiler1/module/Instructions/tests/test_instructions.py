@@ -324,8 +324,8 @@ def test_eor():
     for rd in rds:
         for rr in rrs:
             result = eor(rd, rr)
-            solution = opcode + twoOp(rd, rr)
-            assert(result == solution)
+            expected = opcode + twoOp(rd, rr)
+            assert(result == expected)
 
 
 def test_fmul():
@@ -335,8 +335,8 @@ def test_fmul():
     for rd in rds:
         for rr in rrs:
             result = fmul(rd, rr)
-            solution = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == solution)
+            expected = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == expected)
 
 
 def test_fmuls():
@@ -346,8 +346,8 @@ def test_fmuls():
     for rd in rds:
         for rr in rrs:
             result = fmuls(rd, rr)
-            solution = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == solution)
+            expected = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == expected)
 
 
 def test_fmulsu():
@@ -357,8 +357,8 @@ def test_fmulsu():
     for rd in rds:
         for rr in rrs:
             result = fmulsu(rd, rr)
-            solution = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == solution)
+            expected = opcode + ((rd - 16) << 4) + (rr - 16)
+            assert(result == expected)
 
 
 def test_icall():
@@ -378,8 +378,8 @@ def test_in():
     for rd in rds:
         for rr in rrs:
             result = in_(rd, rr)
-            solution = opcode + (rd << 4) + ((rr & 0x30) << 5) + (rr & 0xF)
-            assert(result == solution)
+            expected = opcode + (rd << 4) + ((rr & 0x30) << 5) + (rr & 0xF)
+            assert(result == expected)
 
 
 def test_inc():
@@ -387,8 +387,8 @@ def test_inc():
     opcode = 0b1001_0100_0000_0011
     for rd in rds:
         result = inc(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_jmp():
@@ -396,8 +396,8 @@ def test_jmp():
     opcode = 0b1001_0100_0000_1100 << 16
     for rd in rds:
         result = jmp(rd)
-        solution = opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
-        assert(result == solution)
+        expected = opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
+        assert(result == expected)
 
 
 def test_lac():
@@ -405,8 +405,8 @@ def test_lac():
     opcode = 0b1001_0010_0000_0110
     for rd in rds:
         result = lac(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_las():
@@ -414,8 +414,8 @@ def test_las():
     opcode = 0b1001_0010_0000_0101
     for rd in rds:
         result = las(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_lat():
@@ -423,8 +423,8 @@ def test_lat():
     opcode = 0b1001_0010_0000_0111
     for rd in rds:
         result = lat(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldx():
@@ -432,8 +432,8 @@ def test_ldx():
     opcode = 0b1001_0000_0000_1100
     for rd in rds:
         result = ldx(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldxi():
@@ -441,8 +441,8 @@ def test_ldxi():
     opcode = 0b1001_0000_0000_1101
     for rd in rds:
         result = ldxi(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldxd():
@@ -450,8 +450,8 @@ def test_ldxd():
     opcode = 0b1001_0000_0000_1110
     for rd in rds:
         result = ldxd(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldy():
@@ -459,8 +459,8 @@ def test_ldy():
     opcode = 0b1000_0000_0000_1000
     for rd in rds:
         result = ldy(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldyi():
@@ -468,8 +468,8 @@ def test_ldyi():
     opcode = 0b1001_0000_0000_1001
     for rd in rds:
         result = ldyi(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldyd():
@@ -477,8 +477,8 @@ def test_ldyd():
     opcode = 0b1001_0000_0000_1010
     for rd in rds:
         result = ldyd(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_lddy():
@@ -488,9 +488,9 @@ def test_lddy():
     for rd in rds:
         for q in qs:
             result = lddy(rd, q)
-            solution = opcode + (rd << 4) + ((q & 0b10_0000)
+            expected = opcode + (rd << 4) + ((q & 0b10_0000)
                                              << 8) + ((q & 0b11000) << 7) + (q & 0b111)
-            assert(result == solution)
+            assert(result == expected)
 
 
 def test_ldz():
@@ -498,8 +498,8 @@ def test_ldz():
     opcode = 0b1000_0000_0000_0000
     for rd in rds:
         result = ldz(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldzi():
@@ -507,8 +507,8 @@ def test_ldzi():
     opcode = 0b1001_0000_0000_0001
     for rd in rds:
         result = ldzi(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_ldzd():
@@ -516,8 +516,8 @@ def test_ldzd():
     opcode = 0b1001_0000_0000_0010
     for rd in rds:
         result = ldzd(rd)
-        solution = opcode + (rd << 4)
-        assert(result == solution)
+        expected = opcode + (rd << 4)
+        assert(result == expected)
 
 
 def test_lddz():
@@ -527,9 +527,9 @@ def test_lddz():
     for rd in rds:
         for q in qs:
             result = lddz(rd, q)
-            solution = opcode + (rd << 4) + ((q & 0b10_0000)
+            expected = opcode + (rd << 4) + ((q & 0b10_0000)
                                              << 8) + ((q & 0b01_1000) << 7) + (q & 0b111)
-            assert(result == solution)
+            assert(result == expected)
 
 
 def test_lds32():
@@ -539,8 +539,8 @@ def test_lds32():
     for rd in rds:
         for k in ks:
             result = lds32(rd, k)
-            solution = fromBitMask(mask, d=rd, k=k)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=rd, k=k)
+            assert(result == expected)
 
 
 def test_lds():
@@ -550,8 +550,8 @@ def test_lds():
     for rd in rds:
         for k in ks:
             result = lds(rd, k)
-            solution = fromBitMask(mask, d=(rd-16), k=k)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=(rd-16), k=k)
+            assert(result == expected)
 
 
 def test_lpm0():
@@ -564,8 +564,8 @@ def test_lpm():
     mask = "1001 000d dddd 0100"
     for rd in rds:
         result = lpm(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_lpmi():
@@ -573,8 +573,8 @@ def test_lpmi():
     mask = "1001 000d dddd 0101"
     for rd in rds:
         result = lpmi(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_lsl():
@@ -587,8 +587,8 @@ def test_lsr():
     mask = "1001 010d dddd 0110"
     for rd in rds:
         result = lsr(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_movw():
@@ -598,8 +598,8 @@ def test_movw():
     for rd in rds:
         for rr in rrs:
             result = movw(rd, rr)
-            solution = fromBitMask(mask, d=rd//2, r=rr//2)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=rd//2, r=rr//2)
+            assert(result == expected)
 
 
 def test_mul():
@@ -609,8 +609,8 @@ def test_mul():
     for rd in rds:
         for rr in rrs:
             result = mul(rd, rr)
-            solution = fromBitMask(mask, d=rd, r=rr)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=rd, r=rr)
+            assert(result == expected)
 
 
 def test_muls():
@@ -620,8 +620,8 @@ def test_muls():
     for rd in rds:
         for rr in rrs:
             result = muls(rd, rr)
-            solution = fromBitMask(mask, d=(rd-16), r=(rr - 16))
-            assert(result == solution)
+            expected = fromBitMask(mask, d=(rd-16), r=(rr - 16))
+            assert(result == expected)
 
 
 def test_mulsu():
@@ -631,8 +631,8 @@ def test_mulsu():
     for rd in rds:
         for rr in rrs:
             result = mulsu(rd, rr)
-            solution = fromBitMask(mask, d=(rd-16), r=(rr - 16))
-            assert(result == solution)
+            expected = fromBitMask(mask, d=(rd-16), r=(rr - 16))
+            assert(result == expected)
 
 
 def test_neg():
@@ -640,8 +640,8 @@ def test_neg():
     mask = "1001 010d dddd 0001"
     for rd in rds:
         result = neg(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_nop():
@@ -655,8 +655,8 @@ def test_or():
     for rd in rds:
         for rr in rrs:
             result = or_(rd, rr)
-            solution = fromBitMask(mask, d=rd, r=rr)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=rd, r=rr)
+            assert(result == expected)
 
 
 def test_ori():
@@ -666,8 +666,8 @@ def test_ori():
     for rd in rds:
         for rr in rrs:
             result = ori(rd, rr)
-            solution = fromBitMask(mask, d=(rd - 16), K=rr)
-            assert(result == solution)
+            expected = fromBitMask(mask, d=(rd - 16), K=rr)
+            assert(result == expected)
 
 
 def test_out():
@@ -677,8 +677,8 @@ def test_out():
     for a in as_:
         for rr in rrs:
             result = out(a, rr)
-            solution = fromBitMask(mask, A=a, r=rr)
-            assert(result == solution)
+            expected = fromBitMask(mask, A=a, r=rr)
+            assert(result == expected)
 
 
 def test_pop():
@@ -686,8 +686,8 @@ def test_pop():
     mask = "1001 000d dddd 1111"
     for rd in rds:
         result = pop(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_push():
@@ -695,8 +695,8 @@ def test_push():
     mask = "1001 001d dddd 1111"
     for rd in rds:
         result = push(rd)
-        solution = fromBitMask(mask, d=rd)
-        assert(result == solution)
+        expected = fromBitMask(mask, d=rd)
+        assert(result == expected)
 
 
 def test_rcall():
@@ -705,8 +705,8 @@ def test_rcall():
     mask = "1101 kkkk kkkk kkkk"
     for i, k in zip(solutions, ks):
         result = rcall(k)
-        solution = fromBitMask(mask, k=i)
-        assert(result == solution)
+        expected = fromBitMask(mask, k=i)
+        assert(result == expected)
 
 
 def test_ret():

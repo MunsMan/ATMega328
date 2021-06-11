@@ -6,10 +6,10 @@ import re
 class FileReader:
     def __init__(self, filepath) -> None:
         self.filepath = filepath
-        self.lines: List[Tuple(int, str)] = self._readSourceFile()
+        self.lines: List[Tuple[int, str]] = self._readSourceFile()
         self._cleanFile()
 
-    def _readSourceFile(self):
+    def _readSourceFile(self) -> List[Tuple[int, str]]:
         try:
             with open(self.filepath) as fd:
                 lines = fd.readlines()
@@ -20,19 +20,16 @@ class FileReader:
     def _cleanFile(self):
         lines = []
         for index, line in self.lines:
-            line = re.sub(r'\/\/.*$', "", line)  # removing comments
-            # replace \n, \t, ',', ; with space
+            line = re.sub(r'\/\/.*$', "", line)
             line = re.sub(r'[\n|\t|,|;|\s+]', " ", line)
             line = re.sub(r'\s+', " ", line)
-            # line = re.sub(r'\s+', " ", line)  # spaces to one
             line = line.strip()
             if line != "":
                 lines.append((index, line))
         self.lines = lines
 
-    def getLines(self):
-        return self.lines
-
-    def printFile(self):
-        for line in self.lines:
-            print(line)
+    def __str__(self) -> str:
+        file = ""
+        for lineNum, line in self.lines:
+            file += str(lineNum) + "\t" + line + "\n"
+        return file

@@ -18,7 +18,7 @@ def test_cleanSemicolon(mocker: MockerFixture):
     expected = [(1, "ADD r0 r1"), (2, "BREQ r0")]
     beforeEach(mocker, rawInput)
     fileReader = FileReader("")
-    assert(fileReader.getLines() == expected)
+    assert(fileReader.lines == expected)
 
 
 def test_cleanCommas(mocker: MockerFixture):
@@ -26,7 +26,7 @@ def test_cleanCommas(mocker: MockerFixture):
     expected = zipLines(["ADD r0 r2", "BREQ r1"])
     beforeEach(mocker, rawInput)
     fileReader = FileReader("")
-    assert(fileReader.getLines() == expected)
+    assert(fileReader.lines == expected)
 
 
 def test_cleanComment(mocker: MockerFixture):
@@ -35,7 +35,7 @@ def test_cleanComment(mocker: MockerFixture):
     expected = zipLines(["ADD r0 r1", "BREQ test"])
     beforeEach(mocker, rawInput)
     fileReader = FileReader("")
-    assert(fileReader.getLines() == expected)
+    assert(fileReader.lines == expected)
 
 
 def test_removeEmptyLine(mocker: MockerFixture):
@@ -43,4 +43,4 @@ def test_removeEmptyLine(mocker: MockerFixture):
     expected = []
     beforeEach(mocker, rawInput)
     fileReader = FileReader("")
-    assert(fileReader.getLines() == expected)
+    assert(fileReader.lines == expected)

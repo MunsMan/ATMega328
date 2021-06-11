@@ -16,7 +16,7 @@ def test_scanLabels(mocker: MockerFixture):
     labelDecoder = LabelDecoder(rawInput)
     labelDecoder._scanLabels()
 
-    assert(labelDecoder.getLabels() == expected)
+    assert(labelDecoder.labels == expected)
 
 
 def test_splitLabels():
@@ -28,4 +28,4 @@ def test_splitLabels():
         "loop": [(7, "MOV r1 #5"), (8, "MOV r1 #5")],
         "main": [(1, "MOV r4 r3")]}
     labelDecoder = LabelDecoder(rawInput)
-    assert(labelDecoder.getLabels() == expected)
+    assert(labelDecoder.labels == expected)

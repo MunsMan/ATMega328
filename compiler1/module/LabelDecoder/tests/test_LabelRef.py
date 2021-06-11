@@ -8,8 +8,7 @@ def createRawInput(labelRef):
             4, [
                 (1, lambda: 1),
                 (1, lambda: labelRef("loop", 1, "main")),
-                (1, lambda: 1),
-                (1, lambda: 1),
+                (2, lambda: 1),
             ]
         ),
         "hi": (
@@ -33,7 +32,7 @@ def createRawInput(labelRef):
 def test_labelRef():
     labelDecoder = LabelDecoder([])
     rawInput = createRawInput(labelDecoder.labelRef)
-    labelDecoder.setParsedLabels(rawInput)
+    labelDecoder.parsedLabels = rawInput
     res = labelDecoder.decodeLabelRef()
     assert(res["main"][1][1] == (1, 7))
     assert(res["hi"][1][4] == (1, -9))
