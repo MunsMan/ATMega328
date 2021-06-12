@@ -4,22 +4,7 @@ from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
-from typing import Callable, List, Tuple
-
-
-class CommandArgs:
-    def __init__(self, opcode: str, rd: str, rr: str, cond: str = None, flag: str = None, labelRef: Callable = None, lineNum: int = None, label: str = None) -> None:
-        self.opcode = opcode
-        self.cond = cond
-        self.flag = flag
-        self.rd = rd
-        self.rr = rr
-        self.blockIndex = lineNum
-        self.label = label
-        self.labelRef = lambda: labelRef(
-            self.rr if self.rr is not None else self.rd,
-            self.blockIndex,
-            self.label)
+from typing import List, Tuple
 
 
 def mapCommmands(args: LineParser):
