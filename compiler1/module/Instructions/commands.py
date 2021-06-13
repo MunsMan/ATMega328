@@ -1,33 +1,19 @@
+from module.Parser.LineParser import LineParser
 from ..Instructions.branch import *
 from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 
 
-class CommandArgs:
-    def __init__(self, opcode: str, rd: str, rr: str, cond: str = None, flag: str = None, labelRef: Callable = None, lineNum: int = None, label: str = None) -> None:
-        self.opcode = opcode
-        self.cond = cond
-        self.flag = flag
-        self.rd = rd
-        self.rr = rr
-        self.blockIndex = lineNum
-        self.label = label
-        self.labelRef = lambda: labelRef(
-            self.rr if self.rr is not None else self.rd,
-            self.blockIndex,
-            self.label)
-
-
-def mapCommmands(args: CommandArgs):
+def mapCommmands(args: LineParser):
     if args.opcode in CommandsMap:
         return CommandsMap[args.opcode](args)
     throwError(4, True, args.opcode)
 
 
-def ADD(args: CommandArgs):
+def ADD(args: LineParser):
     rr = args.rr
     rd = args.rd
     instructions = []
@@ -59,7 +45,7 @@ def ADIW(rd, rr):
     return (1, lambda: [instruction])
 
 
-def MOV(args: CommandArgs):
+def MOV(args: LineParser):
     rd = args.rd
     rr = args.rr
     instructions = []
@@ -75,7 +61,7 @@ def MOV(args: CommandArgs):
     return (len(instructions), lambda: instructions)
 
 
-def BR(args: CommandArgs):
+def BR(args: LineParser):
     rd = args.rd
     rr = args.rr
     cond = args.cond
@@ -110,7 +96,7 @@ def BR(args: CommandArgs):
     throwError(9, True, (cond))
 
 
-def AND(args: CommandArgs):
+def AND(args: LineParser):
     rd = args.rd
     rr = args.rr
     instructions = []
@@ -136,7 +122,7 @@ def AND(args: CommandArgs):
 
 
 # ToDo: Needs to be tested!
-def ASR(args: CommandArgs) -> Tuple[int, List[int]]:
+def ASR(args: LineParser) -> Tuple[int, List[int]]:
     rd = getRegister(args.rd)
     rr = getImmediate(args.rr, 3) if args.rr is not None else 1
     instructions = [mapInstructions("asr")(rd)] * rr

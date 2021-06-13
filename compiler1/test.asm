@@ -27,6 +27,3 @@ main:
 
 func:
     ADD r1, r2
-
-
-[main , hi, jump, func]

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from typing import List
 import sys
 from module import FileReader, throwError, LabelDecoder, Parser
 
@@ -10,13 +9,11 @@ def main():
     filepath = sys.argv[1]
     fileReader = FileReader(filepath)
     labelDecoder = LabelDecoder(fileReader.lines)
-    parser = Parser(labelDecoder.labelRef)
-    labelDecoder.printLabels()
-    res = parser.parseLabels(labelDecoder.labels)
-    labelDecoder.parsedLabels = res
-    for label in res:
+    parsedLabels = Parser(labelDecoder.labels, labelDecoder.labelRef).parse()
+    labelDecoder.parsedLabels = parsedLabels
+    for label in parsedLabels:
         print(label)
-        _, instructions = res[label]
+        _, instructions = parsedLabels[label]
         for _, instruction in instructions:
             for inst in instruction():
                 print("\t0x%04X" % inst)

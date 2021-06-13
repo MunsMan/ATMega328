@@ -29,11 +29,19 @@ def createRawInput(labelRef):
     }
 
 
+def decodeLabelRef(parsedLabels):
+    for label in parsedLabels:
+        _, instructions = parsedLabels[label]
+        for i, (l, instruction) in enumerate(instructions):
+            instructions[i] = (l, instruction())
+    return parsedLabels
+
+
 def test_labelRef():
     labelDecoder = LabelDecoder([])
     rawInput = createRawInput(labelDecoder.labelRef)
     labelDecoder.parsedLabels = rawInput
-    res = labelDecoder.decodeLabelRef()
+    res = decodeLabelRef(labelDecoder.parsedLabels)
     assert(res["main"][1][1] == (1, 7))
     assert(res["hi"][1][4] == (1, -9))
     assert(res["loop"][1][1] == (1, -7))
@@ -43,4 +51,4 @@ def test_labelRef():
 def test_labelRefAssertion():
     labelDecoder = LabelDecoder([])
     with pytest.raises(AssertionError):
-        labelDecoder.decodeLabelRef()
+        labelDecoder.labelRef(None, None, None)

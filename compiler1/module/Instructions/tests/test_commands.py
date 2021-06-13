@@ -1,7 +1,8 @@
+from module.Parser.LineParser import LineParser
 from ..instructions import *
 import pytest
 from pytest_mock import MockerFixture
-from ..commands import ADD, AND, CommandArgs, MOV, loadImmediate
+from ..commands import ADD, AND, MOV, loadImmediate
 from .. import commands
 from .. import helper
 from . import mock_exit
@@ -13,7 +14,7 @@ def test_addTwoRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rds = range(0, 32)
     rrs = range(0, 32)
-    args = CommandArgs("ADD", "", "")
+    args = LineParser("ADD r0", None, None, None)
 
     for rd in rds:
         for rr in rrs:
@@ -33,7 +34,7 @@ def test_addRegisterConstant(mocker: MockerFixture):
 
     rds = range(0, 32)
     ks = range(0, 256)
-    args = CommandArgs("ADD", "", "")
+    args = LineParser("ADD r0", None, None, None)
     for rd in rds:
         for k in ks:
             if rd == 16:
@@ -51,7 +52,7 @@ def test_addInvalidRegisterRegister(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     rd = "r32"
     rr = "r0"
-    args = CommandArgs("ADD", rd, rr)
+    args = LineParser(f"ADD {rd} {rr}", None, None, None)
     with pytest.raises(SystemExit):
         ADD(args)
     mock_throwError.assert_called_once_with(5, True, rd)
@@ -62,7 +63,7 @@ def test_addRegisterInvalidRegister(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     rd = "r0"
     rr = "r32"
-    args = CommandArgs("ADD", rd, rr)
+    args = LineParser(f"ADD {rd} {rr}", None, None, None)
     with pytest.raises(SystemExit):
         ADD(args)
     mock_throwError.assert_called_once_with(5, True, rr)
@@ -72,7 +73,7 @@ def test_adc(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rd = "r0"
     rr = "r1"
-    args = CommandArgs("ADC", rd, rr)
+    args = LineParser(f"ADC {rd} {rr}", None, None, None)
     numInstruction, instructions = ADD(args)
     assert(numInstruction == 1)
     assert(instructions() == [adc(0, 1)])
@@ -83,7 +84,7 @@ def test_adiw(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rds = ["r24:r25", "r26:r27", "r28:r29", "r30:r31", "X", "Y", "Z"]
     rrs = range(0, 64)
-    args = CommandArgs("ADD", "", "")
+    args = LineParser(f"ADD r0 r0", None, None, None)
     for rd in rds:
         args.rd = rd
         for rr in rrs:
@@ -101,7 +102,7 @@ def test_adiwInvalidRegister(mocker: MockerFixture):
     mock_throwError.side_effect = mock_exit
     invalidRds = ["r22:", "r23:", "r31:", "r0:"]
     rr = 0
-    args = CommandArgs("ADD", "", rr)
+    args = LineParser(f"ADD r0 {rr}", None, None, None)
     for rd in invalidRds:
         args.rd = rd
         with pytest.raises(SystemExit):
@@ -114,7 +115,7 @@ def test_adiwInvalidImmediate(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
     mock_throwError.side_effect = mock_exit
     rd = "X"
-    args = CommandArgs("ADD", rd, "")
+    args = LineParser(f"ADD {rd}", None, None, None)
     # Lower Bound Immediate - negative
     immediate = -1
     args.rr = immediate
@@ -135,7 +136,7 @@ def test_adiwInvalidImmediate(mocker: MockerFixture):
 def test_andTwoRegister():
     rds = range(0, 32)
     rrs = range(0, 32)
-    args = CommandArgs("AND", "", "")
+    args = LineParser("AND r0 r1", None, None, None)
     for rd in rds:
         for rr in rrs:
             args.rd = 'r' + str(rd)
@@ -148,11 +149,9 @@ def test_andTwoRegister():
 def test_andRegister16Immediate():
     rds = range(16, 32)
     rrs = range(0, 256)
-    args = CommandArgs("AND", "", "")
     for rd in rds:
         for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = rr
+            args = LineParser(f"AND r{rd} {rr}", None, None, None)
             numInstructions, instructions = AND(args)
             assert numInstructions == 1
             assert instructions() == [andi(rd, rr)]
@@ -164,11 +163,9 @@ def test_andRegister0Immediate(mocker: MockerFixture):
     mock_getRegister.return_value = 16
     rds = range(0, 16)
     rrs = range(0, 256)
-    args = CommandArgs("AND", "", "")
     for rd in rds:
         for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = rr
+            args = LineParser(f"AND r{rd} {rr}", None, None, None)
             numInstructions, instructions = AND(args)
             assert numInstructions == 2
             assert instructions() == [ldi(16, rr), and_(rd, 16)]
@@ -178,11 +175,9 @@ def test_movRegisterRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rds = range(0, 32)
     rrs = range(0, 32)
-    args = CommandArgs("MOV", "", "")
     for rd in rds:
         for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = 'r' + str(rr)
+            args = LineParser(f"MOV r{rd} r{rr}", None, None, None)
             numInstruction, instructions = MOV(args)
             assert(numInstruction == 1)
             assert(instructions() == [mov(rd, rr)])
@@ -196,20 +191,17 @@ def test_movRegisterImmediate(mocker: MockerFixture):
     mock_getRegister.return_value = 16
     rds = range(0, 32)
     rrs = range(0, 256)
-    args = CommandArgs("MOV", "", "")
     # Register < 16
     for rd in rds[:16]:
         for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = rr
+            args = LineParser(f"MOV r{rd} {rr}", None, None, None)
             numInstruction, instructions = MOV(args)
             assert(numInstruction == 2)
             assert(instructions() == [ldi(16, rr), mov(rd, 16)])
     # Register >= 16
     for rd in rds[16:]:
         for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = rr
+            args = LineParser(f"MOV r{rd} {rr}", None, None, None)
             numInstruction, instructions = MOV(args)
             assert(numInstruction == 1)
             assert(instructions() == [ldi(rd, rr)])
@@ -220,11 +212,11 @@ def test_movInvalidFirstRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     mock_throwError.side_effect = mock_exit
 
-    arg_list = [CommandArgs("MOV", "1", "r0"),
-                CommandArgs("MOV", "r-1", "r0"),
-                CommandArgs("MOV", "r32", "r0"),
-                CommandArgs("MOV", "-1", "r0"),
-                CommandArgs("MOV", "ro", "r0")]
+    arg_list = [LineParser("MOV 1 r0", None, None, None),
+                LineParser("MOV r-1 r0", None, None, None),
+                LineParser("MOV r32 r0", None, None, None),
+                LineParser("MOV -1 r0", None, None, None),
+                LineParser("MOV ro r0", None, None, None)]
 
     for args in arg_list:
         with pytest.raises(SystemExit):
@@ -237,10 +229,10 @@ def test_movInvalidSecondRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     mock_throwError.side_effect = mock_exit
 
-    arg_list = [CommandArgs("MOV", "r0", "r-1"),
-                CommandArgs("MOV", "r0", "r32"),
-                CommandArgs("MOV", "r0", "-1"),
-                CommandArgs("MOV", "r0", "ro")]
+    arg_list = [LineParser("MOV r0 r-1", None, None, None),
+                LineParser("MOV r0 r32", None, None, None),
+                LineParser("MOV r0 -1", None, None, None),
+                LineParser("MOV r0 ro", None, None, None)]
 
     for args in arg_list:
         with pytest.raises(SystemExit):
@@ -250,13 +242,13 @@ def test_movInvalidSecondRegister(mocker: MockerFixture):
 
 
 def test_movInvalidImmediate(mocker: MockerFixture):
-    mock_throwError = mocker.patch.object(helper, "throwError")
+    mock_throwError = mocker.patch.object(commands, "throwError")
     mock_throwError.side_effect = mock_exit
 
-    args = CommandArgs("MOV", "r0", -1)
+    args = LineParser("MOV r0 -1", None, None, None)
     with pytest.raises(SystemExit):
         MOV(args)
-    mock_throwError.assert_called_once_with(6, True, args.rr)
+    mock_throwError.assert_called_once_with(5, True, args.rr)
     mock_throwError.reset_mock()
 
 
@@ -264,7 +256,7 @@ def test_movInvalidImmediateSize(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(helper, "throwError")
     mock_throwError.side_effect = mock_exit
     rr = 256
-    args = CommandArgs("MOV", "r0", str(rr))
+    args = LineParser(f"MOV r0 {rr}", None, None, None)
     with pytest.raises(SystemExit):
         MOV(args)
     mock_throwError.assert_called_once_with(
