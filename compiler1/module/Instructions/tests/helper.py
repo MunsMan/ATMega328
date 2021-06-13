@@ -1,3 +1,7 @@
+from module.Instructions.helper import twoComplement
+from typing import Dict
+
+
 def mock_exit(*_): return exit()
 
 
@@ -12,7 +16,7 @@ def getBitAt(byte: int, index: int):
     return (byte & 1 << index - 1) >> (index - 1)
 
 
-def fromBitMask(mask: str, **kwargs: int):
+def bitMask(mask: str, **kwargs: Dict[str, int]):
     charDict = {}
     mask = mask.replace(" ", "")
     mask = mask.replace("_", "")
@@ -22,6 +26,10 @@ def fromBitMask(mask: str, **kwargs: int):
                 charDict[bit] += 1
             else:
                 charDict[bit] = 1
+    for key in kwargs:
+        value = kwargs[key]
+        if value < 0:
+            kwargs[key] = twoComplement(value, charDict[key])
     for bit in mask:
         if not bit.isdigit():
             value = getBitAt(kwargs[bit], charDict[bit])
