@@ -4,7 +4,6 @@ import pytest
 from .helper import mock_exit
 from ..branch import BRBS, BRBC
 from ..instructions import brbc, brbs
-from ..helper import twoComplement
 from .. import helper
 from .. import instructions as Instructions
 
@@ -17,7 +16,7 @@ def test_BRBC_validImmediate(mocker: MockerFixture):
         for offset in offsets:
             numInstructions, instructions = BRBC(flag, offset, None)
             assert(numInstructions == 1)
-            assert(instructions() == [brbc(flag, twoComplement(offset, 7))])
+            assert(instructions() == [brbc(flag, offset)])
     mocker_throwError.assert_not_called()
 
 
@@ -67,7 +66,7 @@ def test_BRBS_validImmediate(mocker: MockerFixture):
         for offset in offsets:
             numInstructions, instructions = BRBS(flag, offset, None)
             assert(numInstructions == 1)
-            assert(instructions() == [brbs(flag, twoComplement(offset, 7))])
+            assert(instructions() == [brbs(flag, offset)])
     mocker_throwError.assert_not_called()
 
 
