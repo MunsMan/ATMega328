@@ -5,7 +5,7 @@ from pytest_mock import MockerFixture
 import numpy as np
 from ctypes import c_uint8, c_uint16
 
-from . import mock_exit, fromBitMask
+from . import mock_exit, bitMask
 from .. import helper
 from ..helper import checkImmediate, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer, twoComplement, twoOp
 
@@ -173,5 +173,5 @@ def test_fromBitMask():
     c = 0b10
     d = 0b1111
     expected = 0b1101_0010_1001_1111
-    result = fromBitMask(mask, a=a, b=b, c=c, d=d)
+    result = bitMask(mask, a=a, b=b, c=c, d=d)
     assert(expected == result)
