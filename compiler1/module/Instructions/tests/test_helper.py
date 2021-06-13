@@ -79,9 +79,11 @@ def test_getInvalidRegister(mocker: MockerFixture):
 
 
 def test_twoOp():
+    mask = "rd dddd rrrr"
     for rd in range(0, 32):
         for rr in range(0, 32):
-            assert twoOp(rd, rr) == ((rr & 0x10) << 5) + (rd << 4) + (rr & 0xF)
+            expected = bitMask(mask, r=rr, d=rd)
+            assert expected == twoOp(rd, rr)
 
 
 def test_twoComplementValid():
