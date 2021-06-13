@@ -1,4 +1,4 @@
-from ..Instructions.helper import checkFlag, twoComplement
+from ..Instructions.helper import checkFlag
 from ..Instructions.instructions import mapInstructions
 from typing import Callable, Union
 from . import Flags
@@ -84,8 +84,7 @@ def BRBC(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
         return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbc')(
             flag, labelRef())]
     else:
-        instruction = mapInstructions('brbc')(
-            flag, twoComplement(int(offset), 7))
+        instruction = mapInstructions('brbc')(flag, offset)
         return INSTRUCTIONS_LEN, lambda: [instruction]
 
 
@@ -93,8 +92,7 @@ def BRBS(flag: int, offset: Union[str, int], labelRef: Callable[[], int]):
     flag = checkFlag(flag)
     if not str(offset).replace("-", "").isdigit():
         return INSTRUCTIONS_LEN, lambda: [mapInstructions('brbs')(
-            flag, twoComplement(labelRef(), 7))]
+            flag, labelRef())]
     else:
-        instruction = mapInstructions('brbs')(
-            flag, twoComplement(int(offset), 7))
+        instruction = mapInstructions('brbs')(flag, int(offset))
         return INSTRUCTIONS_LEN, lambda: [instruction]
