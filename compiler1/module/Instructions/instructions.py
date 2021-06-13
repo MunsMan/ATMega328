@@ -1,3 +1,4 @@
+from module.Instructions.helper import twoComplement
 from . import twoOp
 from typing import Callable
 from ..errorHandling.error import throwError
@@ -37,17 +38,15 @@ def adiw(rd: int, rr: int) -> int:
 
 
 def and_(rd: int, rr: int) -> int:
-    opcode = 0x08 << 10
-    r = ((rr & 0x10) << 5) + (rr & 0x0F)
-    d = ((rd & 0x10) << 3) + ((rd & 0x0F) << 4)
-    return opcode + r + d
+    opcode = 0x2000
+    return opcode + twoOp(rd, rr)
 
 
 def andi(rd: int, immediate: int) -> int:
-    opcode = 0x7 << 12
+    opcode = 0x7000
     kh = (immediate & 0xF0) << 4
     kl = (immediate & 0xF)
-    d = rd << 4
+    d = (rd & 0xF) << 4
     return opcode + kh + d + kl
 
 
@@ -72,14 +71,14 @@ def bld(rd: int, rr: str) -> int:
 def brbc(rd: int, rr: int):
     opcode = 0xF400
     s = rd
-    k = rr << 3
+    k = twoComplement(rr, 7) << 3
     return opcode + k + s
 
 
 def brbs(rd: int, rr: int) -> int:
-    opcode = 0xF << 12
+    opcode = 0xF000
     s = rd
-    k = rr << 3
+    k = twoComplement(rr, 7) << 3
     return opcode + k + s
 
 
@@ -97,12 +96,16 @@ def bst(rd: int, rr: int) -> int:
 
 def call(rd: int) -> int:
     opcode = 0x940E0000
-    return opcode + rd
+    return opcode + ((rd & 0x3E0000) << 3) + (rd & 0x1FFFF)
 
 
 def cbi(rd: int, rr: int) -> int:
     opcode = 0x9800
     return opcode + (rd << 3) + rr
+
+
+def cbr(rd: int, rr: int) -> int:
+    return andi(rd, rr)
 
 
 def clc() -> int:
@@ -123,7 +126,7 @@ def cln() -> int:
 
 def clr(rd: int) -> int:
     opcode = 0x2400
-    return opcode + rd
+    return opcode + twoOp(rd, rd)
 
 
 def cls() -> int:
@@ -185,12 +188,19 @@ def eicall() -> int:
 def eijump() -> int:
     return 0x9419
 
-# ToDo: Needs implemtation
+
+def elpm() -> int:
+    return 0x95D8
 
 
-def elpm(rd: int) -> int:
-    print("Undefinded")
-    exit()
+def elpmz(rd: int) -> int:
+    opcode = 0x9006
+    return opcode + (rd << 4)
+
+
+def elpmzi(rd: int) -> int:
+    opcode = 0x9007
+    return opcode + (rd << 4)
 
 
 def eor(rd: int, rr: int) -> int:
