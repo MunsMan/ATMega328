@@ -690,3 +690,11 @@ def test_rjmp():
     for rd in rds:
         expected = bitMask(mask, k=rd)
         assert expected == rjump(rd)
+
+
+def test_rol():
+    rds = range(32)
+    mask = "0001 11rd dddd rrrr"
+    for rd in rds:
+        expected = bitMask(mask, d=rd, r=rd)
+        assert expected == rol(rd)

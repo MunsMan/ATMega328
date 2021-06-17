@@ -434,6 +434,10 @@ def rjump(rd: int) -> int:
     return opcode + twoComplement(rd, 12)
 
 
+def rol(rd: int) -> int:
+    return adc(rd, rd)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
