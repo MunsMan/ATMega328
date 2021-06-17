@@ -438,6 +438,11 @@ def rol(rd: int) -> int:
     return adc(rd, rd)
 
 
+def ror(rd: int) -> int:
+    opcode = 0x9407
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

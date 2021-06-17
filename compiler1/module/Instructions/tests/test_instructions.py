@@ -698,3 +698,11 @@ def test_rol():
     for rd in rds:
         expected = bitMask(mask, d=rd, r=rd)
         assert expected == rol(rd)
+
+
+def test_ror():
+    rds = range(32)
+    mask = "1001 010d dddd 0111"
+    for rd in rds:
+        expected = bitMask(mask, d=rd)
+        assert expected == ror(rd)
