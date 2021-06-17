@@ -706,3 +706,13 @@ def test_ror():
     for rd in rds:
         expected = bitMask(mask, d=rd)
         assert expected == ror(rd)
+
+
+def test_sbc():
+    rds = range(32)
+    rrs = range(32)
+    mask = "0000 10rd dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == sbc(rd, rr)

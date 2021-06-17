@@ -443,6 +443,11 @@ def ror(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def sbc(rd: int, rr: int) -> int:
+    opcode = 0x0800
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
