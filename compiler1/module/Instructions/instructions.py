@@ -424,8 +424,14 @@ def rcall(k: int) -> int:
 def ret() -> int:
     return 0x9508
 
+
 def reti() -> int:
     return 0x9518
+
+
+def rjump(rd: int) -> int:
+    opcode = 0xC000
+    return opcode + twoComplement(rd, 12)
 
 
 InstructionsMap = {

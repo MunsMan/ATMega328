@@ -682,3 +682,11 @@ def test_ret():
 def test_reti():
     expected = 0b1001_0101_0001_1000
     assert expected == reti()
+
+
+def test_rjmp():
+    rds = range(-2048, 2048)
+    mask = "1100 kkkk kkkk kkkk"
+    for rd in rds:
+        expected = bitMask(mask, k=rd)
+        assert expected == rjump(rd)
