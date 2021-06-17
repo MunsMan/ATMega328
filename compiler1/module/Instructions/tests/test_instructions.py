@@ -1,7 +1,7 @@
 from module.Instructions.tests.helper import bitMask
 from ..instructions import *
-from .. import twoComplement
 import random
+from itertools import chain
 
 
 def test_adc():
@@ -310,264 +310,260 @@ def test_eor():
 def test_fmul():
     rds = range(16, 24)
     rrs = range(16, 24)
-    opcode = 0b0000_0011_0000_1000
+    mask = "0000 0011 0ddd 1rrr"
     for rd in rds:
         for rr in rrs:
-            result = fmul(rd, rr)
-            expected = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == fmul(rd, rr)
 
 
 def test_fmuls():
     rds = range(16, 24)
     rrs = range(16, 24)
-    opcode = 0b0000_0011_1000_0000
+    mask = "0000 0011 1ddd 0rrr"
     for rd in rds:
         for rr in rrs:
-            result = fmuls(rd, rr)
-            expected = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == fmuls(rd, rr)
 
 
 def test_fmulsu():
     rds = range(16, 24)
     rrs = range(16, 24)
-    opcode = 0b0000_0011_1000_1000
+    mask = "0000 0011 1ddd 1rrr"
     for rd in rds:
         for rr in rrs:
-            result = fmulsu(rd, rr)
-            expected = opcode + ((rd - 16) << 4) + (rr - 16)
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == fmulsu(rd, rr)
 
 
 def test_icall():
-    opcode = 0b1001_0101_0000_1001
-    assert(icall() == opcode)
+    expected = 0b1001_0101_0000_1001
+    assert expected == icall()
 
 
-def test_ijump():
-    opcode = 0b1001_0100_0000_1001
-    assert(ijump() == opcode)
+def test_ijmp():
+    expected = 0b1001_0100_0000_1001
+    assert expected == ijmp()
 
 
 def test_in():
     rds = range(0, 32)
     rrs = range(0, 64)
-    opcode = 0b1011 << 12
+    mask = "1011 0AAd dddd AAAA"
     for rd in rds:
         for rr in rrs:
-            result = in_(rd, rr)
-            expected = opcode + (rd << 4) + ((rr & 0x30) << 5) + (rr & 0xF)
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, A=rr)
+            assert expected == in_(rd, rr)
 
 
 def test_inc():
     rds = range(0, 32)
-    opcode = 0b1001_0100_0000_0011
+    mask = "1001 010d dddd 0011"
     for rd in rds:
-        result = inc(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == inc(rd)
 
 
 def test_jmp():
-    rds = [0, 4194303]
-    opcode = 0b1001_0100_0000_1100 << 16
+    rds = [0, 4194303] + [random.randint(1, 4194302) for _ in range(64)]
+    mask = "1001 010k kkkk 110k kkkk kkkk kkkk kkkk"
     for rd in rds:
-        result = jmp(rd)
-        expected = opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
-        assert(result == expected)
+        expected = bitMask(mask, k=rd)
+        assert expected == jmp(rd)
 
 
 def test_lac():
     rds = range(0, 32)
-    opcode = 0b1001_0010_0000_0110
+    mask = "1001 001r rrrr 0110"
     for rd in rds:
-        result = lac(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, r=rd)
+        assert expected == lac(rd)
 
 
 def test_las():
     rds = range(0, 32)
-    opcode = 0b1001_0010_0000_0101
+    mask = "1001 001r rrrr 0101"
     for rd in rds:
-        result = las(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, r=rd)
+        assert expected == las(rd)
 
 
 def test_lat():
     rds = range(0, 32)
-    opcode = 0b1001_0010_0000_0111
+    mask = "1001 001r rrrr 0111"
     for rd in rds:
-        result = lat(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, r=rd)
+        assert expected == lat(rd)
 
 
 def test_ldx():
     rds = range(0, 32)
-    opcode = 0b1001_0000_0000_1100
+    mask = "1001 000d dddd 1100"
     for rd in rds:
-        result = ldx(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldx(rd)
 
 
 def test_ldxi():
-    rds = list(range(0, 26)) + list(range(28, 32))
-    opcode = 0b1001_0000_0000_1101
+    rds = chain(range(0, 26), range(28, 32))
+    mask = "1001 000d dddd 1101"
     for rd in rds:
-        result = ldxi(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldxi(rd)
 
 
 def test_ldxd():
-    rds = list(range(0, 26)) + list(range(28, 32))
-    opcode = 0b1001_0000_0000_1110
+    rds = chain(range(0, 26), range(28, 32))
+    mask = "1001 000d dddd 1110"
     for rd in rds:
-        result = ldxd(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldxd(rd)
 
 
 def test_ldy():
     rds = range(0, 32)
-    opcode = 0b1000_0000_0000_1000
+    mask = "1000 000d dddd 1000"
     for rd in rds:
-        result = ldy(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldy(rd)
 
 
 def test_ldyi():
-    rds = list(range(0, 28)) + [30, 31]
-    opcode = 0b1001_0000_0000_1001
+    rds = chain(range(0, 28), range(30, 32))
+    mask = "1001 000d dddd 1001"
     for rd in rds:
-        result = ldyi(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldyi(rd)
 
 
 def test_ldyd():
-    rds = list(range(0, 28)) + [30, 31]
-    opcode = 0b1001_0000_0000_1010
+    rds = chain(range(0, 28), range(30, 32))
+    mask = "1001 000d dddd 1010"
     for rd in rds:
-        result = ldyd(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldyd(rd)
 
 
 def test_lddy():
     rds = range(0, 32)
-    qs = range(0, 64)
-    opcode = 0b1000_0000_0000_1000
+    rrs = range(0, 64)
+    mask = "10q0 qq0d dddd 1qqq"
     for rd in rds:
-        for q in qs:
-            result = lddy(rd, q)
-            expected = opcode + (rd << 4) + ((q & 0b10_0000)
-                                             << 8) + ((q & 0b11000) << 7) + (q & 0b111)
-            assert(result == expected)
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, q=rr)
+            assert expected == lddy(rd, rr)
 
 
 def test_ldz():
     rds = range(0, 32)
-    opcode = 0b1000_0000_0000_0000
+    mask = "1000 000d dddd 0000"
     for rd in rds:
-        result = ldz(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldz(rd)
 
 
 def test_ldzi():
     rds = range(0, 30)
-    opcode = 0b1001_0000_0000_0001
+    mask = "1001 000d dddd 0001"
     for rd in rds:
-        result = ldzi(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldzi(rd)
 
 
 def test_ldzd():
     rds = range(0, 30)
-    opcode = 0b1001_0000_0000_0010
+    mask = "1001 000d dddd 0010"
     for rd in rds:
-        result = ldzd(rd)
-        expected = opcode + (rd << 4)
-        assert(result == expected)
+        expected = bitMask(mask, d=rd)
+        assert expected == ldzd(rd)
 
 
 def test_lddz():
     rds = range(0, 32)
-    qs = range(0, 64)
-    opcode = 0b1000_0000_0000_0000
+    rrs = range(0, 64)
+    mask = "10q0 qq0d dddd 0qqq"
     for rd in rds:
-        for q in qs:
-            result = lddz(rd, q)
-            expected = opcode + (rd << 4) + ((q & 0b10_0000)
-                                             << 8) + ((q & 0b01_1000) << 7) + (q & 0b111)
-            assert(result == expected)
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, q=rr)
+            assert expected == lddz(rd, rr)
+
+
+def test_ldi():
+    rds = range(16, 32)
+    rrs = range(0, 256)
+    mask = "1110 KKKK dddd KKKK"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, K=rr)
+            assert expected == ldi(rd, rr)
 
 
 def test_lds32():
     rds = range(0, 32)
-    ks = [0, 65535]
+    rrs = [0, 65535]
     mask = "1001 000d dddd 0000 kkkk kkkk kkkk kkkk"
     for rd in rds:
-        for k in ks:
-            result = lds32(rd, k)
-            expected = bitMask(mask, d=rd, k=k)
-            assert(result == expected)
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, k=rr)
+            assert expected == lds32(rd, rr)
 
 
 def test_lds():
     rds = range(16, 32)
-    ks = range(0, 128)
+    rrs = range(0, 128)
     mask = "1010 0kkk dddd kkkk"
     for rd in rds:
-        for k in ks:
-            result = lds(rd, k)
-            expected = bitMask(mask, d=(rd-16), k=k)
-            assert(result == expected)
+        for rr in rrs:
+            expected = bitMask(mask, d=(rd-16), k=rr)
+            assert expected == lds(rd, rr)
 
 
 def test_lpm0():
-    mask = "1001 0101 1100 1000"
-    assert(lpm0() == bitMask(mask))
+    expected = 0b1001_0101_1100_1000
+    assert expected == lpm0()
 
 
 def test_lpm():
     rds = range(0, 32)
     mask = "1001 000d dddd 0100"
     for rd in rds:
-        result = lpm(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == lpm(rd)
 
 
 def test_lpmi():
     rds = range(0, 30)
     mask = "1001 000d dddd 0101"
     for rd in rds:
-        result = lpmi(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == lpmi(rd)
 
 
 def test_lsl():
-    # Already tested via addition
-    pass
+    rds = range(0, 32)
+    mask = "0000 11rd dddd rrrr"
+    for rd in rds:
+        expected = bitMask(mask, r=rd, d=rd)
+        assert expected == lsl(rd)
 
 
 def test_lsr():
     rds = range(0, 32)
     mask = "1001 010d dddd 0110"
     for rd in rds:
-        result = lsr(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == lsr(rd)
+
+
+def test_mov():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    mask = "0010 11rd dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == mov(rd, rr)
 
 
 def test_movw():
@@ -576,9 +572,8 @@ def test_movw():
     mask = "0000 0001 dddd rrrr"
     for rd in rds:
         for rr in rrs:
-            result = movw(rd, rr)
             expected = bitMask(mask, d=rd//2, r=rr//2)
-            assert(result == expected)
+            assert expected == movw(rd, rr)
 
 
 def test_mul():
@@ -587,9 +582,8 @@ def test_mul():
     mask = "1001 11rd dddd rrrr"
     for rd in rds:
         for rr in rrs:
-            result = mul(rd, rr)
             expected = bitMask(mask, d=rd, r=rr)
-            assert(result == expected)
+            assert expected == mul(rd, rr)
 
 
 def test_muls():
@@ -598,9 +592,8 @@ def test_muls():
     mask = "0000 0010 dddd rrrr"
     for rd in rds:
         for rr in rrs:
-            result = muls(rd, rr)
-            expected = bitMask(mask, d=(rd-16), r=(rr - 16))
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == muls(rd, rr)
 
 
 def test_mulsu():
@@ -609,22 +602,21 @@ def test_mulsu():
     mask = "0000 0011 0ddd 0rrr"
     for rd in rds:
         for rr in rrs:
-            result = mulsu(rd, rr)
-            expected = bitMask(mask, d=(rd-16), r=(rr - 16))
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == mulsu(rd, rr)
 
 
 def test_neg():
     rds = range(0, 32)
     mask = "1001 010d dddd 0001"
     for rd in rds:
-        result = neg(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == neg(rd)
 
 
 def test_nop():
-    assert(nop() == 0)
+    expected = 0b0000_0000_0000_0000
+    assert expected == nop()
 
 
 def test_or():
@@ -633,9 +625,8 @@ def test_or():
     mask = "0010 10rd dddd rrrr"
     for rd in rds:
         for rr in rrs:
-            result = or_(rd, rr)
             expected = bitMask(mask, d=rd, r=rr)
-            assert(result == expected)
+            assert expected == or_(rd, rr)
 
 
 def test_ori():
@@ -644,76 +635,45 @@ def test_ori():
     mask = "0110 KKKK dddd KKKK"
     for rd in rds:
         for rr in rrs:
-            result = ori(rd, rr)
-            expected = bitMask(mask, d=(rd - 16), K=rr)
-            assert(result == expected)
+            expected = bitMask(mask, d=rd, K=rr)
+            assert expected == ori(rd, rr)
 
 
 def test_out():
-    as_ = range(0, 64)
+    rds = range(0, 64)
     rrs = range(0, 32)
     mask = "1011 1AAr rrrr AAAA"
-    for a in as_:
+    for rd in rds:
         for rr in rrs:
-            result = out(a, rr)
-            expected = bitMask(mask, A=a, r=rr)
-            assert(result == expected)
+            expected = bitMask(mask, A=rd, r=rr)
+            assert expected == out(rd, rr)
 
 
 def test_pop():
     rds = range(0, 32)
     mask = "1001 000d dddd 1111"
     for rd in rds:
-        result = pop(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == pop(rd)
 
 
 def test_push():
     rds = range(0, 32)
     mask = "1001 001d dddd 1111"
     for rd in rds:
-        result = push(rd)
         expected = bitMask(mask, d=rd)
-        assert(result == expected)
+        assert expected == push(rd)
 
 
 def test_rcall():
-    ks = [-2048, -1, 2047, 0]
-    solutions = [2048, 4095, 2047, 0]
+    rds = [-2048, -1, 2047, 0] + \
+        [random.randint(-2047, 2046) for _ in range(64)]
     mask = "1101 kkkk kkkk kkkk"
-    for i, k in zip(solutions, ks):
-        result = rcall(k)
-        expected = bitMask(mask, k=i)
-        assert(result == expected)
+    for rd in rds:
+        expected = bitMask(mask, k=rd)
+        assert expected == rcall(rd)
 
 
 def test_ret():
-    mask = "1001 0101 0000 1000"
-    assert(ret() == bitMask(mask))
-
-
-def test_mov():
-    rds = range(0, 32)
-    rrs = range(0, 32)
-    opcode = 0b001011 << 10
-    for rd in rds:
-        for rr in rrs:
-            r = (rr & 0x10) << 5
-            ddddd = rd << 4
-            rrrr = rr & 0xF
-            expected = opcode + r + ddddd + rrrr
-            assert(mov(rd, rr) == expected)
-
-
-def test_ldi():
-    registers = range(16, 32)
-    immediates = range(0, 256)
-    opcode = 0b1110 << 12
-    for register in registers:
-        for immediate in immediates:
-            result = ldi(register, immediate)
-            r = (register & 0xF) << 4
-            k = ((immediate & 0xF0) << 4) + (immediate & 0x0F)
-            expected = opcode + r + k
-            assert(result == expected)
+    expected = 0b1001_0101_0000_1000
+    assert expected == ret()

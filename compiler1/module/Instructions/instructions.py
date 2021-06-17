@@ -227,7 +227,7 @@ def icall() -> int:
     return 0x9509
 
 
-def ijump() -> int:
+def ijmp() -> int:
     return 0x9409
 
 
@@ -243,7 +243,7 @@ def inc(rd: int) -> int:
 
 def jmp(rd: int) -> int:
     opcode = 0x940C0000
-    return opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 20)
+    return opcode + (rd & 0x1FFFF) + ((rd & 0x3E0000) << 3)
 
 
 def lac(rd: int) -> int:
