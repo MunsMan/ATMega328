@@ -677,3 +677,8 @@ def test_rcall():
 def test_ret():
     expected = 0b1001_0101_0000_1000
     assert expected == ret()
+
+
+def test_reti():
+    expected = 0b1001_0101_0001_1000
+    assert expected == reti()

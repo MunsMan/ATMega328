@@ -424,6 +424,9 @@ def rcall(k: int) -> int:
 def ret() -> int:
     return 0x9508
 
+def reti() -> int:
+    return 0x9518
+
 
 InstructionsMap = {
     "adc": adc,
