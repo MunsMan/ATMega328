@@ -776,3 +776,13 @@ def test_sbr():
         for rr in rrs:
             expected = bitMask(mask, d=rd, K=rr)
             assert expected == sbr(rd, rr)
+
+
+def test_sbrc():
+    rds = range(0, 32)
+    rrs = range(0, 8)
+    mask = "1111 110r rrrr 0bbb"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, r=rd, b=rr)
+            assert expected == sbrc(rd, rr)
