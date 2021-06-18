@@ -796,3 +796,8 @@ def test_sbrs():
         for rr in rrs:
             expected = bitMask(mask, r=rd, b=rr)
             assert expected == sbrs(rd, rr)
+
+
+def test_sec():
+    expected = 0b1001_0100_0000_1000
+    assert expected == sec()

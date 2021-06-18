@@ -494,6 +494,10 @@ def sbrs(rd: int, rr: int) -> int:
     return opcode + (rd << 4) + rr
 
 
+def sec() -> int:
+    return 0x9408
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
