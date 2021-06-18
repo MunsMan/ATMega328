@@ -824,3 +824,8 @@ def test_ser():
     for rd in rds:
         expected = bitMask(mask, d=rd)
         assert expected == ser(rd)
+
+
+def test_ses():
+    expected = 0b1001_0100_0100_1000
+    assert expected == ses()

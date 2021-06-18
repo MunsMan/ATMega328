@@ -515,6 +515,10 @@ def ser(rd: int) -> int:
     return opcode + ((rd & 0xF) << 4)
 
 
+def ses() -> int:
+    return 0x9448
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
