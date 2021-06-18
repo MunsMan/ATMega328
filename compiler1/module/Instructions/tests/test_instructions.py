@@ -801,3 +801,8 @@ def test_sbrs():
 def test_sec():
     expected = 0b1001_0100_0000_1000
     assert expected == sec()
+
+
+def test_seh():
+    expected = 0b1001_0100_0101_1000
+    assert expected == seh()

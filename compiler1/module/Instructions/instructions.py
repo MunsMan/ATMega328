@@ -498,6 +498,10 @@ def sec() -> int:
     return 0x9408
 
 
+def seh() -> int:
+    return 0x9458
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
