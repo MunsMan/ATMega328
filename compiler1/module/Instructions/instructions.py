@@ -465,6 +465,11 @@ def sbic(rd: int, rr: int) -> int:
     return opcode + (rd << 3) + rr
 
 
+def sbis(rd: int, rr: int) -> int:
+    opcode = 0x9B00
+    return opcode + (rd << 3) + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

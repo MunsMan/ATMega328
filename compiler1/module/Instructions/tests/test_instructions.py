@@ -746,3 +746,13 @@ def test_sbic():
         for rr in rrs:
             expected = bitMask(mask, A=rd, b=rr)
             assert expected == sbic(rd, rr)
+
+
+def test_sbis():
+    rds = range(0, 32)
+    rrs = range(0, 8)
+    mask = "1001 1011 AAAA Abbb"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, A=rd, b=rr)
+            assert expected == sbis(rd, rr)
