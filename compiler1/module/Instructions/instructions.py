@@ -523,6 +523,10 @@ def set_() -> int:
     return 0x9468
 
 
+def sev() -> int:
+    return 0x9438
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
