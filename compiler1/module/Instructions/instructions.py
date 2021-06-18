@@ -531,6 +531,10 @@ def sez() -> int:
     return 0x9418
 
 
+def sleep() -> int:
+    return 0x9588
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
