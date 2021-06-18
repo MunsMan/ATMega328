@@ -716,3 +716,13 @@ def test_sbc():
         for rr in rrs:
             expected = bitMask(mask, d=rd, r=rr)
             assert expected == sbc(rd, rr)
+
+
+def test_sbci():
+    rds = range(16, 32)
+    rrs = range(0, 255)
+    mask = "0100 KKKK dddd KKKK"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, K=rr)
+            assert expected == sbci(rd, rr)

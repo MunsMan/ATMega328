@@ -448,6 +448,13 @@ def sbc(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def sbci(rd: int, rr: int) -> int:
+    opcode = 0x4000
+    rd = (rd & 0xF) << 4
+    rr = ((rr & 0xF0) << 4) + (rr & 0xF)
+    return opcode + rd + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
