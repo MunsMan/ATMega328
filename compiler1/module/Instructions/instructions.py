@@ -489,6 +489,11 @@ def sbrc(rd: int, rr: int) -> int:
     return opcode + (rd << 4) + rr
 
 
+def sbrs(rd: int, rr: int) -> int:
+    opcode = 0xFE00
+    return opcode + (rd << 4) + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
