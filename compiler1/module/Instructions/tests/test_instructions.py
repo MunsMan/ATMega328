@@ -816,3 +816,11 @@ def test_sei():
 def test_sen():
     expected = 0b1001_0100_0010_1000
     assert expected == sen()
+
+
+def test_ser():
+    rds = range(16, 32)
+    mask = "1110 1111 dddd 1111"
+    for rd in rds:
+        expected = bitMask(mask, d=rd)
+        assert expected == ser(rd)

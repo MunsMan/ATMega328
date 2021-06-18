@@ -510,6 +510,11 @@ def sen() -> int:
     return 0x9428
 
 
+def ser(rd: int) -> int:
+    opcode = 0xEF0F
+    return opcode + ((rd & 0xF) << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
