@@ -470,6 +470,13 @@ def sbis(rd: int, rr: int) -> int:
     return opcode + (rd << 3) + rr
 
 
+def sbiw(rd: int, rr: int) -> int:
+    opcode = 0x9700
+    rr = ((rr & 0x30) << 2) + (rr & 0xF)
+    rd = (((rd - 24) // 2) & 0x3) << 4
+    return opcode + rd + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

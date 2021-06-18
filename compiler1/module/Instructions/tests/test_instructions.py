@@ -756,3 +756,13 @@ def test_sbis():
         for rr in rrs:
             expected = bitMask(mask, A=rd, b=rr)
             assert expected == sbis(rd, rr)
+
+
+def test_sbiw():
+    rds = range(24, 32, 2)
+    rrs = range(0, 64)
+    mask = "1001 0111 KKdd KKKK"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=(rd - 24)//2, K=rr)
+            assert expected == sbiw(rd, rr)
