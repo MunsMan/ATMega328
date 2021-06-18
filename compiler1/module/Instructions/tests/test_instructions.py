@@ -811,3 +811,8 @@ def test_seh():
 def test_sei():
     expected = 0b1001_0100_0111_1000
     assert expected == sei()
+
+
+def test_sen():
+    expected = 0b1001_0100_0010_1000
+    assert expected == sen()

@@ -506,6 +506,10 @@ def sei() -> int:
     return 0x9478
 
 
+def sen() -> int:
+    return 0x9428
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
