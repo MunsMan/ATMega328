@@ -519,6 +519,10 @@ def ses() -> int:
     return 0x9448
 
 
+def set_() -> int:
+    return 0x9468
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
