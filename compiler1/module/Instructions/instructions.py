@@ -502,6 +502,10 @@ def seh() -> int:
     return 0x9458
 
 
+def sei() -> int:
+    return 0x9478
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
