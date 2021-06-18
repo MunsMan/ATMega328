@@ -477,6 +477,13 @@ def sbiw(rd: int, rr: int) -> int:
     return opcode + rd + rr
 
 
+def sbr(rd: int, rr: int) -> int:
+    opcode = 0x6000
+    rr = ((rr & 0xF0) << 4) + (rr & 0xF)
+    rd = ((rd & 0xF) << 4)
+    return opcode + rd + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
