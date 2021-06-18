@@ -527,6 +527,10 @@ def sev() -> int:
     return 0x9438
 
 
+def sez() -> int:
+    return 0x9418
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

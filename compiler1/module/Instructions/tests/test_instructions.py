@@ -839,3 +839,8 @@ def test_set():
 def test_sev():
     expected = 0b1001_0100_0011_1000
     assert expected == sev()
+
+
+def test_sez():
+    expected = 0b1001_0100_0001_1000
+    assert expected == sez()
