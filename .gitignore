@@ -9,3 +9,5 @@
 .pytest_cache
 
 *.asm
+*.bin
+*.hex
