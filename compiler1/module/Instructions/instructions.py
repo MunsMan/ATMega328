@@ -539,6 +539,10 @@ def spm() -> int:
     return 0x95E8
 
 
+def spmz() -> int:
+    return 0x95F8
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
