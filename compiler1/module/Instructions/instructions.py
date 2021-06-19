@@ -602,10 +602,17 @@ def stzq(rd: int, rr: int) -> int:
     return opcode + rd + rr
 
 
-def sts(rd: int, rr: int) -> int:
+def sts32(rd: int, rr: int) -> int:
     opcode = 0x9200_0000
     rr = rr << 20
     return opcode + rr + rd
+
+
+def sts16(rd: int, rr: int) -> int:
+    opcode = 0xA800
+    rd = ((rd & 0x70) << 4) + (rd & 0xF)
+    rr = (rr & 0xF) << 4
+    return opcode + rd + rr
 
 
 InstructionsMap = {

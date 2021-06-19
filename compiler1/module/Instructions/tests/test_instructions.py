@@ -953,11 +953,21 @@ def test_stzq():
             assert expected == stzq(rd, rr)
 
 
-def test_sts():
+def test_sts32():
     rds = [0, 65535] + [random.randint(1, 65534) for _ in range(64)]
     rrs = range(0, 32)
     mask = "1001 001r rrrr 0000 kkkk kkkk kkkk kkkk"
     for rd in rds:
         for rr in rrs:
             expected = bitMask(mask, r=rr, k=rd)
-            assert expected == sts(rd, rr)
+            assert expected == sts32(rd, rr)
+
+
+def test_sts16():
+    rds = range(0, 128)
+    rrs = range(16, 32)
+    mask = "1010 1kkk rrrr kkkk"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, k=rd, r=rr)
+            assert expected == sts16(rd, rr)
