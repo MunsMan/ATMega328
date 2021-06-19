@@ -981,3 +981,13 @@ def test_sub():
         for rr in rrs:
             expected = bitMask(mask, d=rd, r=rr)
             assert expected == sub(rd, rr)
+
+
+def test_subi():
+    rds = range(16, 32)
+    rrs = range(0, 256)
+    mask = "0101 KKKK dddd KKKK"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, K=rr)
+            assert expected == subi(rd, rr)

@@ -620,6 +620,13 @@ def sub(rd: int, rr: int) -> int:
     return opcode + twoOp(rd, rr)
 
 
+def subi(rd: int, rr: int) -> int:
+    opcode = 0x5000
+    rr = ((rr & 0xF0) << 4) + (rr & 0xF)
+    rd = (rd & 0xF) << 4
+    return opcode + rr + rd
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
