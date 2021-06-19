@@ -999,3 +999,11 @@ def test_swap():
     for rd in rds:
         expected = bitMask(mask, d=rd)
         assert expected == swap(rd)
+
+
+def test_tst():
+    rds = range(0, 32)
+    mask = "0010 00rd dddd rrrr"
+    for rd in rds:
+        expected = bitMask(mask, r=rd, d=rd)
+        assert expected == tst(rd)

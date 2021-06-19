@@ -632,6 +632,10 @@ def swap(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def tst(rd: int) -> int:
+    return and_(rd, rd)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
