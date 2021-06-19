@@ -971,3 +971,13 @@ def test_sts16():
         for rr in rrs:
             expected = bitMask(mask, k=rd, r=rr)
             assert expected == sts16(rd, rr)
+
+
+def test_sub():
+    rds = range(0, 32)
+    rrs = range(0, 32)
+    mask = "0001 10rd dddd rrrr"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, d=rd, r=rr)
+            assert expected == sub(rd, rr)

@@ -615,6 +615,11 @@ def sts16(rd: int, rr: int) -> int:
     return opcode + rd + rr
 
 
+def sub(rd: int, rr: int) -> int:
+    opcode = 0x1800
+    return opcode + twoOp(rd, rr)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
