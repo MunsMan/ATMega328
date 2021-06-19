@@ -564,17 +564,39 @@ def sty(rd: int) -> int:
 
 
 def styi(rd: int) -> int:
-    opcode = 0x8209
+    opcode = 0x9209
     return opcode + (rd << 4)
 
 
 def styd(rd: int) -> int:
-    opcode = 0x820A
+    opcode = 0x920A
     return opcode + (rd << 4)
 
 
 def styq(rd: int, rr: int) -> int:
     opcode = 0x8208
+    rd = rd << 4
+    rr = ((rr & 0x20) << 8) + ((rr & 0x18) << 7) + (rr & 0x7)
+    return opcode + rd + rr
+
+
+def stz(rd: int) -> int:
+    opcode = 0x8200
+    return opcode + (rd << 4)
+
+
+def stzi(rd: int) -> int:
+    opcode = 0x9201
+    return opcode + (rd << 4)
+
+
+def stzd(rd: int) -> int:
+    opcode = 0x9202
+    return opcode + (rd << 4)
+
+
+def stzq(rd: int, rr: int):
+    opcode = 0x8200
     rd = rd << 4
     rr = ((rr & 0x20) << 8) + ((rr & 0x18) << 7) + (rr & 0x7)
     return opcode + rd + rr
