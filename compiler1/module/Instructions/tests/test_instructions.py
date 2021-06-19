@@ -883,3 +883,37 @@ def test_stxd():
     for rd in rds:
         expected = bitMask(mask, r=rd)
         assert expected == stxd(rd)
+
+
+def test_sty():
+    rds = range(0, 32)
+    mask = "1000 001r rrrr 1000"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == sty(rd)
+
+
+def test_styi():
+    rds = chain(range(0, 28), range(30, 32))
+    mask = "1000 001r rrrr 1001"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == styi(rd)
+
+
+def test_styd():
+    rds = chain(range(0, 28), range(30, 32))
+    mask = "1000 001r rrrr 1010"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == styd(rd)
+
+
+def test_styq():
+    rds = range(0, 32)
+    rrs = range(0, 64)
+    mask = "10q0 qq1r rrrr 1qqq"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, r=rd, q=rr)
+            assert expected == styq(rd, rr)

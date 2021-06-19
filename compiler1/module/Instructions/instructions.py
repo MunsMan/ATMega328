@@ -558,6 +558,28 @@ def stxd(rd: int) -> int:
     return opcode + (rd << 4)
 
 
+def sty(rd: int) -> int:
+    opcode = 0x8208
+    return opcode + (rd << 4)
+
+
+def styi(rd: int) -> int:
+    opcode = 0x8209
+    return opcode + (rd << 4)
+
+
+def styd(rd: int) -> int:
+    opcode = 0x820A
+    return opcode + (rd << 4)
+
+
+def styq(rd: int, rr: int) -> int:
+    opcode = 0x8208
+    rd = rd << 4
+    rr = ((rr & 0x20) << 8) + ((rr & 0x18) << 7) + (rr & 0x7)
+    return opcode + rd + rr
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
