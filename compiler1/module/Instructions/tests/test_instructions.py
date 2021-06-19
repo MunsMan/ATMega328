@@ -1007,3 +1007,16 @@ def test_tst():
     for rd in rds:
         expected = bitMask(mask, r=rd, d=rd)
         assert expected == tst(rd)
+
+
+def test_wdr():
+    expected = 0b1001_0101_1010_1000
+    assert expected == wdr()
+
+
+def test_xch():
+    rds = range(0, 32)
+    mask = "1001 001r rrrr 0100"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == xch(rd)

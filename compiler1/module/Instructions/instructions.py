@@ -636,6 +636,15 @@ def tst(rd: int) -> int:
     return and_(rd, rd)
 
 
+def wdr() -> int:
+    return 0x95A8
+
+
+def xch(rd: int) -> int:
+    opcode = 0x9204
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
