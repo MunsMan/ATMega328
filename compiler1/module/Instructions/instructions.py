@@ -535,6 +535,10 @@ def sleep() -> int:
     return 0x9588
 
 
+def spm() -> int:
+    return 0x95E8
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,

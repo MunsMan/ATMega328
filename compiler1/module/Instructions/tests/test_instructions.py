@@ -849,3 +849,8 @@ def test_sez():
 def test_sleep():
     expected = 0b1001_0101_1000_1000
     assert expected == sleep()
+
+
+def test_spm():
+    expected = 0b1001_0101_1110_1000
+    assert expected == spm()
