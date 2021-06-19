@@ -951,3 +951,13 @@ def test_stzq():
         for rr in rrs:
             expected = bitMask(mask, r=rd, q=rr)
             assert expected == stzq(rd, rr)
+
+
+def test_sts():
+    rds = [0, 65535] + [random.randint(1, 65534) for _ in range(64)]
+    rrs = range(0, 32)
+    mask = "1001 001r rrrr 0000 kkkk kkkk kkkk kkkk"
+    for rd in rds:
+        for rr in rrs:
+            expected = bitMask(mask, r=rr, k=rd)
+            assert expected == sts(rd, rr)

@@ -595,11 +595,17 @@ def stzd(rd: int) -> int:
     return opcode + (rd << 4)
 
 
-def stzq(rd: int, rr: int):
+def stzq(rd: int, rr: int) -> int:
     opcode = 0x8200
     rd = rd << 4
     rr = ((rr & 0x20) << 8) + ((rr & 0x18) << 7) + (rr & 0x7)
     return opcode + rd + rr
+
+
+def sts(rd: int, rr: int) -> int:
+    opcode = 0x9200_0000
+    rr = rr << 20
+    return opcode + rr + rd
 
 
 InstructionsMap = {
