@@ -859,3 +859,27 @@ def test_spm():
 def test_spmz():
     expected = 0b1001_0101_1111_1000
     assert expected == spmz()
+
+
+def test_stx():
+    rds = range(0, 32)
+    mask = "1001 001r rrrr 1100"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == stx(rd)
+
+
+def test_stxi():
+    rds = chain(range(0, 26), range(28, 32))
+    mask = "1001 001r rrrr 1101"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == stxi(rd)
+
+
+def test_stxd():
+    rds = chain(range(0, 26), range(28, 32))
+    mask = "1001 001r rrrr 1110"
+    for rd in rds:
+        expected = bitMask(mask, r=rd)
+        assert expected == stxd(rd)

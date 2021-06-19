@@ -543,6 +543,21 @@ def spmz() -> int:
     return 0x95F8
 
 
+def stx(rd: int) -> int:
+    opcode = 0x920C
+    return opcode + (rd << 4)
+
+
+def stxi(rd: int) -> int:
+    opcode = 0x920D
+    return opcode + (rd << 4)
+
+
+def stxd(rd: int) -> int:
+    opcode = 0x920E
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
