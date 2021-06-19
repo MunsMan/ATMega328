@@ -991,3 +991,11 @@ def test_subi():
         for rr in rrs:
             expected = bitMask(mask, d=rd, K=rr)
             assert expected == subi(rd, rr)
+
+
+def test_swap():
+    rds = range(0, 32)
+    mask = "1001 010d dddd 0010"
+    for rd in rds:
+        expected = bitMask(mask, d=rd)
+        assert expected == swap(rd)

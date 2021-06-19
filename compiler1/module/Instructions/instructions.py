@@ -627,6 +627,11 @@ def subi(rd: int, rr: int) -> int:
     return opcode + rr + rd
 
 
+def swap(rd: int) -> int:
+    opcode = 0x9402
+    return opcode + (rd << 4)
+
+
 InstructionsMap = {
     "adc": adc,
     "add": add,
