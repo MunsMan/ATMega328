@@ -2,7 +2,7 @@ from module.Parser.LineParser import LineParser
 from ..instructions import *
 import pytest
 from pytest_mock import MockerFixture
-from ..commands import ADD, AND, MOV, loadImmediate
+from ..commands import *
 from .. import commands
 from .. import helper
 from . import mock_exit
