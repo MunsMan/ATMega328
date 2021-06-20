@@ -58,3 +58,10 @@ class RegisterManager:
         if isinstance(register, int):
             register = "r" + str(register)
         RegisterManager.registers[register] = True
+
+    @staticmethod
+    def registerIsUsed(register: Union[str, int]) -> bool:
+        checkRegister(register)
+        if isinstance(register, int):
+            register = "r" + str(register)
+        return RegisterManager.registers[register]
