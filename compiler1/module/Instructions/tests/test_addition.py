@@ -8,6 +8,7 @@ from module.Parser.LineParser import LineParser
 from pytest_mock import MockerFixture
 import pytest
 from .. import helper as Helper
+import random
 
 
 def test_additionRegister(mocker: MockerFixture):
@@ -30,7 +31,7 @@ def test_additionImmediate(mocker: MockerFixture):
     mock_immediate = mocker.patch.object(Addition, "immediate")
     mock_throwError = mocker.patch.object(Addition, "throwError")
     rds = range(0, 32)
-    rrs = range(0, 256)
+    rrs = [0, 255] + [random.randint(1, 254) for _ in range(0, 64)]
     opcodes = ["ADD", "ADC", "SUB", "SBC"]
     for rd in rds:
         for rr in rrs:
