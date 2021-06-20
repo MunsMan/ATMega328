@@ -963,14 +963,14 @@ def test_sts32():
             assert expected == sts32(rd, rr)
 
 
-def test_sts16():
+def test_sts():
     rds = range(0, 128)
     rrs = range(16, 32)
     mask = "1010 1kkk rrrr kkkk"
     for rd in rds:
         for rr in rrs:
             expected = bitMask(mask, k=rd, r=rr)
-            assert expected == sts16(rd, rr)
+            assert expected == sts(rd, rr)
 
 
 def test_sub():
