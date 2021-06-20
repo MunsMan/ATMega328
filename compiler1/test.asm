@@ -20,7 +20,8 @@ main:
     AND r2 r0
     BREQ jump
     ADD X 63
-    ADD Y 63
+    SUB Y 63
+    SUB r0 r1
     ADD Z 63
     ADD r24:r25 63
     ADD r24: 63
