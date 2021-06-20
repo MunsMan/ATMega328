@@ -1,4 +1,3 @@
-from unittest import mock
 from .helper import getAllRegisterPointer
 import pytest
 from pytest_mock import MockerFixture
@@ -7,7 +6,7 @@ from ctypes import c_uint8, c_uint16
 
 from . import mock_exit, bitMask
 from .. import helper
-from ..helper import checkImmediate, checkRegister, checkRegisterPointer, getImmediate, getRegister, getRegisterPointer, twoComplement, twoOp
+from ..helper import *
 
 
 def test_checkValidConst():
