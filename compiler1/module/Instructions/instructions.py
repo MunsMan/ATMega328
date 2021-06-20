@@ -1,5 +1,4 @@
-from module.Instructions.helper import twoComplement
-from . import twoOp
+from . import twoOp, twoComplement
 from typing import Callable
 from ..errorHandling.error import throwError
 
@@ -608,7 +607,7 @@ def sts32(rd: int, rr: int) -> int:
     return opcode + rr + rd
 
 
-def sts16(rd: int, rr: int) -> int:
+def sts(rd: int, rr: int) -> int:
     opcode = 0xA800
     rd = ((rd & 0x70) << 4) + (rd & 0xF)
     rr = (rr & 0xF) << 4
@@ -655,5 +654,10 @@ InstructionsMap = {
     "brbc": brbc,
     "brbs": brbs,
     "and": and_,
-    "andi": andi
+    "andi": andi,
+    "sub": sub,
+    "sbc": sbc,
+    "subi": subi,
+    "sbci": sbci,
+    "sbiw": sbiw
 }
