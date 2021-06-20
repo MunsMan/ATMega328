@@ -1,48 +1,18 @@
-from module.Parser.LineParser import LineParser
+from .LoadImmediate import loadImmediate
+from ..Parser.LineParser import LineParser
 from ..Instructions.branch import *
 from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
-from ..Instructions.instructions import mapInstructions
+from ..Instructions.instructions import add, mapInstructions
 from .helper import *
 from typing import List, Tuple
+from .addition import addition
 
 
 def mapCommmands(args: LineParser):
     if args.opcode in CommandsMap:
         return CommandsMap[args.opcode](args)
     throwError(4, True, args.opcode)
-
-
-def ADD(args: LineParser):
-    rr = args.rr
-    rd = args.rd
-    instructions = []
-    if checkRegisterPointer(rd):
-        return ADIW(rd, rr)
-
-    if not checkRegister(rd):
-        throwError(5, True, rd)
-    rd = getRegister(rd)
-    if checkImmediate(rr):
-        r = RegisterManager.getFreeRegister(16)
-        instructions = loadImmediate(r, getImmediate(rr))
-        instructions.append(mapInstructions(args.opcode.lower())(rd, r))
-        RegisterManager.freeRegister(r)
-    else:
-        if not checkRegister(rr):
-            throwError(5, True, rr)
-        instructions.append(mapInstructions(
-            args.opcode.lower())(rd, getRegister(rr)))
-    RegisterManager.setRegister(rd)
-    return (len(instructions), lambda: instructions)
-
-
-def ADIW(rd, rr):
-    rd_p = getRegisterPointer(rd, 24, True)
-    instruction = mapInstructions('adiw')(rd_p, getImmediate(rr, 6))
-    RegisterManager.setRegister(rd_p)
-    RegisterManager.setRegister(rd_p+1)
-    return (1, lambda: [instruction])
 
 
 def MOV(args: LineParser):
@@ -131,24 +101,12 @@ def ASR(args: LineParser) -> Tuple[int, List[int]]:
 
 
 CommandsMap = {
-    "ADD": ADD,
-    "ADC": ADD,
+    "ADD": addition,
+    "ADC": addition,
+    "SUB": addition,
+    "SBC": addition,
     "MOV": MOV,
     "BR": BR,
     "AND": AND,
     "ASR": ASR,
 }
-
-
-def loadImmediate(rd: str, immediate: int):
-    instructions = []
-    checkImmediateSize(immediate, 8)
-    if getRegister(rd) > 15:
-        instructions.append(mapInstructions("ldi")(getRegister(rd), immediate))
-    else:
-        r = RegisterManager.getFreeRegister(16)
-        instructions.append(mapInstructions("ldi")(r, immediate))
-        instructions.append(mapInstructions("mov")(getRegister(rd), r))
-        RegisterManager.freeRegister(r)
-    RegisterManager.setRegister(rd)
-    return instructions
