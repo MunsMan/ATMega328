@@ -90,6 +90,11 @@ def invalidRegisterReference(custom) -> str:
     return "Invalid Register Pointer.\nYou provided the following Register Pointer: {reg_p}.\nIt couldn't be parsed or is not defined for this CPU.\n Please check the docs for more information.\n".format(reg_p=reg_p)
 
 
+def wrongArgumentError(custom) -> str:
+    opcode, argument = custom
+    return f"Argument can't be paired with the opcode.\nOpcode: {opcode}\nArgument: {argument}\nPlease use Documentation for reference.\n"
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -103,4 +108,5 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     10: wrongTwoComplementSize,
     11: wrongRegisterPointer,
     12: invalidRegisterReference,
+    13: wrongArgumentError,
 }
