@@ -23,8 +23,12 @@ main:
     SUB Y 63
     SUB r0 r1
     ADD Z 63
-    ADD r24:r25 63
+    ADDNE r24:r25 63
     ADD r24: 63
+    PUSH {r0 - r12, r16}
+    POP {r0-r12, r16}
+    MOV r13 r0
 
 func:
     ADD r1, r2
+    MOV r0, r1
