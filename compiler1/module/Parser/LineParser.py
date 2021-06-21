@@ -4,7 +4,7 @@ from typing import List
 
 class LineParser:
     def __init__(self, line: str, labelRef, label: str, blockIndex: int) -> None:
-        self.lineArr: List[str] = line.split(" ")
+        self.lineArr: List[str] = self.splitLine(line)
         self.label = label
         self.blockIndex = blockIndex
         self.rd = self.lineArr[1]
@@ -13,11 +13,17 @@ class LineParser:
         self.__labelRefInstance = labelRef
 
     def _parseOpcode(self, opcode: str):
+        shortCodes = ['BR', 'CP']
         case = {
+            "SHORT": (opcode[0:2].upper(), opcode[2:4].upper(), ""),
             3: (opcode.upper(), "", ""),
-            4: (opcode[0:2].upper(), opcode[2:4].upper(), ""),
-            5: (opcode[0:3].upper(), opcode[2:4].upper(), ""),
+            4: (opcode[0:4].upper(), opcode[4:6].upper(), ""),
+            5: (opcode[0:3].upper(), opcode[3:5].upper(), ""),
         }
+
+        if opcode[0:2] in shortCodes:
+            return case["SHORT"]
+
         if len(opcode) in case:
             return case[len(opcode)]
 
@@ -27,3 +33,12 @@ class LineParser:
         return self.__labelRefInstance(self.rr if self.rr is not None else self.rd,
                                        self.blockIndex,
                                        self.label)
+
+    def splitLine(self, line: str) -> List[str]:
+        if line.find("{") != -1:
+            line = line.split("{")
+            line = [line[0]] + line[1].split("}")
+            line = list(map(str.strip, line))
+        else:
+            line = line.split(" ")
+        return line
