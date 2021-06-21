@@ -1,3 +1,4 @@
+from .Stack import POP, PUSH
 from .LoadImmediate import loadImmediate
 from ..Parser.LineParser import LineParser
 from ..Instructions.branch import *
@@ -109,4 +110,6 @@ CommandsMap = {
     "BR": BR,
     "AND": AND,
     "ASR": ASR,
+    "PUSH": PUSH,
+    "POP": POP
 }
