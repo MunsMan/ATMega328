@@ -22,6 +22,8 @@ class FileReader:
         for index, line in self.lines:
             line = re.sub(r'\/\/.*$', "", line)
             line = re.sub(r'[\n|\t|,|;|\s+]', " ", line)
+            line = re.sub(r' *- *', "-", line)
+            line = re.sub(r' *:', ":", line)
             line = re.sub(r'\s+', " ", line)
             line = line.strip()
             if line != "":
