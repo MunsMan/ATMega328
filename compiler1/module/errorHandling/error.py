@@ -85,7 +85,7 @@ def wrongRegisterPointer(custom) -> str:
     return "Wrong use of RegisterPointer.\nRegister Pointer should be higer or equal then {lowest} and smaller then 32.\n{even}You passed the follwing: {reg_p}".format(lowest=lowest, reg_p=reg_p, even=even)
 
 
-def invalidRegisterReference(custom) -> str:
+def invalidRegisterPointerReference(custom) -> str:
     reg_p = custom
     return "Invalid Register Pointer.\nYou provided the following Register Pointer: {reg_p}.\nIt couldn't be parsed or is not defined for this CPU.\n Please check the docs for more information.\n".format(reg_p=reg_p)
 
@@ -93,6 +93,11 @@ def invalidRegisterReference(custom) -> str:
 def wrongArgumentError(custom) -> str:
     opcode, argument = custom
     return f"Argument can't be paired with the opcode.\nOpcode: {opcode}\nArgument: {argument}\nPlease use Documentation for reference.\n"
+
+
+def invalidRegisterRange(custom) -> str:
+    rrange = custom
+    return f"Unable to parse provided register range.\nSuppored Synatx:\n0 <= x <= 31\n0 <= y <= 31\n\trx-ry\nYou provided:\n\t {rrange}"
 
 
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
@@ -107,6 +112,7 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     9: invalidCondError,
     10: wrongTwoComplementSize,
     11: wrongRegisterPointer,
-    12: invalidRegisterReference,
+    12: invalidRegisterPointerReference,
     13: wrongArgumentError,
+    14: invalidRegisterRange
 }
