@@ -659,5 +659,7 @@ InstructionsMap = {
     "sbc": sbc,
     "subi": subi,
     "sbci": sbci,
-    "sbiw": sbiw
+    "sbiw": sbiw,
+    "push": push,
+    "pop": pop
 }
