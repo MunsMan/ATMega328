@@ -1,4 +1,4 @@
-from module.Instructions.Shift import shift
+from .Shift import shift
 from .Stack import POP, PUSH
 from .LoadImmediate import loadImmediate
 from ..Parser.LineParser import LineParser
