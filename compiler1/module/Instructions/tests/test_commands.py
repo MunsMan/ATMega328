@@ -159,3 +159,17 @@ def test_loadImmediateInvalidImmediate(mocker: MockerFixture):
             mocker_throwError.assert_called_once_with(
                 7, True, (immediate, immediate.bit_length(), 8))
             mocker_throwError.reset_mock()
+
+
+def test_ASR():
+    rds = range(0, 32)
+    rrs = range(0, 8)
+    for rd in rds:
+        for rr in rrs:
+            num = rr if rr != 0 else ""
+            args = LineParser(f"ASR r{rd} {num}".strip(), None, None, None)
+            numInstructions, instructions = ASR(args)
+            numExpected = rr if rr != 0 else 1
+            expected = [mapInstructions("asr")(rd)] * numExpected
+            assert numExpected == numInstructions
+            assert expected == instructions()

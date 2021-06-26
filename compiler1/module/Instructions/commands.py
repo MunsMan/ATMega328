@@ -32,7 +32,6 @@ def MOV(args: LineParser):
     return (len(instructions), lambda: instructions)
 
 
-# ToDo: Needs to be tested!
 def ASR(args: LineParser) -> Tuple[int, List[int]]:
     rd = getRegister(args.rd)
     rr = getImmediate(args.rr, 3) if args.rr is not None else 1
