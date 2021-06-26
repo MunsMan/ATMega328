@@ -2,8 +2,8 @@ from . import mock_exit
 from ..helper import getRegisterPointer
 from ..RegisterManager import RegisterManager
 from ..instructions import ldi, mapInstructions
-from .. import Addition
-from ..Addition import addition, complement, immediate, immediateWord, register
+from .. import ALU
+from ..ALU import addition, complement, immediate, immediateWord, register
 from module.Parser.LineParser import LineParser
 from pytest_mock import MockerFixture
 import pytest
@@ -16,8 +16,8 @@ IMMEDIATE_WORD = ["ADD", "SUB"]
 
 
 def test_additionRegister(mocker: MockerFixture):
-    mock_register = mocker.patch.object(Addition, "register")
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_register = mocker.patch.object(ALU, "register")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     rds = range(0, 32)
     rrs = range(0, 32)
     opcodes = ALL_COMMANDS
@@ -32,8 +32,8 @@ def test_additionRegister(mocker: MockerFixture):
 
 
 def test_additionImmediate(mocker: MockerFixture):
-    mock_immediate = mocker.patch.object(Addition, "immediate")
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_immediate = mocker.patch.object(ALU, "immediate")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     rds = range(0, 32)
     rrs = [0, 255] + [random.randint(1, 254) for _ in range(0, 64)]
     opcodes = ALL_COMMANDS
@@ -48,8 +48,8 @@ def test_additionImmediate(mocker: MockerFixture):
 
 
 def test_additionWord(mocker: MockerFixture):
-    mock_immediateWord = mocker.patch.object(Addition, "immediateWord")
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_immediateWord = mocker.patch.object(ALU, "immediateWord")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     rds = ["r24:r25", "r26:r27", "r28:r29", "r30:r31", "X", "Y", "Z"]
     rrs = range(0, 64)
     opcodes = IMMEDIATE_WORD
@@ -146,7 +146,7 @@ def test_immediateWord():
 
 
 def test_invalid_rd(mocker: MockerFixture):
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     mock_throwError.side_effect = mock_exit
     rds = [-1, 32]
     opcodes = ALL_COMMANDS
@@ -160,7 +160,7 @@ def test_invalid_rd(mocker: MockerFixture):
 
 
 def test_invalid_rr(mocker: MockerFixture):
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     mock_throwError.side_effect = mock_exit
     rrs = [-1, 32]
     opcodes = ALL_COMMANDS
@@ -195,7 +195,7 @@ def test_invalid_immediate_for_word(mocker: MockerFixture):
 
 
 def test_wrong_argument(mocker: MockerFixture):
-    mock_throwError = mocker.patch.object(Addition, "throwError")
+    mock_throwError = mocker.patch.object(ALU, "throwError")
     mock_throwError.side_effect = mock_exit
     opcodes = ["ADC", "SBC", "AND"]
     for opcode in opcodes:
