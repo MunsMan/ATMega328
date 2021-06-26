@@ -67,31 +67,6 @@ def BR(args: LineParser):
     throwError(9, True, (cond))
 
 
-def AND(args: LineParser):
-    rd = args.rd
-    rr = args.rr
-    instructions = []
-    if not checkRegister(rd):
-        throwError(5, True, rd)
-    rd = getRegister(rd)
-    if checkImmediate(rr):
-        rr = getImmediate(rr)
-        if rd < 16:
-            r = RegisterManager.getFreeRegister(16)
-            instructions += loadImmediate(r, rr)
-            instructions.append(mapInstructions("and")(rd, r))
-            RegisterManager.freeRegister(r)
-        else:
-            instructions.append(mapInstructions("andi")(rd, rr))
-    else:
-        if not checkRegister(rr):
-            throwError(5, True, rr)
-        rr = getRegister(rr)
-        instructions.append(mapInstructions("and")(rd, rr))
-    RegisterManager.setRegister(rd)
-    return (len(instructions), lambda: instructions)
-
-
 # ToDo: Needs to be tested!
 def ASR(args: LineParser) -> Tuple[int, List[int]]:
     rd = getRegister(args.rd)
@@ -108,7 +83,7 @@ CommandsMap = {
     "SBC": addition,
     "MOV": MOV,
     "BR": BR,
-    "AND": AND,
+    "AND": addition,
     "ASR": ASR,
     "PUSH": PUSH,
     "POP": POP
