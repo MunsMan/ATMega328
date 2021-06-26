@@ -1,3 +1,4 @@
+from module.Instructions.Shift import shift
 from .Stack import POP, PUSH
 from .LoadImmediate import loadImmediate
 from ..Parser.LineParser import LineParser
@@ -32,14 +33,6 @@ def MOV(args: LineParser):
     return (len(instructions), lambda: instructions)
 
 
-def ASR(args: LineParser) -> Tuple[int, List[int]]:
-    rd = getRegister(args.rd)
-    rr = getImmediate(args.rr, 3) if args.rr is not None else 1
-    instructions = [mapInstructions("asr")(rd)] * rr
-    RegisterManager.setRegister(rd)
-    return (len(instructions), lambda: instructions)
-
-
 CommandsMap = {
     "ADD": addition,
     "ADC": addition,
@@ -48,7 +41,9 @@ CommandsMap = {
     "MOV": MOV,
     "BR": BR,
     "AND": addition,
-    "ASR": ASR,
+    "ASR": shift,
+    "LSL": shift,
+    "LSR": shift,
     "PUSH": PUSH,
     "POP": POP
 }

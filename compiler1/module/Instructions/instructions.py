@@ -655,6 +655,8 @@ InstructionsMap = {
     "brbs": brbs,
     "and": and_,
     "andi": andi,
+    "lsl": lsl,
+    "lsr": lsr,
     "sub": sub,
     "sbc": sbc,
     "subi": subi,
