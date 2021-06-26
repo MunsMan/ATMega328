@@ -1,7 +1,7 @@
 from .Stack import POP, PUSH
 from .LoadImmediate import loadImmediate
 from ..Parser.LineParser import LineParser
-from ..Instructions.branch import *
+from ..Instructions.Branch import *
 from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import add, mapInstructions

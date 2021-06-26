@@ -2,7 +2,7 @@ from pytest_mock import MockerFixture
 import pytest
 
 from .helper import mock_exit
-from ..branch import BRBS, BRBC
+from ..Branch import BRBS, BRBC
 from ..instructions import brbc, brbs
 from .. import helper
 from .. import instructions as Instructions
