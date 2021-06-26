@@ -51,3 +51,10 @@ def immediate(opcode: str, rd: int, rr: int):
 def register(opcode: str, rd: int, rr: int):
     RegisterManager.setRegister(rd)
     return 1, lambda: [mapInstructions(opcode)(rd, rr)]
+
+
+def complement(args: LineParser):
+    rd = getRegister(args.rd)
+    opcode = args.opcode.lower()
+    RegisterManager.setRegister(rd)
+    return 1, lambda: [mapInstructions(opcode)(rd)]

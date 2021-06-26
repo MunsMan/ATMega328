@@ -7,8 +7,7 @@ from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
-from typing import List, Tuple
-from .Addition import addition
+from .ALU import addition, complement
 
 
 def mapCommmands(args: LineParser):
@@ -45,5 +44,7 @@ CommandsMap = {
     "LSL": shift,
     "LSR": shift,
     "PUSH": PUSH,
-    "POP": POP
+    "POP": POP,
+    "COM": complement,
+    "NEG": complement
 }

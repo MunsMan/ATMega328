@@ -3,7 +3,7 @@ from ..helper import getRegisterPointer
 from ..RegisterManager import RegisterManager
 from ..instructions import ldi, mapInstructions
 from .. import Addition
-from ..Addition import addition, immediate, immediateWord, register
+from ..Addition import addition, complement, immediate, immediateWord, register
 from module.Parser.LineParser import LineParser
 from pytest_mock import MockerFixture
 import pytest
@@ -204,3 +204,16 @@ def test_wrong_argument(mocker: MockerFixture):
             addition(args)
         mock_throwError.assert_called_once_with(13, True, (opcode, "X"))
         mock_throwError.reset_mock()
+
+
+def test_complement():
+    rds = range(0, 32)
+    opcodes = ["NEG", "COM"]
+    for rd in rds:
+        for opcode in opcodes:
+            args = LineParser(f"{opcode} r{rd}", None, None, None)
+            numInstructions, instructions = complement(args)
+            expected = [mapInstructions(opcode.lower())(rd)]
+            assert 1 == numInstructions
+            assert expected == instructions()
+            assert RegisterManager.registerIsUsed(rd)
