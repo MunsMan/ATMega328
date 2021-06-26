@@ -10,44 +10,6 @@ from . import mock_exit
 invalidRegisters = ["r32", "1", "r-1", "ro", "AB", "-1", "r#"]
 
 
-def test_andTwoRegister():
-    rds = range(0, 32)
-    rrs = range(0, 32)
-    args = LineParser("AND r0 r1", None, None, None)
-    for rd in rds:
-        for rr in rrs:
-            args.rd = 'r' + str(rd)
-            args.rr = 'r' + str(rr)
-            numInstructions, Instructions = AND(args)
-            assert numInstructions == 1
-            assert Instructions() == [and_(rd, rr)]
-
-
-def test_andRegister16Immediate():
-    rds = range(16, 32)
-    rrs = range(0, 256)
-    for rd in rds:
-        for rr in rrs:
-            args = LineParser(f"AND r{rd} {rr}", None, None, None)
-            numInstructions, instructions = AND(args)
-            assert numInstructions == 1
-            assert instructions() == [andi(rd, rr)]
-
-
-def test_andRegister0Immediate(mocker: MockerFixture):
-    mock_getRegister = mocker.patch.object(
-        commands.RegisterManager, "getFreeRegister")
-    mock_getRegister.return_value = 16
-    rds = range(0, 16)
-    rrs = range(0, 256)
-    for rd in rds:
-        for rr in rrs:
-            args = LineParser(f"AND r{rd} {rr}", None, None, None)
-            numInstructions, instructions = AND(args)
-            assert numInstructions == 2
-            assert instructions() == [ldi(16, rr), and_(rd, 16)]
-
-
 def test_movRegisterRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     rds = range(0, 32)
