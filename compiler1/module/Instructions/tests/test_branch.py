@@ -5,11 +5,11 @@ from .helper import mock_exit
 from ..Branch import BRBS, BRBC
 from ..instructions import brbc, brbs
 from .. import helper
-from .. import instructions as Instructions
+from .. import Branch
 
 
 def test_BRBC_validImmediate(mocker: MockerFixture):
-    mocker_throwError = mocker.patch.object(Instructions, "throwError")
+    mocker_throwError = mocker.patch.object(Branch, "throwError")
     flags = range(0, 8)
     offsets = range(-64, 64)
     for flag in flags:
@@ -59,7 +59,7 @@ def test_BRBC_overflowFlag(mocker: MockerFixture):
 
 
 def test_BRBS_validImmediate(mocker: MockerFixture):
-    mocker_throwError = mocker.patch.object(Instructions, "throwError")
+    mocker_throwError = mocker.patch.object(Branch, "throwError")
     flags = range(0, 8)
     offsets = range(-64, 64)
     for flag in flags:

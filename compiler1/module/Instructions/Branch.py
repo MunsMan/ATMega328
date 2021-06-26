@@ -1,9 +1,46 @@
+from ..Parser.LineParser import LineParser
 from ..Instructions.helper import checkFlag
 from ..Instructions.instructions import mapInstructions
 from typing import Callable, Union
 from . import Flags
+from ..errorHandling import throwError
 
 INSTRUCTIONS_LEN = 1
+
+
+def BR(args: LineParser):
+    rd = args.rd
+    rr = args.rr
+    cond = args.cond
+    branch_bit = {
+        "BC": BRBC,
+        "BS": BRBS
+    }
+    branch_cond = {
+        "EQ": BREQ,
+        "NE": BRNE,
+        "CS": BRCS,
+        "CC": BRCC,
+        "SH": BRSH,
+        "LO": BRLO,
+        "MI": BRMI,
+        "PL": BRPL,
+        "GE": BRGE,
+        "LT": BRLT,
+        "HS": BRHS,
+        "HC": BRHC,
+        "TS": BRTS,
+        "TC": BRTC,
+        "VS": BRVS,
+        "VC": BRVC,
+        "IE": BRIE,
+        "ID": BRID,
+    }
+    if cond in branch_bit:
+        return branch_bit[cond](rd, rr, args.labelRef)
+    if cond in branch_cond:
+        return branch_cond[cond](rd, args.labelRef)
+    throwError(9, True, (cond))
 
 
 def BRCC(offset: Union[str, int], labelRef: Callable[[], int]):
