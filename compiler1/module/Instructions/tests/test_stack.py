@@ -47,7 +47,7 @@ def test_registerRangeOutOfRange(mocker: MockerFixture):
 
 
 def test_getRegisters():
-    rd = "r1 - r4 r0 r5 r10 r15-r30"
+    rd = "r1-r4 r0 r5 r10 r15-r30"
     expected = list(range(1, 5)) + [0, 5, 10] + list(range(15, 31))
     assert expected == __getRegisters(rd)
 
