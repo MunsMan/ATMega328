@@ -10,8 +10,8 @@ import pytest
 from .. import helper as Helper
 import random
 
-ALL_COMMANDS = ["ADD", "ADC", "SUB", "SBC", "AND"]
-IMMEDIATE_OPERATIONS = ['AND', 'SUB', "SBC"]
+ALL_COMMANDS = ["ADD", "ADC", "SUB", "SBC", "AND", "EOR", "OR"]
+IMMEDIATE_OPERATIONS = ['AND', 'SUB', "SBC", "OR"]
 IMMEDIATE_WORD = ["ADD", "SUB"]
 
 
@@ -96,7 +96,7 @@ def test_immediateLowRegister(mocker: MockerFixture):
                 assert not RegisterManager.registerIsUsed(r)
 
 
-def test_immediateHighRegisterSub():
+def test_immediateHighRegisterImmediate():
     rds = range(16, 32)
     rrs = range(0, 256)
     opcodes = map(str.lower, IMMEDIATE_OPERATIONS)

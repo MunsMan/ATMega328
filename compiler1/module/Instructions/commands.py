@@ -46,5 +46,7 @@ CommandsMap = {
     "PUSH": PUSH,
     "POP": POP,
     "COM": complement,
-    "NEG": complement
+    "NEG": complement,
+    "EOR": addition,
+    "OR": addition
 }

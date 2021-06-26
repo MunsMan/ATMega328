@@ -37,7 +37,7 @@ def immediateWord(opcode: str, rd: str, rr: int):
 
 def immediate(opcode: str, rd: int, rr: int):
     RegisterManager.setRegister(rd)
-    immediateOperations = ['and', 'sub', "sbc"]
+    immediateOperations = ['and', 'sub', "sbc", "or"]
     if opcode in immediateOperations and rd >= 16:
         return 1, lambda: [mapInstructions(opcode + "i")(rd, rr)]
     else:

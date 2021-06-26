@@ -13,7 +13,7 @@ class LineParser:
         self.__labelRefInstance = labelRef
 
     def _parseOpcode(self, opcode: str):
-        shortCodes = ['BR', 'CP']
+        shortCodes = ['BR', 'CP', "OR"]
         case = {
             "SHORT": (opcode[0:2].upper(), opcode[2:4].upper(), ""),
             3: (opcode.upper(), "", ""),
