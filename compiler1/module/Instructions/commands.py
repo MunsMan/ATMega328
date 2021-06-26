@@ -7,7 +7,7 @@ from ..errorHandling.error import throwError
 from ..Instructions.instructions import add, mapInstructions
 from .helper import *
 from typing import List, Tuple
-from .addition import addition
+from .Addition import addition
 
 
 def mapCommmands(args: LineParser):
