@@ -2,13 +2,17 @@ from . import mock_exit
 from ..helper import getRegisterPointer
 from ..RegisterManager import RegisterManager
 from ..instructions import ldi, mapInstructions
-from .. import addition as Addition
-from ..addition import addition, immediate, immediateWord, register
+from .. import Addition
+from ..Addition import addition, immediate, immediateWord, register
 from module.Parser.LineParser import LineParser
 from pytest_mock import MockerFixture
 import pytest
 from .. import helper as Helper
 import random
+
+ALL_COMMANDS = ["ADD", "ADC", "SUB", "SBC", "AND"]
+IMMEDIATE_OPERATIONS = ['AND', 'SUB', "SBC"]
+IMMEDIATE_WORD = ["ADD", "SUB"]
 
 
 def test_additionRegister(mocker: MockerFixture):
@@ -16,7 +20,7 @@ def test_additionRegister(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     rds = range(0, 32)
     rrs = range(0, 32)
-    opcodes = ["ADD", "ADC", "SUB", "SBC"]
+    opcodes = ALL_COMMANDS
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -32,7 +36,7 @@ def test_additionImmediate(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     rds = range(0, 32)
     rrs = [0, 255] + [random.randint(1, 254) for _ in range(0, 64)]
-    opcodes = ["ADD", "ADC", "SUB", "SBC"]
+    opcodes = ALL_COMMANDS
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -48,7 +52,7 @@ def test_additionWord(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     rds = ["r24:r25", "r26:r27", "r28:r29", "r30:r31", "X", "Y", "Z"]
     rrs = range(0, 64)
-    opcodes = ["ADD", "SUB"]
+    opcodes = IMMEDIATE_WORD
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -63,7 +67,7 @@ def test_additionWord(mocker: MockerFixture):
 def test_register():
     rds = range(0, 32)
     rrs = range(0, 32)
-    opcodes = ["add", "adc", "sub", "sbc"]
+    opcodes = map(str.lower, ALL_COMMANDS)
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -80,7 +84,7 @@ def test_immediateLowRegister(mocker: MockerFixture):
     mock_getFreeRegister.return_value = r
     rds = range(0, 16)
     rrs = range(0, 256)
-    opcodes = ["add", "adc", "sub", "sbc"]
+    opcodes = map(str.lower, ALL_COMMANDS)
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -95,7 +99,7 @@ def test_immediateLowRegister(mocker: MockerFixture):
 def test_immediateHighRegisterSub():
     rds = range(16, 32)
     rrs = range(0, 256)
-    opcodes = ["sub", "sbc"]
+    opcodes = map(str.lower, IMMEDIATE_OPERATIONS)
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -128,7 +132,7 @@ def test_immediateHighRegisterAdd(mocker: MockerFixture):
 def test_immediateWord():
     rds = ["r24:r25", "r26:r27", "r28:r29", "r30:r31", "X", "Y", "Z"]
     rrs = range(0, 64)
-    opcodes = ["add", "sub"]
+    opcodes = map(str.lower, IMMEDIATE_WORD)
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
@@ -145,7 +149,7 @@ def test_invalid_rd(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     mock_throwError.side_effect = mock_exit
     rds = [-1, 32]
-    opcodes = ["ADD", "ADC", "SUB", "SBC"]
+    opcodes = ALL_COMMANDS
     for rd in rds:
         for opcode in opcodes:
             args = LineParser(f"{opcode} r{rd} r0", None, None, None)
@@ -159,7 +163,7 @@ def test_invalid_rr(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     mock_throwError.side_effect = mock_exit
     rrs = [-1, 32]
-    opcodes = ["ADD", "ADC", "SUB", "SBC"]
+    opcodes = ALL_COMMANDS
     for rr in rrs:
         for opcode in opcodes:
             args = LineParser(f"{opcode} r0 r{rr}", None, None, None)
@@ -173,7 +177,7 @@ def test_invalid_immediate_for_word(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Helper, "throwError")
     mock_throwError.side_effect = mock_exit
     rr = 64
-    opcodes = ["ADD", "SUB"]
+    opcodes = IMMEDIATE_WORD
     for opcode in opcodes:
         args = LineParser(f"{opcode} X #{rr}", None, None, None)
         with pytest.raises(SystemExit):
@@ -182,7 +186,6 @@ def test_invalid_immediate_for_word(mocker: MockerFixture):
             7, True, (rr, rr.bit_length(), 6))
         mock_throwError.reset_mock()
     rr = -1
-    opcodes = ["ADD", "SUB"]
     for opcode in opcodes:
         args = LineParser(f"{opcode} X #{rr}", None, None, None)
         with pytest.raises(SystemExit):
@@ -194,7 +197,7 @@ def test_invalid_immediate_for_word(mocker: MockerFixture):
 def test_wrong_argument(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(Addition, "throwError")
     mock_throwError.side_effect = mock_exit
-    opcodes = ["ADC", "SBC"]
+    opcodes = ["ADC", "SBC", "AND"]
     for opcode in opcodes:
         args = LineParser(f"{opcode} X 1", None, None, None)
         with pytest.raises(SystemExit):
