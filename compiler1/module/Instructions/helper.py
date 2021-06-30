@@ -59,13 +59,17 @@ def getImmediate(register: Union[str, int], bits: int = 8) -> int:
     return register
 
 
-def getRegister(register: Union[str, int]) -> int:
+def getRegister(register: Union[str, int], lower: int = 0, upper: int = 31) -> int:
     if isinstance(register, int):
         reg = "r" + str(register)
     else:
         reg = register.lower()
     if reg in RegisterMap:
-        return RegisterMap[reg]
+        reg = RegisterMap[reg]
+        if lower <= reg <= upper:
+            return reg
+        else:
+            throwError(15, True, (reg, lower, upper))
     throwError(5, True, register)
 
 

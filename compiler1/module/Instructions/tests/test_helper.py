@@ -77,6 +77,27 @@ def test_getInvalidRegister(mocker: MockerFixture):
         mock_throwError.reset_mock()
 
 
+def test_getRegisterinBound():
+    rds = range(0, 32)
+    for rd in rds:
+        assert rd == getRegister(f"r{rd}", lower=rd, upper=rd)
+
+
+def test_getRegisterBoundError(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(helper, "throwError")
+    mock_throwError.side_effect = mock_exit
+    rds = range(0, 32)
+    for rd in rds:
+        with pytest.raises(SystemExit):
+            getRegister(rd, lower=rd+1)
+        mock_throwError.assert_called_once_with(15, True, (rd, rd+1, 31))
+        mock_throwError.reset_mock()
+        with pytest.raises(SystemExit):
+            getRegister(rd, upper=rd-1)
+        mock_throwError.assert_called_once_with(15, True, (rd, 0, rd-1))
+        mock_throwError.reset_mock()
+
+
 def test_twoOp():
     mask = "rd dddd rrrr"
     for rd in range(0, 32):
