@@ -7,7 +7,7 @@ from .RegisterManager import RegisterManager
 from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
-from .ALU import addition, complement
+from .ALU import MULS, MULSU, alu, complement
 
 
 def mapCommmands(args: LineParser):
@@ -33,20 +33,23 @@ def MOV(args: LineParser):
 
 
 CommandsMap = {
-    "ADD": addition,
-    "ADC": addition,
-    "AND": addition,
+    "ADD": alu,
+    "ADC": alu,
+    "AND": alu,
     "ASR": shift,
     "BR": BR,
     "COM": complement,
-    "EOR": addition,
+    "EOR": alu,
     "LSL": shift,
     "LSR": shift,
     "MOV": MOV,
+    "MUL": alu,
+    "MULS": MULS,
+    "MULSU": MULSU,
     "NEG": complement,
-    "OR": addition,
+    "OR": alu,
     "PUSH": PUSH,
     "POP": POP,
-    "SBC": addition,
-    "SUB": addition,
+    "SBC": alu,
+    "SUB": alu,
 }
