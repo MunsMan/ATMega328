@@ -100,6 +100,11 @@ def invalidRegisterRange(custom) -> str:
     return f"Unable to parse provided register range.\nSuppored Synatx:\n0 <= x <= 31\n0 <= y <= 31\n\trx-ry\nYou provided:\n\t {rrange}"
 
 
+def registerBoundError(costum) -> str:
+    reg, lower, upper = costum
+    return f"Register needs to be in [{lower}, {upper}] bound.\nYou provided r{reg}.\n"
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -114,5 +119,6 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     11: wrongRegisterPointer,
     12: invalidRegisterPointerReference,
     13: wrongArgumentError,
-    14: invalidRegisterRange
+    14: invalidRegisterRange,
+    15: registerBoundError
 }
