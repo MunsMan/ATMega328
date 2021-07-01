@@ -1,8 +1,10 @@
-from .helper import getAllRegisterPointer
 import pytest
 from pytest_mock import MockerFixture
 import numpy as np
 from ctypes import c_uint8, c_uint16
+import random
+
+from .helper import getAllRegisterPointer
 
 from . import mock_exit, bitMask
 from .. import helper
@@ -197,3 +199,12 @@ def test_fromBitMask():
     expected = 0b1101_0010_1001_1111
     result = bitMask(mask, a=a, b=b, c=c, d=d)
     assert(expected == result)
+
+
+def test_addr():
+    addrs = [0, 0xFFFF] + [random.randint(1, 0xFFFE) for i in range(32)]
+    addrs = map(hex, addrs)
+    for addr in addrs:
+        assert Addr.check(addr)
+        assert int(addr, base=16) == Addr(addr).value
+        assert addr == Addr(addr).hex()
