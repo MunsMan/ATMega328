@@ -105,6 +105,11 @@ def registerBoundError(costum) -> str:
     return f"Register needs to be in [{lower}, {upper}] bound.\nYou provided r{reg}.\n"
 
 
+def invalidAddressError(costum) -> str:
+    addr, hex_len = costum
+    return f"Invalid Address: {addr}\nAddress needs to be in hex-Format and in range [0x{'0'*hex_len}, 0x{'F'*hex_len}\n"
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -120,5 +125,6 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     12: invalidRegisterPointerReference,
     13: wrongArgumentError,
     14: invalidRegisterRange,
-    15: registerBoundError
+    15: registerBoundError,
+    16: invalidAddressError,
 }
