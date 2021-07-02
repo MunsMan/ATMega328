@@ -5,3 +5,5 @@
     - temporary Register
 -> update Indirect Load!
 - adding Store Functions
+- adding GitHub Workflow
+    - test runner
