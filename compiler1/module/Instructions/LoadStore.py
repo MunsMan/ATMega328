@@ -12,6 +12,7 @@ def LOAD(args: LineParser):
     rr = args.rr
     if not checkRegister(rd):
         throwError(5, True, rd)
+    rd = getRegister(rd)
     RegisterManager.setRegister(rd)
 
     if Addr.check(rr):
