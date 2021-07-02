@@ -10,7 +10,6 @@ import pytest
 from .. import helper as Helper
 import random
 
-from module.Instructions import instructions
 
 ALL_COMMANDS = ["ADD", "ADC", "SUB", "SBC", "AND", "EOR", "OR", "MUL"]
 IMMEDIATE_OPERATIONS = ['AND', 'SUB', "SBC", "OR"]
