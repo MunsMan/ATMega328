@@ -656,6 +656,7 @@ InstructionsMap = {
     "com": com,
     "eor": eor,
     "ldi": ldi,
+    "lds": lds,
     "lsl": lsl,
     "lsr": lsr,
     "mov": mov,
