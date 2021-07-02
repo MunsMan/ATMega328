@@ -1,9 +1,9 @@
 from typing import List
-from .RegisterManager import RegisterManager
 from .LoadImmediate import loadImmediate
 from ..Parser import LineParser
 from . import *
 from .instructions import mapInstructions
+from .RegisterManager import RegisterManager
 
 
 # ToDo: Need to be tested!
