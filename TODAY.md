@@ -1,6 +1,10 @@
 # Next Time
 
 - Testing Load Function
+    - [x] normal cases
+    - [ ] Error cases
+- Refactoring
+    - [ ] LoadStore Module
 - Adding Function to Register Manager
     - temporary Register
 -> update Indirect Load!
