@@ -1,12 +1,14 @@
 from pytest_mock import MockerFixture
-from itertools import chain
+import random
+import pytest
 
 from .. import LoadStore
 from ..LoadStore import LOAD
 from ..RegisterManager import RegisterManager
 from ..instructions import mapInstructions
 from ...Parser import LineParser
-import random
+from .. import helper as Helper
+from .helper import mock_exit
 
 
 def test_loadImmediateDirect():
@@ -87,6 +89,7 @@ lowerRegisterPointerMap = {
 
 
 def test_registerPointerIndirectFree():
+    RegisterManager.reset()
     rds = range(0, 32)
     rptrs = range(0, 26, 2)
     for i in range(0, 2):
@@ -110,6 +113,7 @@ def test_registerPointerIndirectFree():
 
 
 def test_registerPointerIndirectUsed(mocker: MockerFixture):
+    RegisterManager.reset()
     mock_getFreeAddressRegisterPointer = mocker.patch.object(
         LoadStore, "getFreeAddressRegisterPointer")
     mock_getFreeAddressRegisterPointer.return_value = -1
@@ -135,3 +139,69 @@ def test_registerPointerIndirectUsed(mocker: MockerFixture):
             assert not RegisterManager.registerIsUsed(0) or 0 == rd
             assert not RegisterManager.registerIsUsed(1) or 1 == rd
             RegisterManager.freeRegister(rd)
+
+
+def test_LoadInvalidAddress(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(Helper, "throwError")
+    mock_throwError.side_effect = mock_exit
+    invalidAddresses = ["0xGGGG", "0x12345"]
+    for rr in invalidAddresses:
+        args = LineParser(f"LD r0 {rr}", None, None, None)
+        with pytest.raises(SystemExit):
+            LOAD(args)
+        mock_throwError.assert_called_once_with(
+            16, True, (rr, 4))
+        mock_throwError.reset_mock()
+
+
+def test_LoadInvalidImmediate(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(Helper, "throwError")
+    mock_throwError.side_effect = mock_exit
+    invalidImmediate = 0b1_1111_1111
+    args = LineParser(f"LD r0 {invalidImmediate}", None, None, None)
+    with pytest.raises(SystemExit):
+        LOAD(args)
+    mock_throwError.assert_called_once_with(7, True, (invalidImmediate, 9, 8))
+
+
+def test_LoadRegisterPointerOperation(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(LoadStore, "throwError")
+    mock_throwError.side_effect = mock_exit
+    rawPointers = ["X", "Y", "Z"]
+    for rawPointer in rawPointers:
+
+        args = LineParser(f"LD r0 {rawPointer}-", None, None, None)
+        with pytest.raises(SystemExit):
+            LOAD(args)
+        mock_throwError.assert_called_once_with(17, True, (False, rawPointer))
+        mock_throwError.reset_mock()
+
+        args = LineParser(f"LD r0 +{rawPointer}", None, None, None)
+        with pytest.raises(SystemExit):
+            LOAD(args)
+        mock_throwError.assert_called_once_with(17, True, (False, rawPointer))
+        mock_throwError.reset_mock()
+
+
+def test_LoadRegisterPointerUnsupported(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(LoadStore, "throwError")
+    mock_throwError.side_effect = mock_exit
+    rrs = range(0, 26, 2)
+    for rr in rrs:
+        args = LineParser(f"LD r0 r{rr}:+", None, None, None)
+        with pytest.raises(SystemExit):
+            LOAD(args)
+        mock_throwError.assert_called_once_with(17, True, (True, f"r{rr}:"))
+        mock_throwError.reset_mock()
+
+
+def test_LoadRegisterPointerOdd(mocker: MockerFixture):
+    mock_throwError = mocker.patch.object(LoadStore, "throwError")
+    mock_throwError.side_effect = mock_exit
+    rrs = range(1, 33, 2)
+    for rr in rrs:
+        args = LineParser(f"LD r0 r{rr}:", None, None, None)
+        with pytest.raises(SystemExit):
+            LOAD(args)
+        mock_throwError.assert_called_once_with(18, True, ())
+        mock_throwError.reset_mock()
