@@ -12,40 +12,52 @@ def LOAD(args: LineParser):
     if not checkRegister(rd):
         throwError(5, True, rd)
     rd = getRegister(rd)
+    RegisterManager.setRegister(rd)
 
     if Addr.check(rr):
-        rr: Addr = Addr(rr)
-        instructions = mapInstructions("lds")(rd, rr.value)
-        RegisterManager.setRegister(rd)
-        return 1, lambda: [instructions]
+        return fromAddress(rd, rr)
 
     if checkImmediate(rr):
-        instructions = loadImmediate(rd, getImmediate(rr))
-        RegisterManager.setRegister(rd)
-        return len(instructions), lambda: instructions
+        return fromImmediate(rd, rr)
 
     rawPointer: str = rr.replace("+", "").replace("-", "")
-    instructions = []
     if checkRegisterPointer(rawPointer):
-        if len(rr) == 1:
-            instructions.append(mapInstructions(f"ld{rr.lower()}")(rd))
-        elif len(rr) == 2:
-            if rr[0] == '-':
-                instructions.append(mapInstructions(f"ld{rr[1].lower()}d")(rd))
-            elif rr[1] == '+':
-                instructions.append(mapInstructions(f"ld{rr[0].lower()}i")(rd))
-            else:
-                throwError(17, True, (False, rawPointer))
-        elif len(rr) == len(rawPointer):
-            ptr = getRegisterPointer(rawPointer)
-            if checkDirect(rawPointer):
-                instructions += loadDirect(ptr, rd)
-            else:
-                instructions += loadIndirect(ptr, rd)
-        else:
-            throwError(17, True, (True, rawPointer))
-        RegisterManager.setRegister(rd)
-        return len(instructions), lambda: instructions
+        return fromRegisterPointer(rd, rr, rawPointer)
+
+
+def fromAddress(rd: int, rr: str):
+    rr: Addr = Addr(rr)
+    instructions = mapInstructions("lds")(rd, rr.value)
+    return 1, lambda: [instructions]
+
+
+def fromImmediate(rd: int, rr: str):
+    instructions = loadImmediate(rd, getImmediate(rr))
+    return len(instructions), lambda: instructions
+
+
+def fromRegisterPointer(rd: int, rr: str, rawPointer: str):
+    instructions = []
+    if len(rawPointer) == 1:
+        suffix = ""
+        if rr[0] == '-':
+            suffix = '-'
+        elif (rr + " ")[1] == '+':
+            suffix == '+'
+        elif len(rr) > 1:
+            throwError(17, True, (False, rawPointer))
+        return 1, lambda: [mapInstructions(
+            f"ld{rawPointer.lower()}{suffix}")(rd)]
+
+    if len(rr) != len(rawPointer):
+        throwError(17, True, (True, rawPointer))
+
+    if checkDirect(rawPointer):
+        instructions = loadDirect(rr, rd)
+    else:
+        instructions = loadIndirect(rr, rd)
+
+    return len(instructions), lambda: instructions
 
 
 def checkDirect(rawPointer):
@@ -53,7 +65,7 @@ def checkDirect(rawPointer):
     return rawPointer in direct
 
 
-def getFreeAddressRegisterPointer() -> int:
+def getFreeAddressRegisterPointer(rd: int) -> int:
     for i, x in enumerate(range(26, 32, 2)):
         r1 = not RegisterManager.registerIsUsed(x)
         r2 = not RegisterManager.registerIsUsed(x + 1)
@@ -72,7 +84,9 @@ def mapRegisterPointerLower(rptr: str):
 
 
 def loadIndirect(ptr: int, rd: int) -> List[int]:
-    arp = getFreeAddressRegisterPointer()
+    ptr = getRegisterPointer(ptr)
+    RegisterManager.freeRegister(rd)
+    arp = getFreeAddressRegisterPointer(rd)
     instructions = []
 
     if ptr % 2 != 0:
@@ -95,9 +109,10 @@ def loadIndirect(ptr: int, rd: int) -> List[int]:
         instructions.append(mapInstructions("mov")(ptr+1, 26 + arp * 2+1))
         instructions.append(mapInstructions(
             f"ld{mapRegisterPointerLower(26 + arp * 2)}")(rd))
+    RegisterManager.setRegister(rd)
     return instructions
 
 
 def loadDirect(ptr: int, rd: int) -> List[int]:
-    direct = mapRegisterPointerLower(ptr)
+    direct = mapRegisterPointerLower(getRegisterPointer(ptr))
     return [mapInstructions(f"ld{direct}")(rd)]
