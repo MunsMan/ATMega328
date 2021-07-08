@@ -121,6 +121,10 @@ def test_registerPointerIndirectUsed(mocker: MockerFixture):
     rptrs = range(0, 26, 2)
     for rd in rds:
         for rptr in rptrs:
+            RegisterManager.reset()
+            RegisterManager.setRegister("r26")
+            RegisterManager.setRegister("r28")
+            RegisterManager.setRegister("r30")
             args = LineParser(
                 f"LD r{rd} r{rptr}:r{rptr+1}", None, None, None)
             numInstructions, instructions = LOAD(args)
@@ -138,7 +142,6 @@ def test_registerPointerIndirectUsed(mocker: MockerFixture):
             assert RegisterManager.registerIsUsed(rd)
             assert not RegisterManager.registerIsUsed(0) or 0 == rd
             assert not RegisterManager.registerIsUsed(1) or 1 == rd
-            RegisterManager.freeRegister(rd)
 
 
 def test_LoadInvalidAddress(mocker: MockerFixture):
