@@ -65,3 +65,44 @@ class RegisterManager:
         if isinstance(register, int):
             register = "r" + str(register)
         return RegisterManager.registers[register]
+
+    @staticmethod
+    def reset():
+        RegisterManager.registers = RegisterManager.__init()
+
+    @staticmethod
+    def __init():
+        return {
+            "r0": 0x00,
+            "r1": False,
+            "r2": False,
+            "r3": False,
+            "r4": False,
+            "r5": False,
+            "r6": False,
+            "r7": False,
+            "r8": False,
+            "r9": False,
+            "r10": False,
+            "r11": False,
+            "r12": False,
+            "r13": False,
+            "r14": False,
+            "r15": False,
+            "r16": False,
+            "r17": False,
+            "r18": False,
+            "r19": False,
+            "r20": False,
+            "r21": False,
+            "r22": False,
+            "r23": False,
+            "r24": False,
+            "r25": False,
+            "r26": False,
+            "r27": False,
+            "r28": False,
+            "r29": False,
+            "r30": False,
+            "r31": False,
+        }
