@@ -2,7 +2,7 @@
 
 - Testing Load Function
     - [x] normal cases
-    - [ ] Error cases
+    - [x] Error cases
 - Refactoring
     - [ ] LoadStore Module
 - Adding Function to Register Manager
