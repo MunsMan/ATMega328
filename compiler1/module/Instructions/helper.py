@@ -148,7 +148,7 @@ class Addr:
 
     @staticmethod
     def check(addr) -> bool:
-        return len(addr) <= 6 and addr[:2] == "0x"
+        return addr[:2] == "0x"
 
     def hex(self) -> str:
         return hex(self.value)
