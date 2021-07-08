@@ -110,6 +110,17 @@ def invalidAddressError(costum) -> str:
     return f"Invalid Address: {addr}\nAddress needs to be in hex-Format and in range [0x{'0'*hex_len}, 0x{'F'*hex_len}\n"
 
 
+def unsupportedRegisterPointerOperation(costum) -> str:
+    case, rptr = costum
+    wreg = f"{rptr} doesn't support these Operations."
+    missUsage = f"Only -{rptr} or {rptr}+ are supported.\n"
+    return f"Post increment and pre decrement are only supported on RegisterPointer X, Y, Z.\n{wreg if case else missUsage}"
+
+
+def oddRegisterPointer(costum) -> str:
+    return f"Only even RegisterPointer are allowed.\n"
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -127,4 +138,6 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     14: invalidRegisterRange,
     15: registerBoundError,
     16: invalidAddressError,
+    17: unsupportedRegisterPointerOperation,
+    18: oddRegisterPointer,
 }
