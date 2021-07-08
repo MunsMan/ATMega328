@@ -4,7 +4,7 @@ from typing import Union
 
 class RegisterManager:
     registers = {
-        "r0": 0x00,
+        "r0": False,
         "r1": False,
         "r2": False,
         "r3": False,
@@ -73,7 +73,7 @@ class RegisterManager:
     @staticmethod
     def __init():
         return {
-            "r0": 0x00,
+            "r0": False,
             "r1": False,
             "r2": False,
             "r3": False,
