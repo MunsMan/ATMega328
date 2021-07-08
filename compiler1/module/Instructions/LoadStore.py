@@ -6,7 +6,6 @@ from .instructions import mapInstructions
 from .RegisterManager import RegisterManager
 
 
-# ToDo: Need to be tested for miss usage!
 def LOAD(args: LineParser):
     rd = args.rd
     rr = args.rr
@@ -35,6 +34,8 @@ def LOAD(args: LineParser):
                 instructions.append(mapInstructions(f"ld{rr[1].lower()}d")(rd))
             elif rr[1] == '+':
                 instructions.append(mapInstructions(f"ld{rr[0].lower()}i")(rd))
+            else:
+                throwError(17, True, (False, rawPointer))
         elif len(rr) == len(rawPointer):
             ptr = getRegisterPointer(rawPointer)
             if checkDirect(rawPointer):
@@ -42,7 +43,7 @@ def LOAD(args: LineParser):
             else:
                 instructions += loadIndirect(ptr, rd)
         else:
-            throwError()
+            throwError(17, True, (True, rawPointer))
         RegisterManager.setRegister(rd)
         return len(instructions), lambda: instructions
 
@@ -75,7 +76,7 @@ def loadIndirect(ptr: int, rd: int) -> List[int]:
     instructions = []
 
     if ptr % 2 != 0:
-        throwError()
+        throwError(18, True, ())
 
     if arp == -1:
         r1 = RegisterManager.getFreeRegister()
