@@ -115,16 +115,13 @@ def test_registerPointerIndirectFree():
 def test_registerPointerIndirectUsed(mocker: MockerFixture):
     RegisterManager.reset()
     mock_getFreeAddressRegisterPointer = mocker.patch.object(
-        LoadStore, "getFreeAddressRegisterPointer")
+        RegisterManager, "getFreeAddressRegister")
     mock_getFreeAddressRegisterPointer.return_value = -1
     rds = range(0, 32)
     rptrs = range(0, 26, 2)
     for rd in rds:
         for rptr in rptrs:
             RegisterManager.reset()
-            RegisterManager.setRegister("r26")
-            RegisterManager.setRegister("r28")
-            RegisterManager.setRegister("r30")
             args = LineParser(
                 f"LD r{rd} r{rptr}:r{rptr+1}", None, None, None)
             numInstructions, instructions = LOAD(args)
