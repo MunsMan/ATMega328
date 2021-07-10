@@ -4,9 +4,10 @@
     - [x] normal cases
     - [x] Error cases
 - Refactoring
-    - [ ] LoadStore Module
+    - [x] LoadStore Module
 - Adding Function to Register Manager
-    - temporary Register
+    - [x] temporary Register
+        - SWAPPING
 -> update Indirect Load!
 - adding Store Functions
 - adding GitHub Workflow
