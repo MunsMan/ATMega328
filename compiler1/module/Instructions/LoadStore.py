@@ -52,7 +52,7 @@ def fromRegisterPointer(rd: int, rr: str, rawPointer: str):
     if len(rr) != len(rawPointer):
         throwError(17, True, (True, rawPointer))
 
-    if checkDirect(rawPointer):
+    if getRegisterPointer(rr) in [26, 28, 30]:
         instructions = loadDirect(rr, rd)
     else:
         instructions = loadIndirect(rr, rd)
@@ -60,33 +60,14 @@ def fromRegisterPointer(rd: int, rr: str, rawPointer: str):
     return len(instructions), lambda: instructions
 
 
-def checkDirect(rawPointer):
-    direct = ['X', 'Y', 'Z', 'r26:r27', 'r28:r29', 'r30:r31']
-    return rawPointer in direct
-
-
-def getFreeAddressRegisterPointer(rd: int) -> int:
-    for i, x in enumerate(range(26, 32, 2)):
-        r1 = not RegisterManager.registerIsUsed(x)
-        r2 = not RegisterManager.registerIsUsed(x + 1)
-        if r1 and r2:
-            return i
-    return -1
-
-
-def mapRegisterPointerLower(rptr: str):
-    ptrMap = {
-        26: 'x',
-        28: 'y',
-        30: 'z'
-    }
-    return ptrMap[rptr]
+def mapAddressRegisterToChar(rptr: str):
+    return chr(120 + (rptr - 26) // 2)
 
 
 def loadIndirect(ptr: int, rd: int) -> List[int]:
     ptr = getRegisterPointer(ptr)
     RegisterManager.freeRegister(rd)
-    arp = getFreeAddressRegisterPointer(rd)
+    arp = RegisterManager.getFreeAddressRegister()
     instructions = []
 
     if ptr % 2 != 0:
@@ -108,11 +89,11 @@ def loadIndirect(ptr: int, rd: int) -> List[int]:
         instructions.append(mapInstructions("mov")(ptr, 26 + arp * 2))
         instructions.append(mapInstructions("mov")(ptr+1, 26 + arp * 2+1))
         instructions.append(mapInstructions(
-            f"ld{mapRegisterPointerLower(26 + arp * 2)}")(rd))
+            f"ld{mapAddressRegisterToChar(26 + arp * 2)}")(rd))
     RegisterManager.setRegister(rd)
     return instructions
 
 
 def loadDirect(ptr: int, rd: int) -> List[int]:
-    direct = mapRegisterPointerLower(getRegisterPointer(ptr))
+    direct = mapAddressRegisterToChar(getRegisterPointer(ptr))
     return [mapInstructions(f"ld{direct}")(rd)]
