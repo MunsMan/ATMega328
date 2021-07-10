@@ -1,108 +1,81 @@
-from .helper import checkRegister, getRegister
-from typing import Union
+from ..Instructions.instructions import mapInstructions
+from . import *
+from .MemoryManager import MemoryManager
+from .helper import getRegister
+from typing import Dict, List, Tuple, Union
 
 
 class RegisterManager:
-    registers = {
-        "r0": False,
-        "r1": False,
-        "r2": False,
-        "r3": False,
-        "r4": False,
-        "r5": False,
-        "r6": False,
-        "r7": False,
-        "r8": False,
-        "r9": False,
-        "r10": False,
-        "r11": False,
-        "r12": False,
-        "r13": False,
-        "r14": False,
-        "r15": False,
-        "r16": False,
-        "r17": False,
-        "r18": False,
-        "r19": False,
-        "r20": False,
-        "r21": False,
-        "r22": False,
-        "r23": False,
-        "r24": False,
-        "r25": False,
-        "r26": False,
-        "r27": False,
-        "r28": False,
-        "r29": False,
-        "r30": False,
-        "r31": False,
-    }
+    _swapMap: Dict[Register, Address] = {}
+    registers = [False] * 32
 
     @staticmethod
     def getFreeRegister(lower=0) -> int:
-        for register in list(RegisterManager.registers.keys())[lower:]:
-            if not RegisterManager.registers[register]:
+        for register, state in enumerate(RegisterManager.registers[lower:]):
+            if not state:
                 RegisterManager.registers[register] = True
-                return getRegister(register)
+                return register
+        return -1
 
     @staticmethod
-    def freeRegister(register: Union[str, int]):
-        checkRegister(register)
-        if isinstance(register, int):
-            register = "r" + str(register)
+    def freeRegister(register: Union[str, int]) -> None:
+        register = getRegister(register)
         RegisterManager.registers[register] = False
 
     @staticmethod
-    def setRegister(register: Union[str, int]):
-        checkRegister(register)
-        if isinstance(register, int):
-            register = "r" + str(register)
+    def setRegister(register: Union[str, int]) -> None:
+        register = getRegister(register)
         RegisterManager.registers[register] = True
 
     @staticmethod
     def registerIsUsed(register: Union[str, int]) -> bool:
-        checkRegister(register)
-        if isinstance(register, int):
-            register = "r" + str(register)
+        register = getRegister(register)
         return RegisterManager.registers[register]
+
+    def getFreeAddressRegister():
+        for i, x in enumerate(range(26, 32, 2)):
+            r1 = not RegisterManager.registerIsUsed(x)
+            r2 = not RegisterManager.registerIsUsed(x + 1)
+            if r1 and r2:
+                return i
+        return -1
 
     @staticmethod
     def reset():
-        RegisterManager.registers = RegisterManager.__init()
+        RegisterManager.registers = [False] * 32
+
+    #ToDo: Test
+    @staticmethod
+    def _swapOut(register: int) -> List[Instruction]:
+        memoryAddress: Address = MemoryManager.getMemory()
+        instruction = mapInstructions("sts")(register, memoryAddress)
+        RegisterManager._swapMap[register] = memoryAddress
+        return [instruction]
+
+    #ToDo: Test
+    @staticmethod
+    def _swapIn(register: int) -> List[Instruction]:
+        memoryAddress: Address = RegisterManager._swapMap.pop(register)
+        instruction = mapInstructions("lds")(register, memoryAddress)
+        RegisterManager.setRegister(register)
+        MemoryManager.freeMemory(memoryAddress)
+        return [instruction]
 
     @staticmethod
-    def __init():
-        return {
-            "r0": False,
-            "r1": False,
-            "r2": False,
-            "r3": False,
-            "r4": False,
-            "r5": False,
-            "r6": False,
-            "r7": False,
-            "r8": False,
-            "r9": False,
-            "r10": False,
-            "r11": False,
-            "r12": False,
-            "r13": False,
-            "r14": False,
-            "r15": False,
-            "r16": False,
-            "r17": False,
-            "r18": False,
-            "r19": False,
-            "r20": False,
-            "r21": False,
-            "r22": False,
-            "r23": False,
-            "r24": False,
-            "r25": False,
-            "r26": False,
-            "r27": False,
-            "r28": False,
-            "r29": False,
-            "r30": False,
-            "r31": False,
-        }
+    def getRegister(lower=0) -> Tuple[Register, List[Instruction]]:
+        for register, state in enumerate(RegisterManager.registers[lower:]):
+            register += lower
+            if not state:
+                RegisterManager.registers[register] = True
+                return getRegister(register), []
+        for register in range(lower, 32):
+            if not register in RegisterManager._swapMap:
+                instructions = RegisterManager._swapOut(register)
+                return register, instructions
+
+    @staticmethod
+    def returnRegister(register) -> List[Instruction]:
+        if register in RegisterManager._swapMap:
+            return RegisterManager._swapIn(register)
+        RegisterManager.registers[register] = False
+        return []
