@@ -674,6 +674,7 @@ InstructionsMap = {
     "sbc": sbc,
     "sbci": sbci,
     "sbiw": sbiw,
+    "sts": sts,
     "sub": sub,
     "subi": subi,
 }
