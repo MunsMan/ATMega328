@@ -4,7 +4,6 @@ from .Types import Address
 from ..errorHandling import throwError
 
 
-#ToDo: test
 class MemoryManager:
     mmap: Set[Address] = set()
     _start = 0x0100
