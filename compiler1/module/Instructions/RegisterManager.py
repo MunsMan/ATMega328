@@ -42,9 +42,9 @@ class RegisterManager:
 
     @staticmethod
     def reset():
+        RegisterManager._swapMap = {}
         RegisterManager.registers = [False] * 32
 
-    #ToDo: Test
     @staticmethod
     def _swapOut(register: int) -> List[Instruction]:
         memoryAddress: Address = MemoryManager.getMemory()
@@ -52,7 +52,6 @@ class RegisterManager:
         RegisterManager._swapMap[register] = memoryAddress
         return [instruction]
 
-    #ToDo: Test
     @staticmethod
     def _swapIn(register: int) -> List[Instruction]:
         memoryAddress: Address = RegisterManager._swapMap.pop(register)
