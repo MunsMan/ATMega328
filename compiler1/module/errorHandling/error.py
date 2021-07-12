@@ -121,6 +121,10 @@ def oddRegisterPointer(costum) -> str:
     return f"Only even RegisterPointer are allowed.\n"
 
 
+def outOffMemoryError(costum) -> str:
+    return f"All usable SRAM is already used.\nPlease free Memory after usage or extend the Memory Space.\n"
+
+
 errorCodeMap: Dict[int, Callable[[Any], str]] = {
     1: missingInputFile,
     2: failedLoadingInputFile,
@@ -140,4 +144,5 @@ errorCodeMap: Dict[int, Callable[[Any], str]] = {
     16: invalidAddressError,
     17: unsupportedRegisterPointerOperation,
     18: oddRegisterPointer,
+    19: outOffMemoryError,
 }
