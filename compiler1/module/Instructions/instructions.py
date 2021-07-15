@@ -657,6 +657,7 @@ InstructionsMap = {
     "eor": eor,
     "ldi": ldi,
     "lds": lds,
+    "lds32": lds32,
     "ldx": ldx,
     "ldy": ldy,
     "ldz": ldz,
@@ -675,6 +676,7 @@ InstructionsMap = {
     "sbci": sbci,
     "sbiw": sbiw,
     "sts": sts,
+    "sts32": sts32,
     "sub": sub,
     "subi": subi,
 }
