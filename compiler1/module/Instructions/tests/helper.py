@@ -36,3 +36,15 @@ def bitMask(mask: str, **kwargs: Dict[str, int]):
             charDict[bit] -= 1
             mask = mask.replace(bit, str(value), 1)
     return int(mask, 2)
+
+
+def mapRegisterPointer(rptr: str) -> str:
+    rptrMap = {
+        26: 'x',
+        28: 'y',
+        30: 'z'
+    }
+    if rptr.find(":") != -1:
+        return rptrMap[int(rptr.split(":")[0].replace("r", ""))]
+    else:
+        return rptr.lower()
