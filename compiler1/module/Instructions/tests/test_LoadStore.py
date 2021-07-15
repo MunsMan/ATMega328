@@ -49,7 +49,8 @@ def test_loadAddress():
         for rr in rrs:
             args = LineParser(f"LD r{rd} {hex(rr)}", None, None, None)
             numInstructions, instructions = LOAD(args)
-            expected = [mapInstructions("lds")(rd, rr)]
+            expected = [mapInstructions(
+                "lds" if rr < 128 else "lds32")(rd, rr)]
             assert len(expected) == numInstructions
             assert expected == instructions()
             assert RegisterManager.registerIsUsed(rd)
