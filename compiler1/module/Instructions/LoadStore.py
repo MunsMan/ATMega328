@@ -6,7 +6,7 @@ from .instructions import mapInstructions
 from .RegisterManager import RegisterManager
 
 
-def LOAD(args: LineParser):
+def LDST(args: LineParser):
     rd = args.rd
     rr = args.rr
     opcode = args.opcode.lower()
@@ -93,7 +93,7 @@ def loadIndirect(opcode: str, ptr: int, rd: int) -> List[int]:
         instructions.append(mapInstructions("mov")(ptr, 26 + arp * 2))
         instructions.append(mapInstructions("mov")(ptr+1, 26 + arp * 2+1))
         instructions.append(mapInstructions(
-            f"ld{mapAddressRegisterToChar(26 + arp * 2)}")(rd))
+            f"{opcode}{mapAddressRegisterToChar(26 + arp * 2)}")(rd))
     RegisterManager.setRegister(rd)
     return instructions
 
