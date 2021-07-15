@@ -26,13 +26,13 @@ def test_movRegisterRegister(mocker: MockerFixture):
 def test_movRegisterImmediate(mocker: MockerFixture):
     mock_throwError = mocker.patch.object(commands, "throwError")
     mock_getRegister = mocker.patch.object(
-        commands.RegisterManager, "getFreeRegister")
-    mock_getRegister.return_value = 16
+        commands.RegisterManager, "getRegister")
     rds = range(0, 32)
     rrs = range(0, 256)
     # Register < 16
     for rd in rds[:16]:
         for rr in rrs:
+            mock_getRegister.return_value = 16, []
             args = LineParser(f"MOV r{rd} {rr}", None, None, None)
             numInstruction, instructions = MOV(args)
             assert(numInstruction == 2)
@@ -106,8 +106,7 @@ def test_movInvalidImmediateSize(mocker: MockerFixture):
 def test_loadImmediate(mocker: MockerFixture):
     mocker_throwError = mocker.patch.object(commands, "throwError")
     mock_getRegister = mocker.patch.object(
-        commands.RegisterManager, "getFreeRegister")
-    mock_getRegister.return_value = 16
+        commands.RegisterManager, "getRegister")
 
     rds = range(0, 32)
     immediates = range(0, 256)
@@ -115,6 +114,7 @@ def test_loadImmediate(mocker: MockerFixture):
     # Register < 16
     for rd in rds[:16]:
         for immediate in immediates:
+            mock_getRegister.return_value = 16, []
             instructions = loadImmediate(rd, immediate)
             expected = [ldi(16, immediate), mov(rd, 16)]
             assert(len(instructions) == 2)
@@ -146,14 +146,14 @@ def test_loadImmediateInvalidImmediate(mocker: MockerFixture):
     mocker_throwError = mocker.patch.object(helper, "throwError")
     mocker_throwError.side_effect = mock_exit
     mock_getRegister = mocker.patch.object(
-        commands.RegisterManager, "getFreeRegister")
-    mock_getRegister.return_value = 16
+        commands.RegisterManager, "getRegister")
 
     rds = range(0, 32)
     invalidImmediates = [256, -1]
 
     for rd in rds:
         for immediate in invalidImmediates:
+            mock_getRegister.return_value = 16, []
             with pytest.raises(SystemExit):
                 loadImmediate(rd, immediate)
             mocker_throwError.assert_called_once_with(

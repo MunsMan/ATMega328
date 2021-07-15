@@ -66,7 +66,7 @@ def mapAddressRegisterToChar(rptr: str):
 
 def loadIndirect(ptr: int, rd: int) -> List[int]:
     ptr = getRegisterPointer(ptr)
-    RegisterManager.freeRegister(rd)
+    RegisterManager.returnRegister(rd)
     arp = RegisterManager.getFreeAddressRegister()
     instructions = []
 
@@ -74,8 +74,10 @@ def loadIndirect(ptr: int, rd: int) -> List[int]:
         throwError(18, True, ())
 
     if arp == -1:
-        r1 = RegisterManager.getFreeRegister()
-        r2 = RegisterManager.getFreeRegister()
+        r1, swapInstructions = RegisterManager.getRegister()
+        instructions += swapInstructions
+        r2, swapInstructions = RegisterManager.getRegister()
+        instructions += swapInstructions
         instructions.append(mapInstructions("mov")(r1, 26))
         instructions.append(mapInstructions("mov")(r2, 27))
         instructions.append(mapInstructions("mov")(26, ptr))
@@ -83,8 +85,8 @@ def loadIndirect(ptr: int, rd: int) -> List[int]:
         instructions.append(mapInstructions("ldx")(rd))
         instructions.append(mapInstructions("mov")(26, r1))
         instructions.append(mapInstructions("mov")(27, r2))
-        RegisterManager.freeRegister(r1)
-        RegisterManager.freeRegister(r2)
+        RegisterManager.returnRegister(r1)
+        RegisterManager.returnRegister(r2)
     else:
         instructions.append(mapInstructions("mov")(ptr, 26 + arp * 2))
         instructions.append(mapInstructions("mov")(ptr+1, 26 + arp * 2+1))

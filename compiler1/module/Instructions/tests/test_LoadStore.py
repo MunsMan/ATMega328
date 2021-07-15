@@ -26,12 +26,12 @@ def test_loadImmediateDirect():
 
 def test_loadImmediateIndirect(mocker: MockerFixture):
     mock_getFreeRegister = mocker.patch.object(
-        LoadStore.RegisterManager, "getFreeRegister")
-    mock_getFreeRegister.return_value = 16
+        LoadStore.RegisterManager, "getRegister")
     rds = range(0, 16)
     rrs = [0, 255] + [random.randint(0, 254) for _ in range(32)]
     for rd in rds:
         for rr in rrs:
+            mock_getFreeRegister.return_value = 16, []
             args = LineParser(f"LD r{rd} #{rr}", None, None, None)
             numInstructions, instructions = LOAD(args)
             expected = [mapInstructions("ldi")(

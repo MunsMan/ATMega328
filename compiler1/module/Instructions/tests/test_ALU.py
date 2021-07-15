@@ -81,18 +81,23 @@ def test_register():
 def test_immediateLowRegister(mocker: MockerFixture):
     r = 16
     mock_getFreeRegister = mocker.patch.object(
-        RegisterManager, "getFreeRegister")
-    mock_getFreeRegister.return_value = r
+        RegisterManager, "getRegister")
+    mock_returnRegister = mocker.patch.object(
+        RegisterManager, "returnRegister")
+    mock_returnRegister.return_value = []
     rds = range(0, 16)
     rrs = range(0, 256)
     opcodes = map(str.lower, ALL_COMMANDS)
     for rd in rds:
         for rr in rrs:
             for opcode in opcodes:
+                mock_getFreeRegister.return_value = r, []
                 numInstructions, instructions = immediate(opcode, rd, rr)
                 assert 2 == numInstructions
                 assert [ldi(r, rr), mapInstructions(
                     opcode)(rd, r)] == instructions()
+                mock_returnRegister.assert_called_once_with(r)
+                mock_returnRegister.reset_mock()
                 assert RegisterManager.registerIsUsed(rd)
                 assert not RegisterManager.registerIsUsed(r)
 
@@ -112,8 +117,11 @@ def test_immediateHighRegisterImmediate():
 
 
 def test_immediateHighRegisterAdd(mocker: MockerFixture):
-    mock_getFreeRegister = mocker.patch.object(
-        RegisterManager, "getFreeRegister")
+    mock_getRegister = mocker.patch.object(
+        RegisterManager, "getRegister")
+    mock_returnRegister = mocker.patch.object(
+        RegisterManager, "returnRegister")
+    mock_returnRegister.return_value = []
     rds = range(16, 32)
     rrs = range(0, 256)
     opcodes = ["add", "adc"]
@@ -121,13 +129,14 @@ def test_immediateHighRegisterAdd(mocker: MockerFixture):
         for rr in rrs:
             for opcode in opcodes:
                 r = 16 if rd != 16 else 17
-                mock_getFreeRegister.return_value = r
+                mock_getRegister.return_value = r, []
                 numInstructions, instructions = immediate(opcode, rd, rr)
                 assert 2 == numInstructions
                 assert [ldi(r, rr), mapInstructions(
                     opcode)(rd, r)] == instructions()
                 assert RegisterManager.registerIsUsed(rd)
-                assert not RegisterManager.registerIsUsed(r)
+                mock_returnRegister.assert_called_once_with(r)
+                mock_returnRegister.reset_mock()
 
 
 def test_immediateWord():

@@ -9,9 +9,10 @@ def loadImmediate(rd: str, immediate: int):
     if getRegister(rd) > 15:
         instructions.append(mapInstructions("ldi")(getRegister(rd), immediate))
     else:
-        r = RegisterManager.getFreeRegister(16)
+        r, swapInstructions = RegisterManager.getRegister(16)
+        instructions += swapInstructions
         instructions.append(mapInstructions("ldi")(r, immediate))
         instructions.append(mapInstructions("mov")(getRegister(rd), r))
-        RegisterManager.freeRegister(r)
-    RegisterManager.setRegister(rd)
+        swapInstructions = RegisterManager.returnRegister(r)
+        instructions += swapInstructions
     return instructions

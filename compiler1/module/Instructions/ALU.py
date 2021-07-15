@@ -41,10 +41,10 @@ def immediate(opcode: str, rd: int, rr: int):
     if opcode in immediateOperations and rd >= 16:
         return 1, lambda: [mapInstructions(opcode + "i")(rd, rr)]
     else:
-        r = RegisterManager.getFreeRegister(16)
-        instructions = loadImmediate(r, rr)
+        r, instructions = RegisterManager.getRegister(16)
+        instructions += loadImmediate(r, rr)
         instructions.append(mapInstructions(opcode)(rd, r))
-        RegisterManager.freeRegister(r)
+        instructions += RegisterManager.returnRegister(r)
     return (len(instructions), lambda: instructions)
 
 
