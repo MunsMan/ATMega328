@@ -26,6 +26,14 @@ def LDST(args: LineParser):
         return fromRegisterPointer(opcode, rd, rr, rawPointer)
 
 
+def IO(args: LineParser):
+    opcode = args.opcode.lower()
+    rd = getRegister(args.rd)
+    rr = getImmediate(args.rr, bits=6)
+    instructions = [mapInstructions(opcode)(rd, rr)]
+    return len(instructions), lambda: instructions
+
+
 def fromAddress(opcode: str, rd: int, rr: str):
     rr: Addr = Addr(rr)
     suffix = "" if rr.value < 128 else "32"
