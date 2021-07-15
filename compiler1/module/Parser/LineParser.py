@@ -15,7 +15,7 @@ class LineParser:
     @staticmethod
     def _parseOpcode(opcode: str):
         opcode = opcode.upper()
-        shortCodes = ['BR', 'CP', 'OR', 'LD', "ST"]
+        shortCodes = ['BR', 'CP', 'OR', 'LD', "ST", "IN"]
         longCodes = ['FMULS', 'FMULSU', 'MULSU']
         case = {
             'SHORT': (opcode[0:2], opcode[2:4], ""),
