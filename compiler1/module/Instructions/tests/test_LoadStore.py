@@ -3,7 +3,7 @@ import random
 import pytest
 
 from .. import LoadStore
-from ..LoadStore import LDST
+from ..LoadStore import IO, LDST
 from ..RegisterManager import RegisterManager
 from ..instructions import mapInstructions
 from ...Parser import LineParser
@@ -220,3 +220,17 @@ def test_LoadStoreRegisterPointerOdd(mocker: MockerFixture):
                 LDST(args)
             mock_throwError.assert_called_once_with(18, True, ())
             mock_throwError.reset_mock()
+
+
+def test_InOut():
+    rds = range(32)
+    rrs = range(64)
+    opcodes = ["IN", "OUT"]
+    for rd in rds:
+        for rr in rrs:
+            for opcode in opcodes:
+                args = LineParser(f"{opcode} r{rd} {rr}", None, None, None)
+                numInstructions, instructions = IO(args)
+                expected = [mapInstructions(opcode.lower())(rd, rr)]
+                assert expected == instructions()
+                assert len(expected) == numInstructions
