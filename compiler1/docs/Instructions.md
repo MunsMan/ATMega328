@@ -3,7 +3,7 @@
 |Instruction|Meaning|Tested|
 |:---:|:---:|:---:|
 |ADC| Add with Carry | [x] |
-|[ADD](# ADD)| Add without Carry|[x]|
+|[ADD](#ADD)| Add without Carry|[x]|
 |AND| Logical AND | [x] |
 |ASR| Arithmetic Shift Right | [x] |
 |BR| Branch on condition |[x]|
@@ -39,7 +39,7 @@ This Compiler supports relativ flexible Syntax and provide a level of abstraktio
 
 - <operation>: three letter opcode mnemonic, e.g. `MOV` or `ADD` (exception `BR`)
 - {cond}: two letter condition code, e.g. `EQ` or `CS`
-- {flag}: one letter optional flag, e.g. `S` 
+- {flag}: one letter optional flag, e.g. `S`
 - <Rd>: destination register, e.g. `r1`
 - {Rn}: first source Register or Immediate, e.g. `r12`or `#42`
 - {Operand2}: a flexible second operand
