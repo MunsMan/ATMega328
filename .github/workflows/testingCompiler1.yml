@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f $module_name/requirements.txt ]; then pip install -r $module_name/requirements.txt; fi
+        if [ -f ${{env.module_name}}/requirements.txt ]; then pip install -r ${{env.module_name}}/requirements.txt; fi
     - name: Test with pytest
       run: |
         pytest ${{env.module_name}}
