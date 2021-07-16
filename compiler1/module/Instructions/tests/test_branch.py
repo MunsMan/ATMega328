@@ -1,11 +1,13 @@
+import random
 from pytest_mock import MockerFixture
 import pytest
 
 from .helper import mock_exit
-from ..Branch import BRBS, BRBC
-from ..instructions import brbc, brbs
+from ..Branch import BR, BRBS, BRBC
+from ..instructions import brbc, brbs, mapInstructions
 from .. import helper
 from .. import Branch
+from ...Parser import LineParser
 
 
 def test_BRBC_validImmediate(mocker: MockerFixture):
@@ -106,3 +108,33 @@ def test_BRBS_overflowFlag(mocker: MockerFixture):
     mocker_throwError.assert_called_once_with(
         7, True, (invalidFlags, invalidFlags.bit_length(), 3))
     mocker_throwError.reset_mock()
+
+
+def test_jumpCallAddress():
+    rds = [0, 4194303] + [random.randint(1, 4194302) for _ in range(64)]
+    opcodes = ["BR", "BL"]
+    for rd in rds:
+        for opcode in opcodes:
+            args = LineParser(f"{opcode} {hex(rd)}", None, None, None)
+            numInstructions, instructions = BR(args)
+            expected = [mapInstructions(
+                "jmp" if opcode == "BR" else "call")(rd)]
+            assert 1 == numInstructions
+            assert expected == instructions()
+
+
+def test_jumpCallOffset():
+    rds = [-2048, 2047] + [random.randint(-2047, 2046) for _ in range(64)]
+    opcodes = ["BR", "BL"]
+    for rd in rds:
+        for opcode in opcodes:
+            args = LineParser(f"{opcode} {rd}", None, None, None)
+            numInstructions, instructions = BR(args)
+            expected = [mapInstructions(
+                "rjmp" if opcode == "BR" else "rcall")(rd)]
+            assert 1 == numInstructions
+            assert expected == instructions()
+
+
+def test_jumpCallLabel():
+    pass
