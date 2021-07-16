@@ -428,7 +428,7 @@ def reti() -> int:
     return 0x9518
 
 
-def rjump(rd: int) -> int:
+def rjmp(rd: int) -> int:
     opcode = 0xC000
     return opcode + twoComplement(rd, 12)
 
@@ -653,9 +653,11 @@ InstructionsMap = {
     "asr": asr,
     "brbc": brbc,
     "brbs": brbs,
+    "call": call,
     "com": com,
     "eor": eor,
     "in": in_,
+    "jmp": jmp,
     "ldi": ldi,
     "lds": lds,
     "lds32": lds32,
@@ -674,6 +676,8 @@ InstructionsMap = {
     "out": out,
     "pop": pop,
     "push": push,
+    "rcall": rcall,
+    "rjmp": rjmp,
     "sbc": sbc,
     "sbci": sbci,
     "sbiw": sbiw,
