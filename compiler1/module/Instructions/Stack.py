@@ -1,5 +1,6 @@
-from module.errorHandling.error import throwError
-from module.Instructions.instructions import mapInstructions
+from .Types import Register
+from ..errorHandling.error import throwError
+from .instructions import mapInstructions
 from . import getRegister
 from typing import List
 from ..Parser.LineParser import LineParser
@@ -11,7 +12,7 @@ def PUSH(args: LineParser):
     return len(instructions), lambda: instructions
 
 
-def __registerRange(rrange: str) -> List[int]:
+def __registerRange(rrange: str) -> List[Register]:
     if rrange.count("-") > 1:
         throwError(14, True, rrange)
     lower, upper = rrange.split("-")
@@ -23,7 +24,7 @@ def __registerRange(rrange: str) -> List[int]:
         return list(range(lower, upper-1, -1))
 
 
-def __getRegisters(rd: str) -> List[int]:
+def __getRegisters(rd: str) -> List[Register]:
     registers = []
     rds = rd.split(" ")
     for rd in rds:
