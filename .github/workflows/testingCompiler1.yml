@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  module_name: compiler1
+
 jobs:
   build:
 
@@ -23,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f compiler1/requirements.txt ]; then pip install -r compiler1/requirements.txt; fi
+        if [ -f ${module_name}/requirements.txt ]; then pip install -r ${module_name}/requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest
+        pytest ${module_name}
