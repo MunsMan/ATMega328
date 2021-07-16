@@ -33,8 +33,8 @@ def MOV(args: LineParser):
 
 
 CommandsMap = {
-    "ADD": alu,
     "ADC": alu,
+    "ADD": alu,
     "AND": alu,
     "ASR": shift,
     "BR": BR,
