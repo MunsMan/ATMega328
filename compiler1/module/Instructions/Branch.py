@@ -1,7 +1,8 @@
+from module.Instructions.Types import Instruction
 from ..Parser.LineParser import LineParser
-from ..Instructions.helper import checkFlag
+from ..Instructions.helper import Addr, checkFlag
 from ..Instructions.instructions import mapInstructions
-from typing import Callable, Union
+from typing import Callable, List, Tuple, Union
 from . import Flags
 from ..errorHandling import throwError
 
@@ -36,11 +37,22 @@ def BR(args: LineParser):
         "IE": BRIE,
         "ID": BRID,
     }
+    if not cond:
+        return jumpCall(args.opcode, rd, args.labelRef)
     if cond in branch_bit:
         return branch_bit[cond](rd, rr, args.labelRef)
     if cond in branch_cond:
         return branch_cond[cond](rd, args.labelRef)
     throwError(9, True, (cond))
+
+
+def jumpCall(opcode: str, rd: str, labelRef) -> Tuple[int, List[Instruction]]:
+    opcode = "jmp" if opcode == "BR" else "call"
+    if Addr.check(rd):
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions(f"{opcode}")(Addr(rd, 22).value)]
+    if str(rd).replace("-", "").isdigit():
+        return INSTRUCTIONS_LEN, lambda: [mapInstructions(f"r{opcode}")(int(rd))]
+    return INSTRUCTIONS_LEN, lambda: [mapInstructions(f"r{opcode}")(labelRef())]
 
 
 def BRCC(offset: Union[str, int], labelRef: Callable[[], int]):
