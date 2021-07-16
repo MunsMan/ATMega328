@@ -134,16 +134,21 @@ def getRegisterPointer(register: str, lowest: int = 0, even=False):
 
 
 class Addr:
-    def __init__(self, addr: str) -> None:
+    def __init__(self, addr: str, bit_len: int = 4) -> None:
+        self.__maxLen = bit_len
         self.value: int = self._cast(addr)
 
     def _cast(self, addr: str) -> int:
-        if not (len(addr) <= 6 and addr[:2] == "0x"):
+        if not self.check(addr):
             throwError(16, True, (addr, 4))
         else:
             try:
-                return int(addr, base=16)
+                value = int(addr, base=16)
             except:
+                throwError(16, True, (addr, 4))
+            if value.bit_length() <= self.__maxLen:
+                return value
+            else:
                 throwError(16, True, (addr, 4))
 
     @staticmethod
