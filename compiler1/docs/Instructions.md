@@ -44,12 +44,30 @@ This Compiler supports relativ flexible Syntax and provide a level of abstraktio
 - {Rn}: first source Register or Immediate, e.g. `r12`or `#42`
 - {Operand2}: a flexible second operand
 
+### Register Pointer
+
+
 ## Instructions
+
+Nomenclature:
+|`rd` | destination Register |
+|`rr` | source Register |
+|`r:` | [Register Pointer](#Register-Pointer)|
+
+### ADC
+
+The `ADC` Instruction combines two AVG Instruction together. `ADC` allows to Add a value of a Register or directly an Immediate with Carry together.
+This results to the following Syntax:
+- `ADC rd rr`
+- `ADC rd immediate`
+
+The `immediate` can only be of size 8 bit, which leads to the range of 0-255.
 
 ### ADD
 
-The `ADD` allows the addition of two Registers. This Addition ignores the Carry Bit.
-The `ADD` supports different Syntax.
+The `ADD` Instructions combines multiple AVG Instruction together. Compared to the `ADC` it ignores the Carry Bit.
+`ADD` can add a Register or an Immediate to a register like `ADC` and even a Word from a [Register Pointer](#Register-Pointer).
 
-- `ADD` `<Register>` `<Register>`
-- `ADD` `<Register>` `<Immediate>`
+- `ADD rd rr`
+- `ADD rd immediate`
+- `ADD rd r:`
