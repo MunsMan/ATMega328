@@ -1,10 +1,26 @@
 # Supported Instructions
 
-|Instruction|Meaning|example|Tested|
-|:---:|:---:|:---:|:---:|
-|ADD| Adding register or constants together| ADD r1 #5 |[x]|
-|AND| Logical AND | AND r1 r2 | [ ] |
-|MOV| Move Register or Constants to another Register | MOV r5 #45 |[x]|
+|Instruction|Meaning|Tested|
+|:---:|:---:|:---:|
+|ADC| Add with Carry | [x] |
+|[ADD](# ADD)| Add without Carry|[x]|
+|AND| Logical AND | [x] |
+|ASR| Arithmetic Shift Right | [x] |
+|BR| Branch on condition |[x]|
+|COM| One's Complement | [x] |
+|EOR| Exclusive logical OR | [x] |
+|LSL| Logical left Shift | [x] |
+|LSR| Logical right Shift | [x] |
+|MOV| Move a value |[x]|
+|MUL| Multiply Unsigned |[x]|
+|MULS| Multiply Signed |[x]|
+|MULSU| Multiply Signed with Unsigned |[x]|
+|NEG| Two's Complement | [x] |
+|OR| Logical OR |[x]|
+|PUSH| PUSH on Stack |[x]|
+|POP| POP on Stack |[x]|
+|SBC| Subtract with Carry |[x]|
+|SUB| Subtract without Carry |[x]|
 
 ## Syntax
 
