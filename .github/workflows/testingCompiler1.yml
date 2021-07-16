@@ -5,7 +5,7 @@ name: Testing Compiler
 
 on:
   push:
-    branches: [ Compiler, main ]
+    branches: [ Compiler ]
   pull_request:
     branches: [ main ]
 
