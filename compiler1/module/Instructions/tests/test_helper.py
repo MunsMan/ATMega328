@@ -202,7 +202,7 @@ def test_fromBitMask():
 
 
 def test_addr():
-    addrs = [0, 0xFFFF] + [random.randint(1, 0xFFFE) for i in range(32)]
+    addrs = [0, 0xFFFF] + [random.randint(1, 0xFFFE) for _ in range(32)]
     addrs = map(hex, addrs)
     for addr in addrs:
         assert Addr.check(addr)
