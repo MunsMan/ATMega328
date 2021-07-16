@@ -2,7 +2,7 @@
 
 |Instruction|Meaning|Tested|
 |:---:|:---:|:---:|
-|ADC| Add with Carry | [x] |
+|[ADC](#ADC)| Add with Carry | [x] |
 |[ADD](#ADD)| Add without Carry|[x]|
 |AND| Logical AND | [x] |
 |ASR| Arithmetic Shift Right | [x] |
