@@ -2,24 +2,15 @@
 
 **State** = *building*
 
-## Startup
+This is mainly a educational Project, be build a good fundation of the functioning of an CPU. Most of the process is live Streamed on [Twitch](https://www.twitch.tv/cmunsman). You are welcome to support this Project and add you Ideas and Code to it. Because the goal is, to be as close to the acutal CPU, we will follow the official Documentation.
 
-At the moment, the original Startup Method is not implemented.
+## Emulator
 
-`SP` -> `0x08FF`
-`PC` -> `0x0100`
+The Emulator is build around the official ATMega328 Documentation. The goal of the Emulator is, to run AVG Instruction on you main Machine before flashing it on the Chip itself. A later goal is, to add a Web interface, to visually debug or observe the CPU running.
 
-ADD R0 R1
-000011 0 00000 0001
+### Run it locally
 
-
-LDI R0 #100 : R0 <- 100;
-
-100 = 0b 0110 0100
-
- op  4bit  r   4bit
-1110 0110 0000 0100
-
+Sadly, at the moment there is no easy way added to execute Instruction. It will follow soon.
 
 ## Compiler / Assembler
 
@@ -30,8 +21,4 @@ The Compiler works in 4 Steps:
 3. Linking Labels
 4. Compiling Code
 
-### List of supported Instructions:
-|Instruction|Meaning|example|
-|:---:|:---:|:---:|
-|ADD| Adding register or constants together| ADD r1 #5 |
-|MOV| Move Register or Constants to another Register | MOV r5 #45 |
+To Learn more, check the [Compiler1](https://github.com/MunsMan/ATMega328/tree/Compiler/compiler1) out.
