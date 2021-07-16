@@ -8,6 +8,7 @@ from ..errorHandling.error import throwError
 from ..Instructions.instructions import mapInstructions
 from .helper import *
 from .ALU import MULS, MULSU, alu, complement
+from .LoadStore import IO, LDST
 
 
 def mapCommmands(args: LineParser):
@@ -40,6 +41,8 @@ CommandsMap = {
     "BR": BR,
     "COM": complement,
     "EOR": alu,
+    "IN": IO,
+    "LD": LDST,
     "LSL": shift,
     "LSR": shift,
     "MOV": MOV,
@@ -52,4 +55,6 @@ CommandsMap = {
     "POP": POP,
     "SBC": alu,
     "SUB": alu,
+    "ST": LDST,
+    "OUT": IO,
 }
