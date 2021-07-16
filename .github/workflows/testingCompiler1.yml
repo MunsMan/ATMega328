@@ -9,13 +9,12 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  module_name: compiler1
-
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
+    
+    env:
+      module_name: compiler1
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f ${module_name}/requirements.txt ]; then pip install -r ${module_name}/requirements.txt; fi
+        if [ -f $module_name/requirements.txt ]; then pip install -r $module_name/requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest ${module_name}
+        pytest "$module_name"
