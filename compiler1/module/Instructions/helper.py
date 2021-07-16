@@ -134,7 +134,7 @@ def getRegisterPointer(register: str, lowest: int = 0, even=False):
 
 
 class Addr:
-    def __init__(self, addr: str, bit_len: int = 4) -> None:
+    def __init__(self, addr: str, bit_len: int = 16) -> None:
         self.__maxLen = bit_len
         self.value: int = self._cast(addr)
 
