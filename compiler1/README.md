@@ -4,6 +4,10 @@ This is a Compiler which compiles ARMisch Code into AVG Assembly or rather in AV
 
 The goal is to provide an easier writing experience to the programming. This layer of abstractions comes with the cost of a bit performance. There are some instructions, with are not directly supported and compile to multiple Instructions under the hut.
 
+## Instructions
+The Instructions, which are supported and the correstponding Syntax if defined in the Documentaion. Please always reference to the documentation and open a Issue if something is missing or incorrect.
+
+[Documentation](https://github.com/MunsMan/ATMega328/tree/Compiler/compiler1/docs)
 
 ## Performance
 An important topic, when working that low level. The goal is to map Instructions as direct as possible. But for further improvements, the goal is, to reduce the amount of instructions and clock cycles. In the documentation, it is pointed out, which instructions are efficient and which should be avoided in time critical use cases.
