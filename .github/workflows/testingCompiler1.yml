@@ -28,4 +28,4 @@ jobs:
         if [ -f $module_name/requirements.txt ]; then pip install -r $module_name/requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest "$module_name"
+        pytest ${{env.module_name}}
