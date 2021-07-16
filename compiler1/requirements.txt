@@ -1,0 +1,5 @@
+# Install for testing
+
+numpy==1.20.2
+pytest==6.2.3
+pytest-mock==3.6.1
