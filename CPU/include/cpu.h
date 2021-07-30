@@ -1,7 +1,7 @@
 #ifndef _CPU_H_
 #define _CPU_H_
 
-#include "mmemory.h"
+#include "memory.h"
 
 #define NUM_REGISTER 32
 #define SIZE_IO 64
