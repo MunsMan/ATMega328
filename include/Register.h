@@ -10,13 +10,13 @@
 
 typedef struct GeneralPurposeRegister gpr_t;
 
-typedef struct StatusRegister sr_t;
+typedef struct StatusRegister sreg_t;
 
 gpr_t* init_gpr();
-sr_t* init_sr();
+sreg_t* init_sr();
 
 void gprFree(gpr_t* gpr);
-void srFree(sr_t* sr);
+void srFree(sreg_t* sreg);
 
 byte_t gprReadByte(gpr_t* gpr, GPR_ADDR addr);
 word_t gprReadWord(gpr_t* gpr, GPR_ADDR addr);
@@ -31,30 +31,30 @@ void gprWriteZ(gpr_t* gpr, word_t value);
 
 void printRegister(gpr_t* gpr);
 
-void setIFlag(sr_t* sr, bit_t value);
-bit_t getIFlag(sr_t* sr);
+void setIFlag(sreg_t* sreg, bit_t value);
+bit_t getIFlag(sreg_t* sreg);
 
-void setTFlag(sr_t* sr, bit_t value);
-bit_t getTFlag(sr_t* sr);
+void setTFlag(sreg_t* sreg, bit_t value);
+bit_t getTFlag(sreg_t* sreg);
 
-void setHFlag(sr_t* sr, bit_t value);
-bit_t getHFlag(sr_t* sr);
+void setHFlag(sreg_t* sreg, bit_t value);
+bit_t getHFlag(sreg_t* sreg);
 
-void setSFlag(sr_t* sr, bit_t value);
-bit_t getSFlag(sr_t* sr);
+void setSFlag(sreg_t* sreg, bit_t value);
+bit_t getSFlag(sreg_t* sreg);
 
-void setVFlag(sr_t* sr, bit_t value);
-bit_t getVFlag(sr_t* sr);
+void setVFlag(sreg_t* sreg, bit_t value);
+bit_t getVFlag(sreg_t* sreg);
 
-void setNFlag(sr_t* sr, bit_t value);
-bit_t getNFlag(sr_t* sr);
+void setNFlag(sreg_t* sreg, bit_t value);
+bit_t getNFlag(sreg_t* sreg);
 
-void setZFlag(sr_t* sr, bit_t value);
-bit_t getZFlag(sr_t* sr);
+void setZFlag(sreg_t* sreg, bit_t value);
+bit_t getZFlag(sreg_t* sreg);
 
-void setCFlag(sr_t* sr, bit_t value);
-bit_t getCFlag(sr_t* sr);
+void setCFlag(sreg_t* sreg, bit_t value);
+bit_t getCFlag(sreg_t* sreg);
 
-bit_t getFlag(sr_t* sr, byte_t addr);
+bit_t getFlag(sreg_t* sreg, byte_t addr);
 
 #endif //_REGISTER_H

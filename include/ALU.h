@@ -5,13 +5,13 @@
 #include "Register.h"
 #include "Types.h"
 
-byte_t _add(sr_t* sr, byte_t rd, byte_t rr);
+byte_t _add(sreg_t* sreg, byte_t rd, byte_t rr);
 
 void add(cpu_t* cpu, instruction_t instruction);
 void adc(cpu_t* cpu, instruction_t instruction);
 
 void adiw(cpu_t* cpu, instruction_t instruction);
-word_t _adiw(sr_t* sr, word_t Rd, byte_t k);
+word_t _adiw(sreg_t* sreg, word_t Rd, byte_t k);
 
 // logical And
 void land(cpu_t* cpu, instruction_t instruction);
@@ -20,7 +20,7 @@ void land(cpu_t* cpu, instruction_t instruction);
 void andi(cpu_t* cpu, instruction_t instruction);
 
 // base add operation
-byte_t _and(sr_t* sr, byte_t Rd, byte_t Rr);
+byte_t _and(sreg_t* sreg, byte_t Rd, byte_t Rr);
 
 // Arithmetic Shift Operation
 void asr(cpu_t* cpu, instruction_t instruction);

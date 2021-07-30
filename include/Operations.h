@@ -10,7 +10,6 @@
 #define ONE_OP_MASK
 #define ZERO_OP_MASK
 
-typedef void (*operation_t)(cpu_t*, instruction_t);
 
 operation_t getOperation(instruction_t instruction);
 operation_t twoOperation(instruction_t instruction);

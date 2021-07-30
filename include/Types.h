@@ -7,6 +7,7 @@
 #define INSTRUCTION_LENGTH 16
 #define UNUSED(x) (void)(x)
 
+typedef void (*operation_t)(cpu_t*, instruction_t);
 typedef uint8_t byte_t;
 typedef uint16_t word_t;
 typedef byte_t GPR_ADDR;

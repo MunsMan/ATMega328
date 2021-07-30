@@ -3,6 +3,7 @@
 typedef struct GeneralPurposeRegister {
 	byte_t* r;
 	byte_t size;
+	// FixMe: Change to Pointer	
 	GPR_ADDR X;
 	GPR_ADDR Y;
 	GPR_ADDR Z;
@@ -17,7 +18,7 @@ typedef struct StatusRegister {
 	bit_t N : 1; // Negative Flag
 	bit_t Z : 1; // Zero Flag
 	bit_t C : 1; // Carry Flag
-} sr_t;
+} sreg_t;
 
 gpr_t* init_gpr() {
 	gpr_t* gpr = (gpr_t*)malloc(sizeof(gpr_t));
@@ -29,17 +30,17 @@ gpr_t* init_gpr() {
 	return gpr;
 }
 
-sr_t* init_sr() {
-	sr_t* sr = (sr_t*)malloc(sizeof(sr_t));
-	sr->I = 0;
-	sr->T = 0;
-	sr->H = 0;
-	sr->S = 0;
-	sr->V = 0;
-	sr->N = 0;
-	sr->Z = 0;
-	sr->C = 0;
-	return sr;
+sreg_t* init_sr() {
+	sreg_t* sreg = (sreg_t*)malloc(sizeof(sreg_t));
+	sreg->I = 0;
+	sreg->T = 0;
+	sreg->H = 0;
+	sreg->S = 0;
+	sreg->V = 0;
+	sreg->N = 0;
+	sreg->Z = 0;
+	sreg->C = 0;
+	return sreg;
 }
 
 void gprFree(gpr_t* gpr) {
@@ -47,8 +48,8 @@ void gprFree(gpr_t* gpr) {
 	free(gpr);
 }
 
-void srFree(sr_t* sr) {
-	free(sr);
+void srFree(sreg_t* sreg) {
+	free(sreg);
 }
 
 byte_t gprReadByte(gpr_t* gpr, GPR_ADDR addr) {
@@ -96,104 +97,104 @@ void printRegister(gpr_t* gpr) {
 	}
 }
 
-void setIFlag(sr_t* sr, bit_t value) {
-	sr->I = value;
+void setIFlag(sreg_t* sreg, bit_t value) {
+	sreg->I = value;
 }
-bit_t getIFlag(sr_t* sr) {
-	return sr->I;
-}
-
-void setTFlag(sr_t* sr, bit_t value) {
-	sr->T = value;
-}
-bit_t getTFlag(sr_t* sr) {
-	return sr->T;
+bit_t getIFlag(sreg_t* sreg) {
+	return sreg->I;
 }
 
-void setHFlag(sr_t* sr, bit_t value) {
-	sr->H = value;
+void setTFlag(sreg_t* sreg, bit_t value) {
+	sreg->T = value;
 }
-bit_t getHFlag(sr_t* sr) {
-	return sr->H;
-}
-
-void setSFlag(sr_t* sr, bit_t value) {
-	sr->S = value;
-}
-bit_t getSFlag(sr_t* sr) {
-	return sr->S;
+bit_t getTFlag(sreg_t* sreg) {
+	return sreg->T;
 }
 
-void setVFlag(sr_t* sr, bit_t value) {
-	sr->V = value;
+void setHFlag(sreg_t* sreg, bit_t value) {
+	sreg->H = value;
 }
-bit_t getVFlag(sr_t* sr) {
-	return sr->V;
-}
-
-void setNFlag(sr_t* sr, bit_t value) {
-	sr->N = value;
-}
-bit_t getNFlag(sr_t* sr) {
-	return sr->N;
+bit_t getHFlag(sreg_t* sreg) {
+	return sreg->H;
 }
 
-void setZFlag(sr_t* sr, bit_t value) {
-	sr->Z = value;
+void setSFlag(sreg_t* sreg, bit_t value) {
+	sreg->S = value;
 }
-bit_t getZFlag(sr_t* sr) {
-	return sr->Z;
-}
-
-void setCFlag(sr_t* sr, bit_t value) {
-	sr->C = value;
-}
-bit_t getCFlag(sr_t* sr) {
-	return sr->C;
+bit_t getSFlag(sreg_t* sreg) {
+	return sreg->S;
 }
 
-bit_t getFlag(sr_t* sr, byte_t addr) {
+void setVFlag(sreg_t* sreg, bit_t value) {
+	sreg->V = value;
+}
+bit_t getVFlag(sreg_t* sreg) {
+	return sreg->V;
+}
+
+void setNFlag(sreg_t* sreg, bit_t value) {
+	sreg->N = value;
+}
+bit_t getNFlag(sreg_t* sreg) {
+	return sreg->N;
+}
+
+void setZFlag(sreg_t* sreg, bit_t value) {
+	sreg->Z = value;
+}
+bit_t getZFlag(sreg_t* sreg) {
+	return sreg->Z;
+}
+
+void setCFlag(sreg_t* sreg, bit_t value) {
+	sreg->C = value;
+}
+bit_t getCFlag(sreg_t* sreg) {
+	return sreg->C;
+}
+
+bit_t getFlag(sreg_t* sreg, byte_t addr) {
 	if(addr > 7) {
 		fprintf(stderr, "Address out of scope!\n");
 		exit(EXIT_FAILURE);
 	}
 	switch(addr) {
 		case 0x0: {
-			return getCFlag(sr);
+			return getCFlag(sreg);
 		};
 		case 0x1: {
-			return getZFlag(sr);
+			return getZFlag(sreg);
 		};
 		case 0x2: {
-			return getNFlag(sr);
+			return getNFlag(sreg);
 		};
 		case 0x3: {
-			return getVFlag(sr);
+			return getVFlag(sreg);
 		};
 		case 0x4: {
-			return getSFlag(sr);
+			return getSFlag(sreg);
 		};
 		case 0x5: {
-			return getHFlag(sr);
+			return getHFlag(sreg);
 		};
 		case 0x6: {
-			return getTFlag(sr);
+			return getTFlag(sreg);
 		};
 		case 0x7: {
-			return getIFlag(sr);
+			return getIFlag(sreg);
 		};
 		default: return 0;
 	}
 	return 0;
 }
 
-void resetSR(sr_t* sr) {
-	sr->I = 0;
-	sr->T = 0;
-	sr->H = 0;
-	sr->S = 0;
-	sr->V = 0;
-	sr->N = 0;
-	sr->Z = 0;
-	sr->C = 0;
+void resetSR(sreg_t* sreg) {
+	sreg->I = 0;
+	sreg->T = 0;
+	sreg->H = 0;
+	sreg->S = 0;
+	sreg->V = 0;
+	sreg->N = 0;
+	sreg->Z = 0;
+	sreg->C = 0;
 }

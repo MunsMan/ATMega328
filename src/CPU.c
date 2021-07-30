@@ -1,11 +1,11 @@
 #include "CPU.h"
 
 typedef struct AVR_CPU {
-	addr_t SP;
-	addr_t PC; // originally only 14 bits;
-	gpr_t* gpr;
-	memory_t* mem;
-	sr_t* sr;
+	addr_t SP;		// Stack Pointer
+	addr_t PC;		// Program Counter (originally only 14 bits)
+	gpr_t* gpr;		// General Purpose Register
+	memory_t* mem;	// Memory Space	
+	sreg_t* sreg;	// Status Register
 } cpu_t;
 
 cpu_t* initCPU() {
@@ -14,7 +14,7 @@ cpu_t* initCPU() {
 	cpu->PC = 0x0100;
 	cpu->gpr = init_gpr();
 	cpu->mem = init_memory(cpu->gpr);
-	cpu->sr = init_sr();
+	cpu->sreg = init_sr();
 	return cpu;
 }
 
@@ -49,8 +49,8 @@ word_t readMemory(cpu_t* cpu, addr_t addr) {
 	return readWord(cpu->mem, addr);
 }
 
-sr_t* getSR(cpu_t* cpu) {
-	return cpu->sr;
+sreg_t* getSR(cpu_t* cpu) {
+	return cpu->sreg;
 }
 
 gpr_t* getGPR(cpu_t* cpu) {
@@ -70,7 +70,7 @@ void printGPRegister(cpu_t* cpu) {
 }
 
 void freeCPU(cpu_t* cpu) {
-	srFree(cpu->sr);
+	srFree(cpu->sreg);
 	memoryFree(cpu->mem);
 	free(cpu);
 }

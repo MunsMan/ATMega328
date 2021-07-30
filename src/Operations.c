@@ -1,6 +1,9 @@
 #include "Operations.h"
 
 operation_t getOperation(instruction_t instruction) {
+	if(instruction & 0xF800 == 0xF000){
+		return branch(instruction);
+	}
 	if(instruction >> 14 == 0) {
 		return twoOperation(instruction);
 	}

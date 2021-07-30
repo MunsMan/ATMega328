@@ -14,7 +14,7 @@ void flashMemory(cpu_t* cpu, addr_t addr, instruction_t inst);
 void execute(cpu_t* cpu, CLOCK_CYCLE clockCycle);
 instruction_t fetch(cpu_t* cpu);
 
-sr_t* getSR(cpu_t* cpu);
+sreg_t* getSR(cpu_t* cpu);
 gpr_t* getGPR(cpu_t* cpu);
 
 void addPC(cpu_t* cpu, byte_t steps);
