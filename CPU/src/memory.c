@@ -13,6 +13,7 @@ memory_t* init_memory(){
     memory->flash = (word_t*)malloc(sizeof(word_t) * SIZE_FLASH);
     memory->sram_size = SIZE_SRAM;
     memory->flash_size = SIZE_FLASH;
+    return memory;
 }
 
 bool destroy_memory(memory_t* memory) {
