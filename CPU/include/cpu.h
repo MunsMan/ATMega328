@@ -3,6 +3,7 @@
 
 #include "memory.h"
 
+#define BOOT_ADDR 0x3FFF
 #define NUM_REGISTER 32
 #define SIZE_IO 64
 #define SIZE_EXT_IO 160
@@ -25,36 +26,46 @@ typedef struct cpu {
     byte_t ext_io[SIZE_EXT_IO];
     memory_t* memory;
     addr_t PC;
-    addr_t SP;
     uint64_t clock_cycles;
 } cpu_t;
 
 
 cpu_t* init_cpu(memory_t* memory);
-bool destroy_cpu(cpu_t* cpu);
+void destroy_cpu(cpu_t* cpu);
 
-byte_t read_io(addr_t addr);
-byte_t read_ext_io(addr_t addr);
+byte_t read_io(cpu_t* cpu, addr_t addr);
+byte_t read_ext_io(cpu_t* cpu, addr_t addr);
 
-bool write_io(addr_t addr, byte_t byte);
-bool write_ext_io(addr_t addr, byte_t byte);
+void write_io(cpu_t* cpu, addr_t addr, byte_t byte);
+void write_ext_io(cpu_t* cpu, addr_t addr, byte_t byte);
 
-bit_t getC(sreg_t* cpu);
-bit_t getZ(sreg_t* cpu);
-bit_t getN(sreg_t* cpu);
-bit_t getV(sreg_t* cpu);
-bit_t getS(sreg_t* cpu);
-bit_t getH(sreg_t* cpu);
-bit_t getT(sreg_t* cpu);
-bit_t getI(sreg_t* cpu);
+bit_t getC(cpu_t* cpu);
+bit_t getZ(cpu_t* cpu);
+bit_t getN(cpu_t* cpu);
+bit_t getV(cpu_t* cpu);
+bit_t getS(cpu_t* cpu);
+bit_t getH(cpu_t* cpu);
+bit_t getT(cpu_t* cpu);
+bit_t getI(cpu_t* cpu);
 
-bool setC(sreg_t* cpu);
-bool setZ(sreg_t* cpu);
-bool setN(sreg_t* cpu);
-bool setV(sreg_t* cpu);
-bool setS(sreg_t* cpu);
-bool setH(sreg_t* cpu);
-bool setT(sreg_t* cpu);
-bool setI(sreg_t* cpu);
+void setC(cpu_t* cpu);
+void setZ(cpu_t* cpu);
+void setN(cpu_t* cpu);
+void setV(cpu_t* cpu);
+void setS(cpu_t* cpu);
+void setH(cpu_t* cpu);
+void setT(cpu_t* cpu);
+void setI(cpu_t* cpu);
+
+void clearC(cpu_t* cpu);
+void clearZ(cpu_t* cpu);
+void clearN(cpu_t* cpu);
+void clearV(cpu_t* cpu);
+void clearS(cpu_t* cpu);
+void clearH(cpu_t* cpu);
+void clearT(cpu_t* cpu);
+void clearI(cpu_t* cpu);
+
+instruction_t fetch(cpu_t* cpu);
 
 #endif //_CPU_H_
