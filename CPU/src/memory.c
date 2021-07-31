@@ -4,7 +4,7 @@ typedef struct memory {
     size_t sram_size;
     size_t flash_size;
     byte_t* sram;    
-    word_t* flash;
+    instruction_t* flash;
 } memory_t;
 
 memory_t* init_memory(){
@@ -28,7 +28,7 @@ byte_t read_sram(memory_t* memory, addr_t addr){
     return memory->sram[addr];
 }
 
-word_t read_flash(memory_t* memory, addr_t addr){
+instruction_t read_flash(memory_t* memory, addr_t addr){
     return memory->flash[addr];
 }
 
@@ -36,7 +36,7 @@ void write_sram(memory_t* memory, addr_t addr, byte_t byte){
     memory->sram[addr] = byte;
 }
 
-void write_flash(memory_t* memory, addr_t addr, word_t word){
+void write_flash(memory_t* memory, addr_t addr, instruction_t word){
     memory->flash[addr] = word;
 }
 
