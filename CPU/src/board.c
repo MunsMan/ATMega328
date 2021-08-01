@@ -51,7 +51,8 @@ instruction_t nextInstruction(cpu_t* cpu){
 
 int execute(cpu_t* cpu){
     instruction_t instruction = nextInstruction(cpu);
-    operation_t* operation = decodeInstruction(instruction);
-    operation->operation(instruction);
-    return operation->clock_cycles;
+    operation_t operation;
+    decodeInstruction(instruction, &operation);
+    operation.operation(cpu, instruction);
+    return operation.clock_cycles;
 }
