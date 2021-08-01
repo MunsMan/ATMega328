@@ -1,4 +1,4 @@
-#include "include/memory.h"
+#include "avr_memory.h"
 
 typedef struct memory {
     size_t sram_size;
@@ -10,7 +10,7 @@ typedef struct memory {
 memory_t* init_memory(){
     memory_t* memory = (memory_t*)malloc(sizeof(memory_t));
     memory->sram = (byte_t*)malloc(sizeof(byte_t) * SIZE_SRAM);
-    memory->flash = (word_t*)malloc(sizeof(word_t) * SIZE_FLASH);
+    memory->flash = (instruction_t*)malloc(sizeof(word_t) * SIZE_FLASH);
     memory->sram_size = SIZE_SRAM;
     memory->flash_size = SIZE_FLASH;
     return memory;
