@@ -1,9 +1,11 @@
 CFLAGS = -Wall -Wextra -Werror -std=gnu11
 LFLAGS =
 
-INCLUDES = inlcudes
+INCLUDES = include
 SRC = src
 BIN = bin
 
-memory.o: memory.c
+EXECUTABLE = main
+
+$(BIN)/$(EXECUTABLE): $(SRC)/*.c $(SRC)/**/*.c
 	$(CC) $(CFLAGS) -I $(INCLUDES) -o $@ $^ 
