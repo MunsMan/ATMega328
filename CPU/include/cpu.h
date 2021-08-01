@@ -1,7 +1,7 @@
 #ifndef _CPU_H_
 #define _CPU_H_
 
-#include "memory.h"
+#include "avr_memory.h"
 
 #define BOOT_ADDR 0x3FFF
 #define NUM_REGISTER 32
@@ -20,7 +20,7 @@ typedef struct sreg {
 } sreg_t;
 
 typedef struct cpu {
-    register_t r[NUM_REGISTER];
+    reg_t r[NUM_REGISTER];
     sreg_t* sreg;
     byte_t io[SIZE_IO];
     byte_t ext_io[SIZE_EXT_IO];
@@ -67,5 +67,7 @@ void clearT(cpu_t* cpu);
 void clearI(cpu_t* cpu);
 
 instruction_t fetch(cpu_t* cpu);
+
+void increase_pc(cpu_t* cpu);
 
 #endif //_CPU_H_
