@@ -7,5 +7,8 @@ BIN = bin
 
 EXECUTABLE = main
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*.c $(SRC)/**/*.c
-	$(CC) $(CFLAGS) -I $(INCLUDES) -o $@ $^ 
+$(EXECUTABLE): $(SRC)/*.c $(SRC)/**/*.c
+	$(CC) $(CFLAGS) -I $(INCLUDES) -o $(BIN)/$@ $^ 
+
+debug: $(SRC)/*.c $(SRC)/**/*.c
+	$(CC) $(CFLAGS) -I $(INCLUDES) -g $^ -o $(BIN)/$@
