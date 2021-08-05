@@ -59,8 +59,31 @@ void erase_memory(memory_t* memory){
     }
 }
 
-// ToDo: Need implementation
-bool flash_memory(memory_t* memory, char* filename);
+void flash_loadable(char* file, memory_t* memory, loadable_t* loadable){
+    for(unsigned i = 0; i < loadable->size / 2; i++){
+        instruction_t instruction = ((instruction_t*)&file[loadable->offset])[i];
+        write_flash(memory, loadable->addr + i, instruction);
+    } 
+}
+
+void flash_memory(memory_t* memory, char* filename){
+    char* file = readFile(filename);
+    load_table_t* load_table = parseElf(file);
+    for(int i = 0; i < load_table->num_sections; i++){
+        flash_loadable(file, memory, load_table->loadables[i]);
+    }
+    destroy_load_table(load_table);
+    free(file);
+}
+
+void dump_flash(memory_t* memory, int fd){
+    write(fd, memory->flash, memory->flash_size);
+}
+
+void memory_dump(memory_t* memory){
+    int fd = open("memory_dump.txt", O_CREAT | O_WRONLY);
+    dump_flash(memory, fd);
+}
 
 size_t sram_size(memory_t* memory){
     return memory->sram_size;

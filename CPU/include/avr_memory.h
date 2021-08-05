@@ -2,6 +2,7 @@
 #define _MEMORY_H_
 
 #include "types.h"
+#include "elf.h"
 
 #define SIZE_SRAM 1048
 #define SIZE_FLASH 18176
@@ -21,9 +22,11 @@ bool check_addr_sram(memory_t* memory, addr_t addr);
 bool check_addr_flash(memory_t* memory, addr_t addr);
 
 void erase_memory(memory_t* memory);
-bool flash_memory(memory_t* memory, char* filename);
+void flash_memory(memory_t* memory, char* filename);
 
 size_t sram_size(memory_t* memory);
 size_t flash_size(memory_t* memory);
+
+void memory_dump(memory_t* memory);
 
 #endif // _MEMORY_H
