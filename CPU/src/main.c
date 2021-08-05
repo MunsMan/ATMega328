@@ -9,7 +9,9 @@ int main(){
     cpu_t* cpu = init_cpu(memory);
 
     // FLASH
-    write_flash(cpu->memory, 0x0000, 3073);
+    flash_memory(memory, "test.elf");
+
+    memory_dump(memory);
 
 
     printf("Zero Flag: %d\n", getZ(cpu));
