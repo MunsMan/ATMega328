@@ -3,7 +3,7 @@
 
 #include "avr_memory.h"
 
-#define BOOT_ADDR 0x3FFF
+#define BOOT_ADDR 0
 #define NUM_REGISTER 32
 #define SIZE_IO 64
 #define SIZE_EXT_IO 160
