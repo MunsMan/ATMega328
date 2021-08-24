@@ -5,4 +5,6 @@
 
 operation_t* alu(instruction_t instruction, operation_t* operation);
 
+void add(cpu_t* cpu, instruction_t instruction);
+
 #endif  // _OPERATIONS_ALU_H_
