@@ -11,5 +11,7 @@ def test_init_cpu():
     cpu = testlib.init_cpu(memory)
     print(memory, cpu.contents.memory)
     assert isinstance(cpu.contents.sreg, POINTER(sreg_t))
+    # ToDo:
+    # Check memory Pointer to be the same!
     assert cpu.contents.PC == 0
     assert cpu.contents.clock_cycles == 0
