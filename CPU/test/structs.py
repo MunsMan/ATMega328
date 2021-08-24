@@ -6,6 +6,11 @@ bit_t = c_uint8
 addr_t = c_uint16
 
 
+NUM_REGISTER = 32
+SIZE_IO = 64
+SIZE_EXT_IO = 160
+
+
 class memory_t (Structure):
     _fields_ = [
         ("sram_size", c_size_t),
@@ -30,10 +35,10 @@ class sreg_t (Structure):
 
 class cpu_t (Structure):
     _fields_ = [
-        ("r", POINTER(c_int8)),
+        ("r", c_int8 * NUM_REGISTER),
         ("sreg", POINTER(sreg_t)),
-        ("io", POINTER(byte_t)),
-        ("ext_io", POINTER(byte_t)),
+        ("io", byte_t * SIZE_IO),
+        ("ext_io", byte_t * SIZE_EXT_IO),
         ("memory", POINTER(memory_t)),
         ("PC", addr_t),
         ("clock_cycles", c_uint64)
