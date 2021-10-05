@@ -1,12 +1,6 @@
 from typing import Dict
 
-
-def bit3(reg: int) -> bool:
-    return (reg & (1 << 3)) > 0
-
-
-def bit7(reg: int) -> bool:
-    return bool((reg >> 7) & 1)
+opcode = "0010 00rd dddd rrrr"
 
 
 def getBitAt(byte: int, index: int):
