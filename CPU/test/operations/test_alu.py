@@ -61,6 +61,26 @@ def test_add():
     destroy_cpu(cpu)
 
 
+def test_and():
+    cpu = create_cpu().contents
+    for _ in range(64):
+        rd, rr = random.sample(list(range(32)), 2)
+        vd = c_int8(random.randint(0, 255))
+        vr = c_int8(random.randint(0, 255))
+        cpu.r[rd] = vd.value
+        cpu.r[rr] = vr.value
+        instruction = maskOpcode("0010 00rd dddd rrrr", d=rd, r=rr)
+        testlib.add(byref(cpu), instruction)
+        r = c_int8(vd.value * vr.value).value
+        print(f"rd: {vd.value}, rr: {vr.value}, r: {r}")
+        assert cpu.r[rd] == r
+        assert testlib.getS(byref(cpu)) == testlib.getN(
+            byref(cpu)) ^ testlib.getV(byref(cpu))
+        assert testlib.getV(byref(cpu)) == 0
+        assert testlib.getN(byref(cpu)) == bit7(r)
+        assert testlib.getZ(byref(cpu)) == (r.value == 0)
+
+
 def statusRegister(cpu: cpu_t, rd: int, rr: int, r: int):
     print(f"rd: {rd}, rr: {rr}, r: {r}")
     assert testlib.getH(cpu) == ((bit3(rd) and bit3(rr)) or (

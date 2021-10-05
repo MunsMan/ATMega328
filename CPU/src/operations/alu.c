@@ -58,6 +58,17 @@ void add(cpu_t* cpu, instruction_t instruction){
     (rd3 && rr3) || (rr3 && !r3) || (!r3 && rd3) ? setH(cpu) : clearH(cpu);
 }
 
+void and(cpu_t* cpu, instruction_t instruction){
+    byte_t rd = cpu->r[getRd(instruction)];
+    byte_t rr = cpu->r[getRr(instruction)];
+    byte_t r = rd && rr;
+
+    cpu->r[getRd(instruction)] = r;
+    clearV(cpu);
+    ((r >> 7) & 1) == 1 ? setN(cpu) : clearN(cpu);
+    getN(cpu) ? setS(cpu) : clearS(cpu);
+    r == 0 ? setZ(cpu) : clearZ(cpu);
+}
 
 
 reg_t getRd(instruction_t instruction){
