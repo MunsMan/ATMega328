@@ -58,10 +58,10 @@ void add(cpu_t* cpu, instruction_t instruction){
     (rd3 && rr3) || (rr3 && !r3) || (!r3 && rd3) ? setH(cpu) : clearH(cpu);
 }
 
-void and(cpu_t* cpu, instruction_t instruction){
+void and_(cpu_t* cpu, instruction_t instruction){
     byte_t rd = cpu->r[getRd(instruction)];
     byte_t rr = cpu->r[getRr(instruction)];
-    byte_t r = rd && rr;
+    byte_t r = rd & rr;
 
     cpu->r[getRd(instruction)] = r;
     clearV(cpu);
