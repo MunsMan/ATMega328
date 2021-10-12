@@ -1,0 +1,171 @@
+Branch Operations
+BRBC      		 1111 01kk kkkk ksss
+BRBS      		 1111 00kk kkkk ksss
+BRCC      		 1111 01kk kkkk k000
+BRCS      		 1111 00kk kkkk k000
+BREQ      		 1111 00kk kkkk k001
+BRGE      		 1111 01kk kkkk k100
+BRHC      		 1111 01kk kkkk k101
+BRHS      		 1111 00kk kkkk k101
+BRID      		 1111 01kk kkkk k111
+BRIE      		 1111 00kk kkkk k111
+BRLO      		 1111 00kk kkkk k000
+BRLT      		 1111 00kk kkkk k100
+BRMI      		 1111 00kk kkkk k010
+BRNE      		 1111 01kk kkkk k001
+BRPL      		 1111 01kk kkkk k010
+BRSH      		 1111 01kk kkkk k000
+BRTC      		 1111 01kk kkkk k110
+BRTS      		 1111 00kk kkkk k110
+BRVC      		 1111 01kk kkkk k011
+BRVS      		 1111 00kk kkkk k011
+
+
+Flags
+BCLR      		 1001 0100 1sss 1000
+BSET      		 1001 0100 0sss 1000
+CLC      		 1001 0100 1000 1000
+CLH      		 1001 0100 1101 1000
+CLI      		 1001 0100 1111 1000
+CLN      		 1001 0100 1010 1000
+CLS      		 1001 0100 1100 1000
+CLT      		 1001 0100 1110 1000
+CLV      		 1001 0100 1011 1000
+CLZ      		 1001 0100 1001 1000
+SEC      		 1001 0100 0000 1000
+SEH      		 1001 0100 0101 1000
+SEI      		 1001 0100 0111 1000
+SEN      		 1001 0100 0010 1000
+SES      		 1001 0100 0100 1000
+SET      		 1001 0100 0110 1000
+SEV      		 1001 0100 0011 1000
+SEZ      		 1001 0100 0001 1000
+
+
+ALU
+ADC      		 0001 11rd dddd rrrr
+ADD      		 0000 11rd dddd rrrr
+AND      		 0010 00rd dddd rrrr
+CLR      		 0010 01dd dddd dddd
+CP      		 0001 01rd dddd rrrr
+CPC      		 0000 01rd dddd rrrr
+CPI      		 0011 KKKK dddd KKKK
+CPSE      		 0001 00rd dddd rrrr
+EOR      		 0010 01rd dddd rrrr
+FMUL      		 0000 0011 0ddd 1rrr
+FMULS      		 0000 0011 1ddd 0rrr
+FMULSU  		 0000 0011 1ddd 1rrr
+LSL      		 0000 11dd dddd dddd
+MOV      		 0010 11rd dddd rrrr
+MOVW      		 0000 0001 dddd rrrr
+MULS      		 0000 0010 dddd rrrr
+MULSU      		 0000 0011 0ddd 0rrr
+NOP      		 0000 0000 0000 0000
+OR      		 0010 10rd dddd rrrr
+ROL      		 0001 11dd dddd dddd
+SBC      		 0000 10rd dddd rrrr
+SUB      		 0001 10rd dddd rrrr
+TST      		 0010 00dd dddd dddd
+
+
+Immediate Word
+ADIW      		 1001 0110 KKdd KKKK
+SBIW      		 1001 0111 KKdd KKKK
+
+
+Load and Store
+ELPM      		 1001 000d dddd 0110
+ELPM      		 1001 000d dddd 0111
+LAC      		 1001 001r rrrr 0110
+LAS      		 1001 001r rrrr 0101
+LAT      		 1001 001r rrrr 0111
+LD      		 1000 000d dddd 0000
+LD      		 1000 000d dddd 1000
+LD      		 1001 000d dddd 0001
+LD      		 1001 000d dddd 0010
+LD      		 1001 000d dddd 1001
+LD      		 1001 000d dddd 1010
+LD      		 1001 000d dddd 1100
+LD      		 1001 000d dddd 1101
+LD      		 1001 000d dddd 1110
+LDS      		 1001 000d dddd 0000
+LPM      		 1001 000d dddd 0100
+LPM      		 1001 000d dddd 0101
+POP      		 1001 000d dddd 1111
+PUSH      		 1001 001d dddd 1111
+ST      		 1000 001r rrrr 0000
+ST      		 1000 001r rrrr 1000
+ST      		 1001 001r rrrr 0001
+ST      		 1001 001r rrrr 0010
+ST      		 1001 001r rrrr 1001
+ST      		 1001 001r rrrr 1010
+ST      		 1001 001r rrrr 1100
+ST      		 1001 001r rrrr 1101
+ST      		 1001 001r rrrr 1110
+STS      		 1001 001d dddd 0000
+XCH      		 1001 001r rrrr 0100
+
+
+Immediate
+ANDI      		 0111 KKKK dddd KKKK
+CBR      		 0111 KKKK dddd KKKK
+ORI      		 0110 KKKK dddd KKKK
+SBCI      		 0100 KKKK dddd KKKK
+SBR      		 0110 KKKK dddd KKKK
+SUBI      		 0101 KKKK dddd KKKK
+
+
+Return
+EICALL  		 1001 0101 0001 1001
+ICALL      		 1001 0101 0000 1001
+RET      		 1001 0101 0000 1000
+RETI      		 1001 0101 0001 1000
+
+
+Return
+
+
+Missing
+ASR      		 1001 010d dddd 0101 	 BIT
+BLD      		 1111 100d dddd 0bbb 	 BIT
+BREAK      		 1001 0101 1001 1000 	 MCU
+BST      		 1111 101d dddd 0bbb 	 BIT
+CALL      		 1001 010k kkkk 111k 	 BR
+CBI      		 1001 1000 AAAA Abbb 	 BIT
+COM      		 1001 010d dddd 0000 	 ALU
+DEC      		 1001 010d dddd 1010 	 ALU
+DES      		 1001 0100 KKKK 1011 	 NONE
+EIJMP      		 1001 0100 0001 1001 	 BR
+ELPM      		 1001 0101 1101 1000 	 DT
+IJMP      		 1001 0100 0000 1001 	 BR
+IN      		 1011 0AAd dddd AAAA 	 DT
+INC      		 1001 010d dddd 0011 	 ALU
+JMP      		 1001 010k kkkk 110k 	 BR
+LD      		 10q0 qq0d dddd 0qqq 	 DT
+LD      		 10q0 qq0d dddd 1qqq 	 DT
+LDI      		 1110 KKKK dddd KKKK 	 DT
+LDS      		 1010 0kkk dddd kkkk 	 DT
+LPM      		 1001 0101 1100 1000 	 DT
+LSR      		 1001 010d dddd 0110 	 BIT
+MUL      		 1001 11rd dddd rrrr 	 ALU
+NEG      		 1001 010d dddd 0001 	 ALU
+OUT      		 1011 1AAr rrrr AAAA 	 DT
+RCALL      		 1101 kkkk kkkk kkkk 	 BR
+RJMP      		 1100 kkkk kkkk kkkk 	 BR
+ROR      		 1001 010d dddd 0111 	 BIT
+SBI      		 1001 1010 AAAA Abbb 	 BR
+SBIC      		 1001 1001 AAAA Abbb 	 BR
+SBIS      		 1001 1011 AAAA Abbb 	 BR
+SBRC      		 1111 110r rrrr 0bbb 	 BR
+SBRS      		 1111 111r rrrr 0bbb 	 BR
+SER      		 1110 1111 dddd 1111 	 BIT
+SLEEP      		 1001 0101 1000 1000 	 MCU
+SPM      		 1001 0101 1110 1000 	 DT
+SPM      		 1001 0101 1111 1000 	 DT
+ST      		 10q0 qq1r rrrr 0qqq 	 DT
+ST      		 10q0 qq1r rrrr 1qqq 	 DT
+STS      		 1010 1kkk dddd kkkk 	 DT
+SWAP      		 1001 010d dddd 0010 	 DT
+WDR      		 1001 0101 1010 1000 	 MCU
+
+
