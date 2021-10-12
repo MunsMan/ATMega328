@@ -41,8 +41,8 @@ def test_adc():
         testlib.adc(byref(cpu), instruction)
         r = c_int8(vd.value + vr.value + c).value
         assert cpu.r[rd] == r
-        # assert testlib.getH(cpu) == ((bit3(vd.value) and bit3(vr.value)) or (
-        #     bit3(vd.value) and not bit3(r)) or (not bit3(r) and bit3(vr.value)))
+        assert testlib.getH(byref(cpu)) == ((bit3(vd.value) and bit3(vr.value)) or (
+            bit3(vd.value) and not bit3(r)) or (not bit3(r) and bit3(vr.value)))
         statusRegister(byref(cpu), vd.value, vr.value, r)
     destroy_cpu(cpu)
 
@@ -59,8 +59,8 @@ def test_add():
         testlib.add(byref(cpu), instruction)
         r = c_int8(vd.value + vr.value).value
         assert cpu.r[rd] == r
-        # assert testlib.getH(cpu) == ((bit3(vd.value) and bit3(vr.value)) or (
-        #     bit3(vd.value) and not bit3(r)) or (not bit3(r) and bit3(vr.value)))
+        assert testlib.getH(byref(cpu)) == ((bit3(vd.value) and bit3(vr.value)) or (
+            bit3(vd.value) and not bit3(r)) or (not bit3(r) and bit3(vr.value)))
         statusRegister(byref(cpu), vd.value, vr.value, r)
     destroy_cpu(cpu)
 
@@ -83,25 +83,39 @@ def test_and():
         assert testlib.getV(byref(cpu)) == 0
         assert testlib.getN(byref(cpu)) == bit7(r)
         assert testlib.getZ(byref(cpu)) == (r == 0)
+    destroy_cpu(cpu)
 
 
 def test_sub():
     cpu = create_cpu().contents
     for _ in range(64):
-        rd, rr = random.sample(list(range(32)), 2)
-        vd = c_int8(random.randint(0, 255)).value
-        vr = c_int8(random.randint(0, 255)).value
-        cpu.r[rd] = vd
-        cpu.r[rr] = vr
-        instruction = maskOpcode("0001 10rd dddd rrrr", d=rd, r=rr)
+        numberRd, numberRr = random.sample(list(range(32)), 2)
+        rd = c_int8(random.randint(0, 255)).value
+        rr = c_int8(random.randint(0, 255)).value
+        cpu.r[numberRd] = rd
+        cpu.r[numberRr] = rr
+        instruction = maskOpcode("0001 10rd dddd rrrr", d=numberRd, r=numberRr)
         testlib.sub(byref(cpu), instruction)
-        r = c_int8(vd - vr).value
-        print(f"{vd} - {vr} = {r}")
-        assert r == cpu.r[rd]
+        r = c_int8(rd - rr).value
+        print(f"{rd} - {rr} = {r}")
+
         h: bool = (not bit3(rd) and bit3(rr)) or (
             bit3(rr) and bit3(r)) or (bit3(r) and not bit3(rd))
-        assert h == testlib.getH(cpu)
-        statusRegister(cpu, vd, vr, r)
+        rd7, rr7, r7 = bit7(rd), bit7(rr), bit7(r)
+        v: bool = ((rd7 and not rr7 and not r7) or (not rd7 and rr7 and r7))
+        n: bool = bool(r7)
+        s: bool = bool(n ^ v)
+        z: bool = r == 0
+        c: bool = (not rd7 and rr7) or (rr7 and r7) or (r7 and not rd7)
+
+        assert r == cpu.r[numberRd]
+        assert h == testlib.getH(byref(cpu))
+        assert s == testlib.getS(byref(cpu))
+        assert v == testlib.getV(byref(cpu))
+        assert n == testlib.getN(byref(cpu))
+        assert z == testlib.getZ(byref(cpu))
+        assert c == testlib.getC(byref(cpu))
+    destroy_cpu(cpu)
 
 
 def statusRegister(cpu: cpu_t, rd: int, rr: int, r: int):
