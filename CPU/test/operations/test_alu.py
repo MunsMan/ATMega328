@@ -32,18 +32,29 @@ def test_adc():
     for _ in range(64):
         c = random.sample([0, 1], 1)[0]
         numberRd, numberRr = random.sample(list(range(32)), 2)
-        rd = c_int8(random.randint(0, 255))
-        rr = c_int8(random.randint(0, 255))
+        rd = c_int8(random.randint(0, 255)).value
+        rr = c_int8(random.randint(0, 255)).value
         testlib.setC(byref(cpu)) if c == 1 else testlib.clearC(byref(cpu))
-        cpu.r[numberRd] = rd.value
-        cpu.r[numberRr] = rr.value
+        cpu.r[numberRd] = rd
+        cpu.r[numberRr] = rr
         instruction = maskOpcode("0001 11rd dddd rrrr", d=numberRd, r=numberRr)
         testlib.adc(byref(cpu), instruction)
-        r = c_int8(rd.value + rr.value + c).value
+        r = c_int8(rd + rr + c).value
+        rd7, rr7, r7 = bit7(rd), bit7(rr), bit7(r)
+        h = ((bit3(rd) and bit3(rr)) or (bit3(rd)
+             and not bit3(r)) or (not bit3(r) and bit3(rr)))
+        v = ((rd7 and rr7 and not r7) or (not rd7 and not rr7 and r7))
+        n = r7
+        s = v ^ n
+        z = r == 0
+        c = ((rd7 and rr7) or (not r7 and (rr7 or rd7)))
         assert cpu.r[numberRd] == r
-        assert testlib.getH(byref(cpu)) == ((bit3(rd.value) and bit3(rr.value)) or (
-            bit3(rd.value) and not bit3(r)) or (not bit3(r) and bit3(rr.value)))
-        statusRegister(byref(cpu), rd.value, rr.value, r)
+        assert h == testlib.getH(byref(cpu))
+        assert s == testlib.getS(byref(cpu))
+        assert v == testlib.getV(byref(cpu))
+        assert n == testlib.getN(byref(cpu))
+        assert z == testlib.getZ(byref(cpu))
+        assert c == testlib.getC(byref(cpu))
     destroy_cpu(cpu)
 
 
@@ -51,17 +62,28 @@ def test_add():
     cpu = create_cpu().contents
     for _ in range(64):
         numberRd, numberRr = random.sample(list(range(32)), 2)
-        rd = c_int8(random.randint(0, 255))
-        rr = c_int8(random.randint(0, 255))
-        cpu.r[numberRd] = rd.value
-        cpu.r[numberRr] = rr.value
+        rd = c_int8(random.randint(0, 255)).value
+        rr = c_int8(random.randint(0, 255)).value
+        cpu.r[numberRd] = rd
+        cpu.r[numberRr] = rr
         instruction = maskOpcode("0010 00rd dddd rrrr", d=numberRd, r=numberRr)
         testlib.add(byref(cpu), instruction)
-        r = c_int8(rd.value + rr.value).value
+        r = c_int8(rd + rr).value
+        rd7, rr7, r7 = bit7(rd), bit7(rr), bit7(r)
+        h = ((bit3(rd) and bit3(rr)) or (bit3(rd) and not bit3(r))
+             or (not bit3(r) and bit3(rr)))
+        v = ((rd7 and rr7 and not r7) or (not rd7 and not rr7 and r7))
+        n = r7
+        s = v ^ n
+        z = r == 0
+        c = ((rd7 and rr7) or (not r7 and (rr7 or rd7)))
         assert cpu.r[numberRd] == r
-        assert testlib.getH(byref(cpu)) == ((bit3(rd.value) and bit3(rr.value)) or (
-            bit3(rd.value) and not bit3(r)) or (not bit3(r) and bit3(rr.value)))
-        statusRegister(byref(cpu), rd.value, rr.value, r)
+        assert h == testlib.getH(byref(cpu))
+        assert s == testlib.getS(byref(cpu))
+        assert v == testlib.getV(byref(cpu))
+        assert n == testlib.getN(byref(cpu))
+        assert z == testlib.getZ(byref(cpu))
+        assert c == testlib.getC(byref(cpu))
     destroy_cpu(cpu)
 
 
@@ -116,15 +138,3 @@ def test_sub():
         assert z == testlib.getZ(byref(cpu))
         assert c == testlib.getC(byref(cpu))
     destroy_cpu(cpu)
-
-
-def statusRegister(cpu: cpu_t, rd: int, rr: int, r: int):
-    rd7: bool = bit7(rd)
-    rr7: bool = bit7(rr)
-    r7: bool = bit7(r)
-    assert testlib.getV(cpu) == ((rd7 and rr7 and not r7) or (
-        not rd7 and not rr7 and r7))
-    assert testlib.getN(cpu) == r7
-    assert testlib.getS(cpu) == testlib.getN(cpu) ^ testlib.getV(cpu)
-    assert testlib.getZ(cpu) == (r == 0)
-    assert testlib.getC(cpu) == ((rd7 and rr7) or (not r7 and (rr7 or rd7)))
